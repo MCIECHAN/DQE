@@ -1,13 +1,7 @@
 package com.company;
 
-/**
- * Created by ciechan on 2016-01-18.
- */
 public class Cell {
-
-    public int CellPositionX;
-    public int CellPositionY;
-
+    //TODO: konstruktor
     public int xMin;
     public int xMax;
     public int yMin;

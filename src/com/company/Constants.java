@@ -1,9 +1,7 @@
 package com.company;
 
-/**
- * Created by ciechan on 2016-01-18.
- */
 public class Constants {
+    //TODO:konstruktor potrzebny
     int areaWallLenght;
     int cellWallLength;
     int cellHeight;
