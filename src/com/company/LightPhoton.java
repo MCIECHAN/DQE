@@ -1,8 +1,12 @@
 package com.company;
 
 import com.sun.xml.internal.bind.v2.model.core.MaybeElement;
+import jdk.nashorn.internal.runtime.arrays.ArrayIndex;
 import jdk.nashorn.internal.runtime.options.Option;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
 
 /**
@@ -10,12 +14,14 @@ import java.util.Optional;
  */
 public class LightPhoton {
     private Position position;
+    private Position oldPosition;
     private DirectionCooficient directCoefficient;
     private Cell cell;
     private Boolean saved;
 
     public LightPhoton (Position newPosition,DirectionCooficient newDirectionCooficient, Cell newCell, Boolean stan){
         position = newPosition;
+        oldPosition = newPosition;
         directCoefficient = newDirectionCooficient;
         cell = newCell;
         saved = stan;
@@ -82,29 +88,24 @@ public class LightPhoton {
         return Optional.of(nowyLightPhoton);
     }
 
-    private Optional <LightPhoton> odbicie(LightPhoton przewidywanaNowaPozycja ){
+    private Optional <LightPhoton> odbicie(LightPhoton przewidywanaNowaPozycja){
 
-        if(przewidywanaNowaPozycja.position.x<przewidywanaNowaPozycja.cell.xMin){
-            DirectionCooficient newdirectCoefficient = new DirectionCooficient(-przewidywanaNowaPozycja.directCoefficient.x,przewidywanaNowaPozycja.directCoefficient.y,przewidywanaNowaPozycja.directCoefficient.z);
-            Double wsp = (przewidywanaNowaPozycja.position.x-przewidywanaNowaPozycja.cell.xMin)/przewidywanaNowaPozycja.directCoefficient.x;
-            Position newPosition = new Position(przewidywanaNowaPozycja.position.x-wsp*przewidywanaNowaPozycja.position.x,przewidywanaNowaPozycja.position.y-wsp*przewidywanaNowaPozycja.position.y,przewidywanaNowaPozycja.position.z-wsp*przewidywanaNowaPozycja.position.z);
-            return Optional.of(new LightPhoton(newPosition, newdirectCoefficient,przewidywanaNowaPozycja.cell, przewidywanaNowaPozycja.saved));
+        Granica punktOdbicia = new Granica(przewidywanaNowaPozycja);
+        int indeksNajblizszejGranicy = Arrays.asList(punktOdbicia.odleglosc).indexOf(Collections.min(Arrays.asList(punktOdbicia.odleglosc)));
+        Position punktZetknieciaZeSciana = punktOdbicia.pozycjaPrzeciecia[indeksNajblizszejGranicy]; //Nowa pozycja fotonu swiat³a
+        while (indeksNajblizszejGranicy==0||indeksNajblizszejGranicy==1){
+            DirectionCooficient noweWspolczynnikiKierunkowe = new DirectionCooficient(-przewidywanaNowaPozycja.directCoefficient.x,przewidywanaNowaPozycja.directCoefficient.y,przewidywanaNowaPozycja.directCoefficient.z);
         }
-        else if(przewidywanaNowaPozycja.position.x>przewidywanaNowaPozycja.cell.xMax){
-            przewidywanaNowaPozycja.directCoefficient.x= -przewidywanaNowaPozycja.directCoefficient.x;
-            Double wsp = (przewidywanaNowaPozycja.position.x-przewidywanaNowaPozycja.cell.xMax)/przewidywanaNowaPozycja.directCoefficient.x;
+        while (indeksNajblizszejGranicy==2||indeksNajblizszejGranicy==3){
+            DirectionCooficient noweWspolczynnikiKierunkowe = new DirectionCooficient(przewidywanaNowaPozycja.directCoefficient.x, -przewidywanaNowaPozycja.directCoefficient.y, przewidywanaNowaPozycja.directCoefficient.z);
         }
-        else if (przewidywanaNowaPozycja.position.y<przewidywanaNowaPozycja.cell.yMin||przewidywanaNowaPozycja.position.y>przewidywanaNowaPozycja.cell.yMax){
-            przewidywanaNowaPozycja.directCoefficient.y= -przewidywanaNowaPozycja.directCoefficient.y;
+        while (indeksNajblizszejGranicy==4||indeksNajblizszejGranicy==5){
+            DirectionCooficient noweWspolczynnikiKierunkowe = new DirectionCooficient(przewidywanaNowaPozycja.directCoefficient.x, przewidywanaNowaPozycja.directCoefficient.y, -przewidywanaNowaPozycja.directCoefficient.z);
         }
-        else if (przewidywanaNowaPozycja.position.z<przewidywanaNowaPozycja.cell.zMin||przewidywanaNowaPozycja.position.z>przewidywanaNowaPozycja.cell.zMax){
-            przewidywanaNowaPozycja.directCoefficient.y= -przewidywanaNowaPozycja.directCoefficient.y;
-        }
-
-        Position punktZetknieciaZeSciana = position; //TODO: nowa pozycja wyliczona za pomoc¹ dziwnej matmy
-
-        return Optional.of(LightPhoton(punktZetknieciaZeSciana, noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, przewidywanaNowaPozycja.saved));
+        LightPhoton nowyLightPhoton = new LightPhoton(przewidywanaNowaPozycja.position, noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, przewidywanaNowaPozycja.saved);// DLaczego to nie dzia³a?
+        return Optional.of(nowyLightPhoton);
     }
+
 
     private Optional <LightPhoton> przejscie(LightPhoton przewidywanaNowaPozycja ){
         //TODO: magia, jeœli przejdzie przez 2 œciany
@@ -118,6 +119,49 @@ public class LightPhoton {
             }
             LightPhoton(przewidywanaNowaPozycja.position, noweWspolczynnikiKierunkowe, cell, newSaved);
         }
+    }
+
+    private Granica znajdzGranice (LightPhoton przewidywanaNowaPozycja){
+
+        Granica tmpGranica = new Granica();
+
+        if(przewidywanaNowaPozycja.position.x<przewidywanaNowaPozycja.cell.xMin){
+            tmpGranica.wskaznik[0]=1;
+            Double wsp = (przewidywanaNowaPozycja.oldPosition.x-przewidywanaNowaPozycja.cell.xMin)/przewidywanaNowaPozycja.directCoefficient.x;
+            tmpGranica.pozycjaPrzeciecia[0] = new Position(przewidywanaNowaPozycja.oldPosition.x-wsp*przewidywanaNowaPozycja.directCoefficient.x,przewidywanaNowaPozycja.oldPosition.y-wsp*przewidywanaNowaPozycja.directCoefficient.y,przewidywanaNowaPozycja.oldPosition.z-wsp*przewidywanaNowaPozycja.directCoefficient.z);
+            tmpGranica.odleglosc[0]=Math.sqrt(Math.pow(przewidywanaNowaPozycja.oldPosition.x-tmpGranica.pozycjaPrzeciecia[0].x,2)+Math.pow(przewidywanaNowaPozycja.oldPosition.y-tmpGranica.pozycjaPrzeciecia[0].y,2)+Math.pow(przewidywanaNowaPozycja.oldPosition.z-tmpGranica.pozycjaPrzeciecia[0].z,2));
+        }
+        else if(przewidywanaNowaPozycja.position.x>przewidywanaNowaPozycja.cell.xMax){
+            tmpGranica.wskaznik[1]=1;
+            Double wsp = (przewidywanaNowaPozycja.oldPosition.x-przewidywanaNowaPozycja.cell.xMax)/przewidywanaNowaPozycja.directCoefficient.x;
+            tmpGranica.pozycjaPrzeciecia[1] = new Position(przewidywanaNowaPozycja.oldPosition.x-wsp*przewidywanaNowaPozycja.directCoefficient.x,przewidywanaNowaPozycja.oldPosition.y-wsp*przewidywanaNowaPozycja.directCoefficient.y,przewidywanaNowaPozycja.oldPosition.z-wsp*przewidywanaNowaPozycja.directCoefficient.z);
+            tmpGranica.odleglosc[1]=Math.sqrt(Math.pow(przewidywanaNowaPozycja.oldPosition.x-tmpGranica.pozycjaPrzeciecia[1].x,2)+Math.pow(przewidywanaNowaPozycja.oldPosition.y-tmpGranica.pozycjaPrzeciecia[1].y,2)+Math.pow(przewidywanaNowaPozycja.oldPosition.z-tmpGranica.pozycjaPrzeciecia[1].z,2));
+        }
+        else if (przewidywanaNowaPozycja.position.y<przewidywanaNowaPozycja.cell.yMin{
+            tmpGranica.wskaznik[2]=1;
+            Double wsp = (przewidywanaNowaPozycja.oldPosition.y-przewidywanaNowaPozycja.cell.yMin)/przewidywanaNowaPozycja.directCoefficient.y;
+            tmpGranica.pozycjaPrzeciecia[2]  = new Position(przewidywanaNowaPozycja.oldPosition.x-wsp*przewidywanaNowaPozycja.directCoefficient.x,przewidywanaNowaPozycja.oldPosition.y-wsp*przewidywanaNowaPozycja.directCoefficient.y,przewidywanaNowaPozycja.oldPosition.z-wsp*przewidywanaNowaPozycja.directCoefficient.z);
+            tmpGranica.odleglosc[2]=Math.sqrt(Math.pow(przewidywanaNowaPozycja.oldPosition.x-tmpGranica.pozycjaPrzeciecia[2].x,2)+Math.pow(przewidywanaNowaPozycja.oldPosition.y-tmpGranica.pozycjaPrzeciecia[2].y,2)+Math.pow(przewidywanaNowaPozycja.oldPosition.z-tmpGranica.pozycjaPrzeciecia[2].z,2));
+        }
+        else if(przewidywanaNowaPozycja.position.y>przewidywanaNowaPozycja.cell.yMax){
+            tmpGranica.wskaznik[3]=1;
+            Double wsp = (przewidywanaNowaPozycja.oldPosition.y-przewidywanaNowaPozycja.cell.yMax)/przewidywanaNowaPozycja.directCoefficient.y;
+            tmpGranica.pozycjaPrzeciecia[3]= new Position(przewidywanaNowaPozycja.oldPosition.x-wsp*przewidywanaNowaPozycja.directCoefficient.x,przewidywanaNowaPozycja.oldPosition.y-wsp*przewidywanaNowaPozycja.directCoefficient.y,przewidywanaNowaPozycja.oldPosition.z-wsp*przewidywanaNowaPozycja.directCoefficient.z);
+            tmpGranica.odleglosc[3]=Math.sqrt(Math.pow(przewidywanaNowaPozycja.oldPosition.x-tmpGranica.pozycjaPrzeciecia[3].x,2)+Math.pow(przewidywanaNowaPozycja.oldPosition.y-tmpGranica.pozycjaPrzeciecia[3].y,2)+Math.pow(przewidywanaNowaPozycja.oldPosition.z-tmpGranica.pozycjaPrzeciecia[3].z,2));
+        }
+        else if (przewidywanaNowaPozycja.position.z<przewidywanaNowaPozycja.cell.zMin{
+            tmpGranica.wskaznik[4]=1;
+            Double wsp = (przewidywanaNowaPozycja.oldPosition.z-przewidywanaNowaPozycja.cell.zMin)/przewidywanaNowaPozycja.directCoefficient.z;
+            tmpGranica.pozycjaPrzeciecia[4]= new Position(przewidywanaNowaPozycja.oldPosition.x-wsp*przewidywanaNowaPozycja.directCoefficient.x,przewidywanaNowaPozycja.oldPosition.y-wsp*przewidywanaNowaPozycja.directCoefficient.y,przewidywanaNowaPozycja.oldPosition.z-wsp*przewidywanaNowaPozycja.directCoefficient.z);
+            tmpGranica.odleglosc[4]=Math.sqrt(Math.pow(przewidywanaNowaPozycja.oldPosition.x-tmpGranica.pozycjaPrzeciecia[4].x,2)+Math.pow(przewidywanaNowaPozycja.oldPosition.y-tmpGranica.pozycjaPrzeciecia[4].y,2)+Math.pow(przewidywanaNowaPozycja.oldPosition.z-tmpGranica.pozycjaPrzeciecia[4].z,2));
+        }
+        else if (przewidywanaNowaPozycja.position.z>przewidywanaNowaPozycja.cell.zMax){
+            tmpGranica.wskaznik[5]=1;
+            Double wsp = (przewidywanaNowaPozycja.oldPosition.z-przewidywanaNowaPozycja.cell.zMax)/przewidywanaNowaPozycja.directCoefficient.z;
+            tmpGranica.pozycjaPrzeciecia[5] = new Position(przewidywanaNowaPozycja.oldPosition.x-wsp*przewidywanaNowaPozycja.directCoefficient.x,przewidywanaNowaPozycja.oldPosition.y-wsp*przewidywanaNowaPozycja.directCoefficient.y,przewidywanaNowaPozycja.oldPosition.z-wsp*przewidywanaNowaPozycja.directCoefficient.z);
+            tmpGranica.odleglosc[5]=Math.sqrt(Math.pow(przewidywanaNowaPozycja.oldPosition.x-tmpGranica.pozycjaPrzeciecia[5].x,2)+Math.pow(przewidywanaNowaPozycja.oldPosition.y-tmpGranica.pozycjaPrzeciecia[5].y,2)+Math.pow(przewidywanaNowaPozycja.oldPosition.z-tmpGranica.pozycjaPrzeciecia[5].z,2));
+        }
+        return tmpGranica;
     }
 
 }

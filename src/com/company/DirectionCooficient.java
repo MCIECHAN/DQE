@@ -8,7 +8,7 @@ public class DirectionCooficient {
      Double y;
      Double z;
 
-    private DirectionCooficient( Double newX, Double newY, Double newZ){
+    public DirectionCooficient( Double newX, Double newY, Double newZ){
         x = newX;
         y = newY;
         z = newZ;
