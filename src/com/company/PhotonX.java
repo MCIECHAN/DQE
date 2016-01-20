@@ -13,7 +13,7 @@ public class PhotonX {
         this.position = position;
         this.directCoefficient = directCoefficient;
         this.cell = cell;
-        this.massAttenuationCoefficientOfXray = newMassAttenuationCoefficientOfXray; //TODO: pełna nazwa, bo nie wiadomo co to jest ;)
+        this.massAttenuationCoefficientOfXray = newMassAttenuationCoefficientOfXray;
         this.numberOfLPhotons = numberOfLPhotons;
     }
 

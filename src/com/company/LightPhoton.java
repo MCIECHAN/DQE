@@ -7,15 +7,12 @@ import java.util.Optional;
 
 public class LightPhoton {
     private Position position;
-    //TODO: pozbądź się tego i spróbuj rozwiązać bez oldPosition
-    private Position oldPosition;
     private DirectionCoefficient directCoefficient;
     private Cell cell;
     private Boolean saved;
 
     public LightPhoton(Position position, DirectionCoefficient directCoefficient, Cell cell, Boolean saved) {
         this.position = position;
-        oldPosition = position;
         this.directCoefficient = directCoefficient;
         this.cell = cell;
         this.saved = saved;
@@ -62,7 +59,7 @@ public class LightPhoton {
         return position.x > cell.xMin || position.x < cell.xMax || position.y > cell.yMin || position.y < cell.yMax || position.z > cell.zMin || position.z < cell.zMax;
     }
 
-    private Optional<Cell> getNewCell(LightPhoton newLightPhoton, Constants constants) {
+    private Optional<Cell> currentCell(LightPhoton newLightPhoton, Constants constants) {
         //TODO: podanie nowej kom�rki, je�liby do takiej przeszed�
         if (newLightPhoton.position.x > 0 && newLightPhoton.position.x < constants.cellWallLength * constants.numberOfColumns &&
                 newLightPhoton.position.y > 0 && newLightPhoton.position.y < constants.cellWallLength * constants.numberOfRows && newLightPhoton.position.z > 0) {
@@ -74,7 +71,7 @@ public class LightPhoton {
                 newCell.xMin = newCell.xMax;
                 newCell.xMax = newCell.xMax + constants.cellWallLength;
             }
-            if (newLightPhoton.position.y <= newLightPhoton.cell.yMin) {
+            else if (newLightPhoton.position.y <= newLightPhoton.cell.yMin) {
                 newCell.yMax = newCell.yMin;
                 newCell.yMin = newCell.yMin - constants.cellWallLength;
             } else {
@@ -122,7 +119,7 @@ public class LightPhoton {
 
         LightPhoton newLightPhoton = new LightPhoton(punktZetknieciaZeSciana, noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, false);
 
-        Optional<Cell> newCell = getNewCell(newLightPhoton, constants);
+        Optional<Cell> newCell = currentCell(newLightPhoton, constants);
 
         return newCell.map(cell -> {
             Boolean newSaved = false;
