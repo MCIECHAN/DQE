@@ -5,6 +5,8 @@ public class Constants {
     int areaWallLenght;
     int cellWallLength;
     int cellHeight;
+    int numberOfRows;
+    int numberOfColumns;
     Double photonXEnergy;
     Double wspolczynnikKonwersjiPromieniowaniaRTG;
     Double dlugoscFaliSwiatla;
