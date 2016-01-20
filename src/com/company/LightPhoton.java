@@ -7,17 +7,18 @@ import java.util.Optional;
 
 public class LightPhoton {
     private Position position;
+    //TODO: usuń old position, nie jest potrzebne, to jest position (serio, think about it ;) )
     private Position oldPosition;
     private DirectionCoefficient directCoefficient;
     private Cell cell;
     private Boolean saved;
 
-    public LightPhoton(Position newPosition, DirectionCoefficient newDirectionCoefficient, Cell newCell, Boolean stan) {
-        position = newPosition;
-        oldPosition = newPosition;
-        directCoefficient = newDirectionCoefficient;
-        cell = newCell;
-        saved = stan;
+    public LightPhoton(Position position, DirectionCoefficient directCoefficient, Cell cell, Boolean saved) {
+        this.position = position;
+        oldPosition = position;
+        this.directCoefficient = directCoefficient;
+        this.cell = cell;
+        this.saved = saved;
     }
 
     private LightPhoton losujDrogeSwobodna(Constants constants) {
@@ -97,13 +98,11 @@ public class LightPhoton {
         DirectionCoefficient noweWspolczynnikiKierunkowe = przewidywanaNowaPozycja.directCoefficient;
         Optional<Cell> newCell = getNewCell(przewidywanaNowaPozycja.position);
 
-        newCell.map(cell -> {//TODO: sprawdz jak się robi lambdy(krótki zapis funkcji w javie 8
+        return newCell.map((Cell cell1) -> {
             Boolean newSaved = false;
-            if (przewidywanaNowaPozycja.position.z >= 150) {
-                newSaved = true;
-            }
-            LightPhoton(przewidywanaNowaPozycja.position, noweWspolczynnikiKierunkowe, cell, newSaved);
-            )
+            if (przewidywanaNowaPozycja.position.z >= 150) { newSaved = true;}
+            return new LightPhoton(przewidywanaNowaPozycja.position, noweWspolczynnikiKierunkowe, cell1, newSaved);
+        });
         }
 
     private Granica znajdzGranice(LightPhoton przewidywanaNowaPozycja) {
