@@ -23,7 +23,7 @@ public class LightPhoton {
 
     private LightPhoton losujDrogeSwobodna(Constants constants) {
         Double r = Math.random();
-        Double s = -1 / constants.masowyWspolczynnikOslabieniaSwiatla * Math.log(r);
+        Double s = -1 / constants.massAttenuationCoefficientOfLight * Math.log(r);
         Double newX = position.x + directCoefficient.x * s;
         Double newY = position.y + directCoefficient.y * s;
         Double newZ = position.z + directCoefficient.z * s;
@@ -42,7 +42,7 @@ public class LightPhoton {
                 }
             } else {
                 Double r = Math.random();
-                if (r <= constants.prawdopodobienstwoOdbicia) {
+                if (r <= constants.probabilityOfReflection) {
                     return odbicie(przewidywanaNowaPozycja);
                 } else {
                     return przejscie(przewidywanaNowaPozycja, constants);
@@ -55,7 +55,7 @@ public class LightPhoton {
 
     private Boolean czyAbsorbowany(Constants constants) {
         Double r = Math.random();
-        return r <= constants.prawdopodobienstwoRozproszenia;
+        return r <= constants.probabilityOfDispersion;
     }
 
     private Boolean czyWgranicyKomorki() {
