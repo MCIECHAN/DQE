@@ -128,21 +128,24 @@ public class LightPhoton {
         });
     }
 
+    //Ta funkcja jest tu, ponieważ po przeniesieniu do Border.java nie mam dostępu do prywatnych pol obiektu LightPhoton
+    //Po prostu nie wiem, co zrobić, by to działało
     private Optional <Border> findBorder(LightPhoton przewidywanaNowaPozycja, LightPhoton oldLightPhoton, Constants constants) {
 
         ArrayList<Border> listOfPotentialBorders = new ArrayList<>();
 
         if (przewidywanaNowaPozycja.position.x < przewidywanaNowaPozycja.cell.xMin) {
             Double wsp = (oldLightPhoton.position.x - przewidywanaNowaPozycja.cell.xMin) / przewidywanaNowaPozycja.directCoefficient.x;
-            Position coordinatesOfCrossing = new Position(oldLightPhoton.position.x - wsp * przewidywanaNowaPozycja.directCoefficient.x, oldLightPhoton.position.y - wsp * przewidywanaNowaPozycja.directCoefficient.y, oldLightPhoton.position.z - wsp * przewidywanaNowaPozycja.directCoefficient.z);
+            Position coordinatesOfCrossing = new Position(oldLightPhoton.position.x - wsp * przewidywanaNowaPozycja.directCoefficient.x, oldLightPhoton.position.x - wsp * przewidywanaNowaPozycja.directCoefficient.y, oldLightPhoton.position.z - wsp * przewidywanaNowaPozycja.directCoefficient.z);
             Double distanceToBorder = Math.sqrt(Math.pow(oldLightPhoton.position.x - coordinatesOfCrossing.x, 2) + Math.pow(oldLightPhoton.position.y - coordinatesOfCrossing.y, 2) + Math.pow(oldLightPhoton.position.z - coordinatesOfCrossing.z, 2));
             Cell newCell = new Cell(przewidywanaNowaPozycja.cell.xMin - constants.cellWallLength,przewidywanaNowaPozycja.cell.xMin,przewidywanaNowaPozycja.cell.yMin,przewidywanaNowaPozycja.cell.yMax,przewidywanaNowaPozycja.cell.zMin,przewidywanaNowaPozycja.cell.zMax);
             listOfPotentialBorders.add(new Border(coordinatesOfCrossing,newCell,distanceToBorder));
         } else if (przewidywanaNowaPozycja.position.x > przewidywanaNowaPozycja.cell.xMax) {
-
-            Double wsp = (przewidywanaNowaPozycja.oldPosition.x - przewidywanaNowaPozycja.cell.xMax) / przewidywanaNowaPozycja.directCoefficient.x;
-            tmpGranica.pozycjaPrzeciecia[1] = new Position(przewidywanaNowaPozycja.oldPosition.x - wsp * przewidywanaNowaPozycja.directCoefficient.x, przewidywanaNowaPozycja.oldPosition.y - wsp * przewidywanaNowaPozycja.directCoefficient.y, przewidywanaNowaPozycja.oldPosition.z - wsp * przewidywanaNowaPozycja.directCoefficient.z);
-            tmpGranica.odleglosc[1] = Math.sqrt(Math.pow(przewidywanaNowaPozycja.oldPosition.x - tmpGranica.pozycjaPrzeciecia[1].x, 2) + Math.pow(przewidywanaNowaPozycja.oldPosition.y - tmpGranica.pozycjaPrzeciecia[1].y, 2) + Math.pow(przewidywanaNowaPozycja.oldPosition.z - tmpGranica.pozycjaPrzeciecia[1].z, 2));
+            Double wsp = (oldLightPhoton.position.x- przewidywanaNowaPozycja.cell.xMax) / przewidywanaNowaPozycja.directCoefficient.x;
+            Position coordinatesOfCrossing = new  Position(oldLightPhoton.position.x - wsp * przewidywanaNowaPozycja.directCoefficient.x, oldLightPhoton.position.y - wsp * przewidywanaNowaPozycja.directCoefficient.y, oldLightPhoton.position.z - wsp * przewidywanaNowaPozycja.directCoefficient.z);
+            Double distanceToBorder= Math.sqrt(Math.pow(oldLightPhoton.position.x - coordinatesOfCrossing.x, 2) + Math.pow(oldLightPhoton.position.y - coordinatesOfCrossing.y, 2) + Math.pow(oldLightPhoton.position.z - coordinatesOfCrossing.z, 2));
+            Cell newCell = new Cell(przewidywanaNowaPozycja.cell.xMax,przewidywanaNowaPozycja.cell.xMax + constants.cellWallLength,przewidywanaNowaPozycja.cell.yMin,przewidywanaNowaPozycja.cell.yMax,przewidywanaNowaPozycja.cell.zMin,przewidywanaNowaPozycja.cell.zMax);
+            listOfPotentialBorders.add(new Border(coordinatesOfCrossing,newCell,distanceToBorder));
 
         } else if (przewidywanaNowaPozycja.position.y < przewidywanaNowaPozycja.cell.yMin) {
 
@@ -167,9 +170,6 @@ public class LightPhoton {
         }
 
         return listOfPotentialBorders.stream().min((b1,b2) -> Double.compare(b1.distance, b2.distance));
-
-
-
     }
 
 }

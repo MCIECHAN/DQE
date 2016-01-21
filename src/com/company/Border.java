@@ -15,4 +15,6 @@ public class Border {
         this.distance = newDistance;
     }
 
+
+
 }
