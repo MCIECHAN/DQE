@@ -2,7 +2,6 @@ package com.company;
 
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class LightPhoton {
     private Position position;
@@ -19,19 +18,19 @@ public class LightPhoton {
 
     Optional<LightPhoton> simulate(Constants constants) {
         if (!saved) {
-            LightPhoton przewidywanaNowaPozycja = losujDrogeSwobodna(constants);
-            if (przewidywanaNowaPozycja.czyWgranicyKomorki()) {
-                if (przewidywanaNowaPozycja.czyAbsorbowany(constants)) {
+            LightPhoton photonInNewPosition = losujDrogeSwobodna(constants);
+            if (photonInNewPosition.wgranicyKomorki()) {
+                if (photonInNewPosition.czyAbsorbowany(constants)) {
                     return Optional.empty();
                 } else {
-                    return rozproszony(przewidywanaNowaPozycja);
+                    return Optional.of(rozproszony(photonInNewPosition));
                 }
             } else {
                 Double r = Math.random();
                 if (r <= constants.probabilityOfReflection) {
-                    return odbicie(przewidywanaNowaPozycja);
+                    return Optional.of(odbicie(photonInNewPosition));
                 } else {
-                    return przejscie(przewidywanaNowaPozycja, constants);
+                    return przejscie(photonInNewPosition, constants);
                 }
             }
         } else {
@@ -53,16 +52,17 @@ public class LightPhoton {
         Double r = Math.random();
         return r <= constants.probabilityOfDispersion;
     }
-    private Optional<LightPhoton> rozproszony(LightPhoton przewidywanaNowaPozycja) {
+
+    private LightPhoton rozproszony(LightPhoton przewidywanaNowaPozycja) {
         DirectionCoefficient noweWspolczynnikiKierunkowe = DirectionCoefficient.getRandomDirectionCoefficient(przewidywanaNowaPozycja.directCoefficient);
-        LightPhoton nowyLightPhoton = new LightPhoton(przewidywanaNowaPozycja.position, noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, przewidywanaNowaPozycja.saved);
-        return Optional.of(nowyLightPhoton);
+        return new LightPhoton(przewidywanaNowaPozycja.position, noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, przewidywanaNowaPozycja.saved);
     }
 
-    private Boolean czyWgranicyKomorki() {
+    private Boolean wgranicyKomorki() {
         return position.x > cell.xMin || position.x < cell.xMax || position.y > cell.yMin || position.y < cell.yMax || position.z > cell.zMin || position.z < cell.zMax;
     }
 
+    //TODO: czy to nie powinno czasem zwracać Optional.empty <- jeśli wypadnie poza pole?
     private Optional<Cell> currentCell(LightPhoton newLightPhoton, Constants constants) {
         if (newLightPhoton.position.x > 0 && newLightPhoton.position.x < constants.cellWallLength * constants.numberOfColumns &&
                 newLightPhoton.position.y > 0 && newLightPhoton.position.y < constants.cellWallLength * constants.numberOfRows && newLightPhoton.position.z > 0) {
@@ -73,8 +73,7 @@ public class LightPhoton {
             } else if (newLightPhoton.position.x >= newLightPhoton.cell.xMax) {
                 newCell.xMin = newCell.xMax;
                 newCell.xMax = newCell.xMax + constants.cellWallLength;
-            }
-            else if (newLightPhoton.position.y <= newLightPhoton.cell.yMin) {
+            } else if (newLightPhoton.position.y <= newLightPhoton.cell.yMin) {
                 newCell.yMax = newCell.yMin;
                 newCell.yMin = newCell.yMin - constants.cellWallLength;
             } else {
@@ -87,12 +86,12 @@ public class LightPhoton {
         }
     }
 
-    private Optional<LightPhoton> odbicie(LightPhoton przewidywanaNowaPozycja) {
+    private LightPhoton odbicie(LightPhoton przewidywanaNowaPozycja) {
 
         Granica punktOdbicia = Granica.znajdzGranice(przewidywanaNowaPozycja);
         int indeksNajblizszejGranicy = Arrays.asList(punktOdbicia.odleglosc).indexOf(Collections.min(Arrays.asList(punktOdbicia.odleglosc)));
         Position punktZetknieciaZeSciana = punktOdbicia.pozycjaPrzeciecia[indeksNajblizszejGranicy];
-        DirectionCoefficient noweWspolczynnikiKierunkowe = przewidywanaNowaPozycja.directCoefficient;
+        DirectionCoefficient noweWspolczynnikiKierunkowe;
 
         if (indeksNajblizszejGranicy == 0 || indeksNajblizszejGranicy == 1) {
             noweWspolczynnikiKierunkowe = new DirectionCoefficient(-przewidywanaNowaPozycja.directCoefficient.x, przewidywanaNowaPozycja.directCoefficient.y, przewidywanaNowaPozycja.directCoefficient.z);
@@ -101,8 +100,7 @@ public class LightPhoton {
         } else {
             noweWspolczynnikiKierunkowe = new DirectionCoefficient(przewidywanaNowaPozycja.directCoefficient.x, przewidywanaNowaPozycja.directCoefficient.y, -przewidywanaNowaPozycja.directCoefficient.z);
         }
-        LightPhoton nowyLightPhoton = new LightPhoton(punktZetknieciaZeSciana, noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, przewidywanaNowaPozycja.saved);
-        return Optional.of(nowyLightPhoton);
+        return new LightPhoton(punktZetknieciaZeSciana, noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, przewidywanaNowaPozycja.saved);
     }
 
 
@@ -130,7 +128,10 @@ public class LightPhoton {
 
     //Ta funkcja jest tu, ponieważ po przeniesieniu do Border.java nie mam dostępu do prywatnych pol obiektu LightPhoton
     //Po prostu nie wiem, co zrobić, by to działało
-    private Optional <Border> findBorder(LightPhoton przewidywanaNowaPozycja, LightPhoton oldLightPhoton, Constants constants) {
+    //TODO: hmm.. ta funkcja się nazywa "find boarder", co ona w takim razie robi?
+    //TODO: jeśli znajduje granice (jak mówi nazwa) to chyba nie powinna w ogóle potrzebować LP?
+    //TODO: napisz co ta funkcja powinna zwracać i czego potrzeba żeby to wyliczyć to się zastanowimy jak to ogarnąć
+    private Optional<Border> findBorder(LightPhoton przewidywanaNowaPozycja, LightPhoton oldLightPhoton, Constants constants) {
 
         ArrayList<Border> listOfPotentialBorders = new ArrayList<>();
 
@@ -138,14 +139,14 @@ public class LightPhoton {
             Double wsp = (oldLightPhoton.position.x - przewidywanaNowaPozycja.cell.xMin) / przewidywanaNowaPozycja.directCoefficient.x;
             Position coordinatesOfCrossing = new Position(oldLightPhoton.position.x - wsp * przewidywanaNowaPozycja.directCoefficient.x, oldLightPhoton.position.x - wsp * przewidywanaNowaPozycja.directCoefficient.y, oldLightPhoton.position.z - wsp * przewidywanaNowaPozycja.directCoefficient.z);
             Double distanceToBorder = Math.sqrt(Math.pow(oldLightPhoton.position.x - coordinatesOfCrossing.x, 2) + Math.pow(oldLightPhoton.position.y - coordinatesOfCrossing.y, 2) + Math.pow(oldLightPhoton.position.z - coordinatesOfCrossing.z, 2));
-            Cell newCell = new Cell(przewidywanaNowaPozycja.cell.xMin - constants.cellWallLength,przewidywanaNowaPozycja.cell.xMin,przewidywanaNowaPozycja.cell.yMin,przewidywanaNowaPozycja.cell.yMax,przewidywanaNowaPozycja.cell.zMin,przewidywanaNowaPozycja.cell.zMax);
-            listOfPotentialBorders.add(new Border(coordinatesOfCrossing,newCell,distanceToBorder));
+            Cell newCell = new Cell(przewidywanaNowaPozycja.cell.xMin - constants.cellWallLength, przewidywanaNowaPozycja.cell.xMin, przewidywanaNowaPozycja.cell.yMin, przewidywanaNowaPozycja.cell.yMax, przewidywanaNowaPozycja.cell.zMin, przewidywanaNowaPozycja.cell.zMax);
+            listOfPotentialBorders.add(new Border(coordinatesOfCrossing, newCell, distanceToBorder));
         } else if (przewidywanaNowaPozycja.position.x > przewidywanaNowaPozycja.cell.xMax) {
-            Double wsp = (oldLightPhoton.position.x- przewidywanaNowaPozycja.cell.xMax) / przewidywanaNowaPozycja.directCoefficient.x;
-            Position coordinatesOfCrossing = new  Position(oldLightPhoton.position.x - wsp * przewidywanaNowaPozycja.directCoefficient.x, oldLightPhoton.position.y - wsp * przewidywanaNowaPozycja.directCoefficient.y, oldLightPhoton.position.z - wsp * przewidywanaNowaPozycja.directCoefficient.z);
-            Double distanceToBorder= Math.sqrt(Math.pow(oldLightPhoton.position.x - coordinatesOfCrossing.x, 2) + Math.pow(oldLightPhoton.position.y - coordinatesOfCrossing.y, 2) + Math.pow(oldLightPhoton.position.z - coordinatesOfCrossing.z, 2));
-            Cell newCell = new Cell(przewidywanaNowaPozycja.cell.xMax,przewidywanaNowaPozycja.cell.xMax + constants.cellWallLength,przewidywanaNowaPozycja.cell.yMin,przewidywanaNowaPozycja.cell.yMax,przewidywanaNowaPozycja.cell.zMin,przewidywanaNowaPozycja.cell.zMax);
-            listOfPotentialBorders.add(new Border(coordinatesOfCrossing,newCell,distanceToBorder));
+            Double wsp = (oldLightPhoton.position.x - przewidywanaNowaPozycja.cell.xMax) / przewidywanaNowaPozycja.directCoefficient.x;
+            Position coordinatesOfCrossing = new Position(oldLightPhoton.position.x - wsp * przewidywanaNowaPozycja.directCoefficient.x, oldLightPhoton.position.y - wsp * przewidywanaNowaPozycja.directCoefficient.y, oldLightPhoton.position.z - wsp * przewidywanaNowaPozycja.directCoefficient.z);
+            Double distanceToBorder = Math.sqrt(Math.pow(oldLightPhoton.position.x - coordinatesOfCrossing.x, 2) + Math.pow(oldLightPhoton.position.y - coordinatesOfCrossing.y, 2) + Math.pow(oldLightPhoton.position.z - coordinatesOfCrossing.z, 2));
+            Cell newCell = new Cell(przewidywanaNowaPozycja.cell.xMax, przewidywanaNowaPozycja.cell.xMax + constants.cellWallLength, przewidywanaNowaPozycja.cell.yMin, przewidywanaNowaPozycja.cell.yMax, przewidywanaNowaPozycja.cell.zMin, przewidywanaNowaPozycja.cell.zMax);
+            listOfPotentialBorders.add(new Border(coordinatesOfCrossing, newCell, distanceToBorder));
 
         } else if (przewidywanaNowaPozycja.position.y < przewidywanaNowaPozycja.cell.yMin) {
 
@@ -169,7 +170,7 @@ public class LightPhoton {
             tmpGranica.odleglosc[5] = Math.sqrt(Math.pow(przewidywanaNowaPozycja.oldPosition.x - tmpGranica.pozycjaPrzeciecia[5].x, 2) + Math.pow(przewidywanaNowaPozycja.oldPosition.y - tmpGranica.pozycjaPrzeciecia[5].y, 2) + Math.pow(przewidywanaNowaPozycja.oldPosition.z - tmpGranica.pozycjaPrzeciecia[5].z, 2));
         }
 
-        return listOfPotentialBorders.stream().min((b1,b2) -> Double.compare(b1.distance, b2.distance));
+        return listOfPotentialBorders.stream().min((b1, b2) -> Double.compare(b1.distance, b2.distance));
     }
 
 }

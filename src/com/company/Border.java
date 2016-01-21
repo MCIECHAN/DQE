@@ -1,18 +1,16 @@
 package com.company;
 
-/**
- * Created by ciechan on 2016-01-20.
- */
 public class Border {
 
     public Position position;
     public Cell cell;
     public Double distance;
 
-    public Border (Position newPosition, Cell newCell, Double newDistance){
-        this.position = newPosition;
-        this.cell = newCell;
-        this.distance = newDistance;
+    //TODO: jak robisz this. to nie musisz dawać new w nazwie
+    public Border (Position position, Cell cell, Double distance){
+        this.position = position;
+        this.cell = cell;
+        this.distance = distance;
     }
 
 

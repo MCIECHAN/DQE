@@ -11,7 +11,7 @@ public class DirectionCoefficient {
         z = newZ;
     }
 
-    public static DirectionCoefficient  getRandomDirectionCoefficient(DirectionCoefficient oldDirectionCoefficient) {
+    public static DirectionCoefficient getRandomDirectionCoefficient(DirectionCoefficient oldDirectionCoefficient) {
         Double r = Math.random();
         Double theta = Math.acos(1 - 2 * r);
 
@@ -27,6 +27,6 @@ public class DirectionCoefficient {
         Double x = wsp * (oldDirectionCoefficient.x * oldDirectionCoefficient.z * cosinusFi - oldDirectionCoefficient.y * sinusFi) + oldDirectionCoefficient.x * cosinusTheta;
         Double y = wsp * (oldDirectionCoefficient.y * oldDirectionCoefficient.z * cosinusFi + oldDirectionCoefficient.x * sinusFi) + oldDirectionCoefficient.y * cosinusFi;
         Double z = -sinusTheta * cosinusFi * Math.sqrt(1 - oldDirectionCoefficient.z * oldDirectionCoefficient.z) + oldDirectionCoefficient.z * cosinusFi;
-        return new DirectionCoefficient(x,y,z);
+        return new DirectionCoefficient(x, y, z);
     }
 }

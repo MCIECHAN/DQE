@@ -18,15 +18,15 @@ public class Granica {
         for (int i = 0; i <= 5; i++) {
             wskaznik[i] = 0;
         }
-
     }
+
     public static Granica znajdzGranice(LightPhoton przewidywanaNowaPozycja) {
 
         Granica tmpGranica = new Granica();
 
         if (przewidywanaNowaPozycja.position.x < przewidywanaNowaPozycja.cell.xMin) {
             tmpGranica.wskaznik[0] = 1;//TODO: te 4 linijki w każdym ifie wyciągnij do osobnej funkcji.. a potem zauważ że wszyskie funkcje są prawie takie same i zrób z nich jedną generyczną
-                                        // To chyba nie do końca tak, każda z opcji odwołuje się do innych koordynant. Wolę to zmienić, jak całość odpoali
+            // To chyba nie do końca tak, każda z opcji odwołuje się do innych koordynant. Wolę to zmienić, jak całość odpoali
             Double wsp = (przewidywanaNowaPozycja.oldPosition.x - przewidywanaNowaPozycja.cell.xMin) / przewidywanaNowaPozycja.directCoefficient.x;
             tmpGranica.pozycjaPrzeciecia[0] = new Position(przewidywanaNowaPozycja.oldPosition.x - wsp * przewidywanaNowaPozycja.directCoefficient.x, przewidywanaNowaPozycja.oldPosition.y - wsp * przewidywanaNowaPozycja.directCoefficient.y, przewidywanaNowaPozycja.oldPosition.z - wsp * przewidywanaNowaPozycja.directCoefficient.z);
             tmpGranica.odleglosc[0] = Math.sqrt(Math.pow(przewidywanaNowaPozycja.oldPosition.x - tmpGranica.pozycjaPrzeciecia[0].x, 2) + Math.pow(przewidywanaNowaPozycja.oldPosition.y - tmpGranica.pozycjaPrzeciecia[0].y, 2) + Math.pow(przewidywanaNowaPozycja.oldPosition.z - tmpGranica.pozycjaPrzeciecia[0].z, 2));
