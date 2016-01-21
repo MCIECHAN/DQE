@@ -1,10 +1,8 @@
 package com.company;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class LightPhoton {
     private Position position;
@@ -130,7 +128,7 @@ public class LightPhoton {
         });
     }
 
-    private Border findBorder(LightPhoton przewidywanaNowaPozycja, LightPhoton oldLightPhoton, Constants constants) {
+    private Optional <Border> findBorder(LightPhoton przewidywanaNowaPozycja, LightPhoton oldLightPhoton, Constants constants) {
 
         ArrayList<Border> listOfPotentialBorders = new ArrayList<>();
 
@@ -167,7 +165,19 @@ public class LightPhoton {
             tmpGranica.pozycjaPrzeciecia[5] = new Position(przewidywanaNowaPozycja.oldPosition.x - wsp * przewidywanaNowaPozycja.directCoefficient.x, przewidywanaNowaPozycja.oldPosition.y - wsp * przewidywanaNowaPozycja.directCoefficient.y, przewidywanaNowaPozycja.oldPosition.z - wsp * przewidywanaNowaPozycja.directCoefficient.z);
             tmpGranica.odleglosc[5] = Math.sqrt(Math.pow(przewidywanaNowaPozycja.oldPosition.x - tmpGranica.pozycjaPrzeciecia[5].x, 2) + Math.pow(przewidywanaNowaPozycja.oldPosition.y - tmpGranica.pozycjaPrzeciecia[5].y, 2) + Math.pow(przewidywanaNowaPozycja.oldPosition.z - tmpGranica.pozycjaPrzeciecia[5].z, 2));
         }
-        return;
+
+        return listOfPotentialBorders.stream().collect(Collectors.minBy(new BorderComp())); // Jestem ciekawy, jak to zadzaiała?
+    }
+
+    class BorderComp implements Comparator<Border>{
+        public Border compare (Border b1, Border b2){
+            if (b1.distance<b2.distance) {
+                return b1;
+            }
+            else{
+                return b2;
+            }
+        }
     }
 
 }
