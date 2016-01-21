@@ -169,13 +169,13 @@ public class LightPhoton {
         return listOfPotentialBorders.stream().collect(Collectors.minBy(new BorderComp())); // Jestem ciekawy, jak to zadzaiała?
     }
 
-    class BorderComp implements Comparator<Border>{
-        public Border compare (Border b1, Border b2){
+     class BorderComp implements Comparator<Border>{
+        public int compare (Border b1, Border b2){
             if (b1.distance<b2.distance) {
-                return b1;
+                return 1;
             }
             else{
-                return b2;
+                return -1;
             }
         }
     }
