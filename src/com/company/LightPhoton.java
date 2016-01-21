@@ -166,18 +166,10 @@ public class LightPhoton {
             tmpGranica.odleglosc[5] = Math.sqrt(Math.pow(przewidywanaNowaPozycja.oldPosition.x - tmpGranica.pozycjaPrzeciecia[5].x, 2) + Math.pow(przewidywanaNowaPozycja.oldPosition.y - tmpGranica.pozycjaPrzeciecia[5].y, 2) + Math.pow(przewidywanaNowaPozycja.oldPosition.z - tmpGranica.pozycjaPrzeciecia[5].z, 2));
         }
 
-        return listOfPotentialBorders.stream().collect(Collectors.minBy(new BorderComp())); // Jestem ciekawy, jak to zadzaiała?
-    }
+        return listOfPotentialBorders.stream().min((b1,b2) -> Double.compare(b1.distance, b2.distance));
 
-     class BorderComp implements Comparator<Border>{
-        public int compare (Border b1, Border b2){
-            if (b1.distance<b2.distance) {
-                return 1;
-            }
-            else{
-                return -1;
-            }
-        }
+
+
     }
 
 }
