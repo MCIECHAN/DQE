@@ -60,7 +60,6 @@ public class Position {
         return  new Position(currentPosition.x - wsp * currentDirectionCoefficient.x, currentPosition.x - wsp * currentDirectionCoefficient.y, currentPosition.z - wsp * currentDirectionCoefficient.z);
     }
 
-    // i zwraca... Optional od position
     // jeśli jeden jest a drugi nie, to robimygeomatryczną magię i wyznaczamy punkt przecięcia prostej między dwoma position a granicą fukcji i go zwracamy
 
 }
