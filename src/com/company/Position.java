@@ -18,6 +18,7 @@ public class Position {
 
     public Position getClosestCrossBorderPoint( ArrayList <Position> coordinatesOfCrossing, Position currentPosition){
         //TODO Chcę żeby to zwróciło  position o najmniejszej odległości
+        Collections.min()
         coordinatesOfCrossing.forEach(Position -> getDistanceBetweenTwoPositions(currentPosition));
             return getClosestCrossBorderPoint min(getDistanceBetweenTwoPositions(currentPosition));
     }
