@@ -125,6 +125,4 @@ public class LightPhoton {
             return newLightPhoton;
         });
     }
-
-
 }

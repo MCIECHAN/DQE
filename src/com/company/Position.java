@@ -26,27 +26,27 @@ public class Position {
 
             if (predictedPosition.x < currentCell.xMin) {
                 Double wsp = (currentPosition.x - currentCell.xMin) / currentDirectionCoefficient.x;
-                coordinatesOfCrossing = new Position(currentPosition.x - wsp * currentDirectionCoefficient.x, currentPosition.x - wsp * currentDirectionCoefficient.y, currentPosition.z - wsp * currentDirectionCoefficient.z);
+                coordinatesOfCrossing = getCrossingPosition (currentPosition, wsp, currentDirectionCoefficient);
             }
             else if (predictedPosition.x > currentCell.xMax){
                 Double wsp = (currentPosition.x - currentCell.xMax) / currentDirectionCoefficient.x;
-                 coordinatesOfCrossing = new Position(currentPosition.x - wsp * currentDirectionCoefficient.x, currentPosition.y - wsp * currentDirectionCoefficient.y, currentPosition.z - wsp * currentDirectionCoefficient.z);
+                 coordinatesOfCrossing = getCrossingPosition (currentPosition, wsp, currentDirectionCoefficient);
             }
             else if (predictedPosition.y < currentCell.yMin) {
                 Double wsp = (currentPosition.y - currentCell.yMin) / currentDirectionCoefficient.y;
-                coordinatesOfCrossing = new Position(currentPosition.x - wsp * currentDirectionCoefficient.x, currentPosition.y - wsp * currentDirectionCoefficient.y, currentPosition.z - wsp * currentDirectionCoefficient.z);
+                coordinatesOfCrossing = getCrossingPosition (currentPosition, wsp, currentDirectionCoefficient);
             }
             else if (predictedPosition.y > currentCell.yMax) {
                 Double wsp = (currentPosition.y - currentCell.yMax) / currentDirectionCoefficient.y;
-                coordinatesOfCrossing = new Position(currentPosition.x - wsp * currentDirectionCoefficient.x, currentPosition.y - wsp * currentDirectionCoefficient.y, currentPosition.z - wsp * currentDirectionCoefficient.z);
+                coordinatesOfCrossing = getCrossingPosition (currentPosition, wsp, currentDirectionCoefficient);
             }
             else if (predictedPosition.z < currentCell.zMin) {
                 Double wsp = (currentPosition.z - currentCell.zMin) / currentDirectionCoefficient.z;
-                coordinatesOfCrossing = new Position(currentPosition.x - wsp * currentDirectionCoefficient.x, currentPosition.y - wsp * currentDirectionCoefficient.y, currentPosition.z - wsp *currentDirectionCoefficient.z);
+                coordinatesOfCrossing = getCrossingPosition (currentPosition, wsp, currentDirectionCoefficient);
             }
             else if (predictedPosition.z > currentCell.zMax) {
                 Double wsp = (currentPosition.z - currentCell.zMax) / currentDirectionCoefficient.z;
-                coordinatesOfCrossing = new Position(currentPosition.x - wsp * currentDirectionCoefficient.x, currentPosition.y - wsp * currentDirectionCoefficient.y, currentPosition.z - wsp * currentDirectionCoefficient.z);
+                coordinatesOfCrossing = getCrossingPosition (currentPosition, wsp, currentDirectionCoefficient);
             }
         }
         return coordinatesOfCrossing;
@@ -54,6 +54,10 @@ public class Position {
 
     private  Boolean wgranicyKomorki(Cell cell, Position position) {
         return position.x > cell.xMin && position.x < cell.xMax && position.y > cell.yMin && position.y < cell.yMax && position.z > cell.zMin && position.z < cell.zMax;
+    }
+
+    private Position getCrossingPosition (Position currentPosition, Double wsp, DirectionCoefficient currentDirectionCoefficient){
+        return  new Position(currentPosition.x - wsp * currentDirectionCoefficient.x, currentPosition.x - wsp * currentDirectionCoefficient.y, currentPosition.z - wsp * currentDirectionCoefficient.z);
     }
 
     // i zwraca... Optional od position
