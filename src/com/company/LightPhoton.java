@@ -59,7 +59,7 @@ public class LightPhoton {
     }
 
     private Boolean wgranicyKomorki() {
-        return position.x > cell.xMin || position.x < cell.xMax || position.y > cell.yMin || position.y < cell.yMax || position.z > cell.zMin || position.z < cell.zMax;
+        return position.x > cell.xMin && position.x < cell.xMax && position.y > cell.yMin && position.y < cell.yMax && position.z > cell.zMin && position.z < cell.zMax;
     }
 
     //TODO: czy to nie powinno czasem zwracać Optional.empty <- jeśli wypadnie poza pole?
@@ -126,51 +126,5 @@ public class LightPhoton {
         });
     }
 
-    //Ta funkcja jest tu, ponieważ po przeniesieniu do Border.java nie mam dostępu do prywatnych pol obiektu LightPhoton
-    //Po prostu nie wiem, co zrobić, by to działało
-    //TODO: hmm.. ta funkcja się nazywa "find boarder", co ona w takim razie robi?
-    //TODO: jeśli znajduje granice (jak mówi nazwa) to chyba nie powinna w ogóle potrzebować LP?
-    //TODO: napisz co ta funkcja powinna zwracać i czego potrzeba żeby to wyliczyć to się zastanowimy jak to ogarnąć
-    private Optional<Border> findBorder(LightPhoton przewidywanaNowaPozycja, LightPhoton oldLightPhoton, Constants constants) {
-
-        ArrayList<Border> listOfPotentialBorders = new ArrayList<>();
-
-        if (przewidywanaNowaPozycja.position.x < przewidywanaNowaPozycja.cell.xMin) {
-            Double wsp = (oldLightPhoton.position.x - przewidywanaNowaPozycja.cell.xMin) / przewidywanaNowaPozycja.directCoefficient.x;
-            Position coordinatesOfCrossing = new Position(oldLightPhoton.position.x - wsp * przewidywanaNowaPozycja.directCoefficient.x, oldLightPhoton.position.x - wsp * przewidywanaNowaPozycja.directCoefficient.y, oldLightPhoton.position.z - wsp * przewidywanaNowaPozycja.directCoefficient.z);
-            Double distanceToBorder = Math.sqrt(Math.pow(oldLightPhoton.position.x - coordinatesOfCrossing.x, 2) + Math.pow(oldLightPhoton.position.y - coordinatesOfCrossing.y, 2) + Math.pow(oldLightPhoton.position.z - coordinatesOfCrossing.z, 2));
-            Cell newCell = new Cell(przewidywanaNowaPozycja.cell.xMin - constants.cellWallLength, przewidywanaNowaPozycja.cell.xMin, przewidywanaNowaPozycja.cell.yMin, przewidywanaNowaPozycja.cell.yMax, przewidywanaNowaPozycja.cell.zMin, przewidywanaNowaPozycja.cell.zMax);
-            listOfPotentialBorders.add(new Border(coordinatesOfCrossing, newCell, distanceToBorder));
-        } else if (przewidywanaNowaPozycja.position.x > przewidywanaNowaPozycja.cell.xMax) {
-            Double wsp = (oldLightPhoton.position.x - przewidywanaNowaPozycja.cell.xMax) / przewidywanaNowaPozycja.directCoefficient.x;
-            Position coordinatesOfCrossing = new Position(oldLightPhoton.position.x - wsp * przewidywanaNowaPozycja.directCoefficient.x, oldLightPhoton.position.y - wsp * przewidywanaNowaPozycja.directCoefficient.y, oldLightPhoton.position.z - wsp * przewidywanaNowaPozycja.directCoefficient.z);
-            Double distanceToBorder = Math.sqrt(Math.pow(oldLightPhoton.position.x - coordinatesOfCrossing.x, 2) + Math.pow(oldLightPhoton.position.y - coordinatesOfCrossing.y, 2) + Math.pow(oldLightPhoton.position.z - coordinatesOfCrossing.z, 2));
-            Cell newCell = new Cell(przewidywanaNowaPozycja.cell.xMax, przewidywanaNowaPozycja.cell.xMax + constants.cellWallLength, przewidywanaNowaPozycja.cell.yMin, przewidywanaNowaPozycja.cell.yMax, przewidywanaNowaPozycja.cell.zMin, przewidywanaNowaPozycja.cell.zMax);
-            listOfPotentialBorders.add(new Border(coordinatesOfCrossing, newCell, distanceToBorder));
-
-        } else if (przewidywanaNowaPozycja.position.y < przewidywanaNowaPozycja.cell.yMin) {
-
-            Double wsp = (przewidywanaNowaPozycja.oldPosition.y - przewidywanaNowaPozycja.cell.yMin) / przewidywanaNowaPozycja.directCoefficient.y;
-            tmpGranica.pozycjaPrzeciecia[2] = new Position(przewidywanaNowaPozycja.oldPosition.x - wsp * przewidywanaNowaPozycja.directCoefficient.x, przewidywanaNowaPozycja.oldPosition.y - wsp * przewidywanaNowaPozycja.directCoefficient.y, przewidywanaNowaPozycja.oldPosition.z - wsp * przewidywanaNowaPozycja.directCoefficient.z);
-            tmpGranica.odleglosc[2] = Math.sqrt(Math.pow(przewidywanaNowaPozycja.oldPosition.x - tmpGranica.pozycjaPrzeciecia[2].x, 2) + Math.pow(przewidywanaNowaPozycja.oldPosition.y - tmpGranica.pozycjaPrzeciecia[2].y, 2) + Math.pow(przewidywanaNowaPozycja.oldPosition.z - tmpGranica.pozycjaPrzeciecia[2].z, 2));
-        } else if (przewidywanaNowaPozycja.position.y > przewidywanaNowaPozycja.cell.yMax) {
-
-            Double wsp = (przewidywanaNowaPozycja.oldPosition.y - przewidywanaNowaPozycja.cell.yMax) / przewidywanaNowaPozycja.directCoefficient.y;
-            tmpGranica.pozycjaPrzeciecia[3] = new Position(przewidywanaNowaPozycja.oldPosition.x - wsp * przewidywanaNowaPozycja.directCoefficient.x, przewidywanaNowaPozycja.oldPosition.y - wsp * przewidywanaNowaPozycja.directCoefficient.y, przewidywanaNowaPozycja.oldPosition.z - wsp * przewidywanaNowaPozycja.directCoefficient.z);
-            tmpGranica.odleglosc[3] = Math.sqrt(Math.pow(przewidywanaNowaPozycja.oldPosition.x - tmpGranica.pozycjaPrzeciecia[3].x, 2) + Math.pow(przewidywanaNowaPozycja.oldPosition.y - tmpGranica.pozycjaPrzeciecia[3].y, 2) + Math.pow(przewidywanaNowaPozycja.oldPosition.z - tmpGranica.pozycjaPrzeciecia[3].z, 2));
-        } else if (przewidywanaNowaPozycja.position.z < przewidywanaNowaPozycja.cell.zMin) {
-
-            Double wsp = (przewidywanaNowaPozycja.oldPosition.z - przewidywanaNowaPozycja.cell.zMin) / przewidywanaNowaPozycja.directCoefficient.z;
-            tmpGranica.pozycjaPrzeciecia[4] = new Position(przewidywanaNowaPozycja.oldPosition.x - wsp * przewidywanaNowaPozycja.directCoefficient.x, przewidywanaNowaPozycja.oldPosition.y - wsp * przewidywanaNowaPozycja.directCoefficient.y, przewidywanaNowaPozycja.oldPosition.z - wsp * przewidywanaNowaPozycja.directCoefficient.z);
-            tmpGranica.odleglosc[4] = Math.sqrt(Math.pow(przewidywanaNowaPozycja.oldPosition.x - tmpGranica.pozycjaPrzeciecia[4].x, 2) + Math.pow(przewidywanaNowaPozycja.oldPosition.y - tmpGranica.pozycjaPrzeciecia[4].y, 2) + Math.pow(przewidywanaNowaPozycja.oldPosition.z - tmpGranica.pozycjaPrzeciecia[4].z, 2));
-        } else if (przewidywanaNowaPozycja.position.z > przewidywanaNowaPozycja.cell.zMax) {
-
-            Double wsp = (przewidywanaNowaPozycja.oldPosition.z - przewidywanaNowaPozycja.cell.zMax) / przewidywanaNowaPozycja.directCoefficient.z;
-            tmpGranica.pozycjaPrzeciecia[5] = new Position(przewidywanaNowaPozycja.oldPosition.x - wsp * przewidywanaNowaPozycja.directCoefficient.x, przewidywanaNowaPozycja.oldPosition.y - wsp * przewidywanaNowaPozycja.directCoefficient.y, przewidywanaNowaPozycja.oldPosition.z - wsp * przewidywanaNowaPozycja.directCoefficient.z);
-            tmpGranica.odleglosc[5] = Math.sqrt(Math.pow(przewidywanaNowaPozycja.oldPosition.x - tmpGranica.pozycjaPrzeciecia[5].x, 2) + Math.pow(przewidywanaNowaPozycja.oldPosition.y - tmpGranica.pozycjaPrzeciecia[5].y, 2) + Math.pow(przewidywanaNowaPozycja.oldPosition.z - tmpGranica.pozycjaPrzeciecia[5].z, 2));
-        }
-
-        return listOfPotentialBorders.stream().min((b1, b2) -> Double.compare(b1.distance, b2.distance));
-    }
 
 }

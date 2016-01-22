@@ -18,7 +18,9 @@ public class Cell {
         this.zMax = zMax;
     }
 
-
+    public static Boolean wgranicyKomorki(Cell cell, Position position) {
+        return position.x > cell.xMin && position.x < cell.xMax && position.y > cell.yMin && position.y < cell.yMax && position.z > cell.zMin && position.z < cell.zMax;
+    }
 
 
 }
