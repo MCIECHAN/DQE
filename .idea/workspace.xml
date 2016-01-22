@@ -70,7 +70,7 @@
         <entry file="file://$PROJECT_DIR$/src/com/company/Position.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.7782609">
-              <caret line="67" column="8" selection-start-line="67" selection-start-column="8" selection-end-line="67" selection-end-column="8" />
+              <caret line="65" column="12" selection-start-line="65" selection-start-column="12" selection-end-line="65" selection-end-column="12" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -477,7 +477,7 @@
       <workItem from="1453322476235" duration="2906000" />
       <workItem from="1453373801102" duration="6580000" />
       <workItem from="1453385689479" duration="7001000" />
-      <workItem from="1453462270936" duration="7098000" />
+      <workItem from="1453462270936" duration="7299000" />
     </task>
     <task id="LOCAL-00001" summary="little changes">
       <created>1453322974757</created>
@@ -527,11 +527,17 @@
       <option name="project" value="LOCAL" />
       <updated>1453468398777</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Working over position file">
+      <created>1453471294674</created>
+      <option name="number" value="00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1453471294674</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="79828000" />
+    <option name="totallyTimeSpent" value="80029000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -577,7 +583,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="little changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="little changes" />
+    <MESSAGE value="Working over position file" />
+    <option name="LAST_COMMIT_MESSAGE" value="Working over position file" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -987,7 +994,7 @@
     <entry file="file://$PROJECT_DIR$/src/com/company/Position.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.7782609">
-          <caret line="67" column="8" selection-start-line="67" selection-start-column="8" selection-end-line="67" selection-end-column="8" />
+          <caret line="65" column="12" selection-start-line="65" selection-start-column="12" selection-end-line="65" selection-end-column="12" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

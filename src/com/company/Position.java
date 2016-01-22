@@ -60,14 +60,20 @@ public class Position {
         return  new Position(currentPosition.x - wsp * currentDirectionCoefficient.x, currentPosition.x - wsp * currentDirectionCoefficient.y, currentPosition.z - wsp * currentDirectionCoefficient.z);
     }
 
+    private Position getClosestCrossBorderPoint( ArrayList <Position> coordinatesOfCrossing){
+
+        for (coordinatesOfCrossing : Position){
+
+        }
+
+        return ;
+    }
+
     private Double getDistanceBetweenTwoPositions (Position position1, Position position2){
         return Math.sqrt(Math.pow(position1.x - position2.x, 2) + Math.pow(position1.y - position2.y, 2) + Math.pow(position1.z - position2.z, 2));
     }
 
-    private Position getClosestCrossBorderPoint( ArrayList <Position> coordinatesOfCrossing){
 
-        return ;
-    }
 
     // jeśli jeden jest a drugi nie, to robimygeomatryczną magię i wyznaczamy punkt przecięcia prostej między dwoma position a granicą fukcji i go zwracamy
 
