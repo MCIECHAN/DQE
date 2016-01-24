@@ -30,7 +30,7 @@ public class Cell {
             return Optional.empty();
         }
         else if ((wGranicy(currentPosition) && !wGranicy(predictedPosition))){
-
+            System.out.println("badanie wielu granic");
             if (predictedPosition.x < this.xMin) {
                 Double wsp = (currentPosition.x - this.xMin) / currentDirectionCoefficient.x;
                 coordinatesOfCrossing.add(getCrossingPosition (currentPosition, wsp, currentDirectionCoefficient));
@@ -56,6 +56,7 @@ public class Cell {
                 coordinatesOfCrossing.add(getCrossingPosition (currentPosition, wsp, currentDirectionCoefficient));
             }
         }
+
         return Optional.of(getClosestCrossBorderPoint(coordinatesOfCrossing,currentPosition));
     }
 

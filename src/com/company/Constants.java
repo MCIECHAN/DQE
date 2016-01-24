@@ -6,18 +6,18 @@ public class Constants {
     int cellHeight;
     int numberOfRows;
     int numberOfColumns;
-    Double photonXEnergy;
+    int photonXEnergy;
     Double  RTGConversionCoefficient;
-    Double lengthOfLightWave;
+    int lengthOfLightWave;
     Double massAttenuationCoefficientOfLight;
     Double massAttenuationCoefficientOfXray;
     Double probabilityOfAbsorption;
     Double  probabilityOfDispersion;
     Double  probabilityOfReflection;
 
-    private Constants(int newAreaWallLength, int newCellWallLength,int newCellHeight,int newNumberOfRows,
-                      int newNumberOfColumns, Double newPhotonXEnergy, Double RTGConversionCoefficient,
-                      Double newLengthOfLightWave, Double newMassAttenuationCoefficientOfLight,
+    public Constants(int newAreaWallLength, int newCellWallLength,int newCellHeight,int newNumberOfRows,
+                      int newNumberOfColumns, int newPhotonXEnergy, Double RTGConversionCoefficient,
+                      int newLengthOfLightWave, Double newMassAttenuationCoefficientOfLight,
                       Double newMassAttenuationCoefficientOfXray, Double newProbabilityOfAbsorption,
                       Double  newProbabilityOfDispersion,Double  newProbabilityOfReflection){
         this.areaWallLength = newAreaWallLength;

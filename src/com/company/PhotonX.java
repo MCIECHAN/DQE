@@ -7,14 +7,16 @@ public class PhotonX {
     DirectionCoefficient directCoefficient;
     Cell cell;
     Double massAttenuationCoefficientOfXray;
-    int numberOfLPhotons;
+    long numberOfLPhotons;
+    ArrayList<LightPhoton> listOfLightPhotons;
 
-    public PhotonX(Position position, DirectionCoefficient directCoefficient, Cell cell, Double massAttenuationCoefficientOfXray, int numberOfLPhotons) {
+    public PhotonX(Position position, DirectionCoefficient directCoefficient, Cell cell, Double massAttenuationCoefficientOfXray, long  numberOfLPhotons) {
         this.position = position;
         this.directCoefficient = directCoefficient;
         this.cell = cell;
         this.massAttenuationCoefficientOfXray = massAttenuationCoefficientOfXray;
         this.numberOfLPhotons = numberOfLPhotons;
+        this.listOfLightPhotons = new ArrayList<>();
     }
 
     private PhotonX losujDrogeSwobodna(Constants constants) {
@@ -27,12 +29,12 @@ public class PhotonX {
         return new PhotonX(newPosition, directCoefficient, cell, massAttenuationCoefficientOfXray, numberOfLPhotons);
     }
 
-    private ArrayList<LightPhoton> generateLightPhotons(int numberOfLPhotons) {
-        ArrayList<LightPhoton> listOfLightPhoton = new ArrayList<>();
-        for (int i = 0; i < numberOfLPhotons; i++) {
-            listOfLightPhoton.add(i, new LightPhoton(position, directCoefficient, cell, false));
+    public ArrayList<LightPhoton> generateLightPhotons() {
+
+        for (int i = 0; i < this.numberOfLPhotons; i++) {
+            this.listOfLightPhotons.add(i, new LightPhoton(position, directCoefficient, cell, false));
         }
-        return listOfLightPhoton;
+        return this.listOfLightPhotons;
     }
 
 }

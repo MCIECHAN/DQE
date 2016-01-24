@@ -15,7 +15,7 @@ public class LightPhoton {
         this.saved = saved;
     }
 
-    Optional<LightPhoton> simulate(Constants constants) {
+    public Optional<LightPhoton> simulate(Constants constants) {
         if (!saved) {
             LightPhoton photonInNewPosition = losujDrogeSwobodna(constants);
             if (photonInNewPosition.wgranicyKomorki()) {
@@ -105,6 +105,8 @@ public class LightPhoton {
     private Optional<LightPhoton> przejscie(LightPhoton przewidywanaNowaPozycja, Constants constants) {
 
         Optional <Position> newPosition = przewidywanaNowaPozycja.cell.getCrossedBorderPoint(this.position, this.directCoefficient, przewidywanaNowaPozycja.position);
+
+        System.out.println(newPosition.toString());
 
         DirectionCoefficient noweWspolczynnikiKierunkowe = przewidywanaNowaPozycja.directCoefficient;
         // TODO Czy nie jest tak, że zanim przeprowadze operację "newPosition.get().x" to powinienem sprawdzić, czy dostanę Position, a nie empty?
