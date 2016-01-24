@@ -1,6 +1,5 @@
 package com.company;
 
-
 import java.util.*;
 
 public class LightPhoton {
@@ -82,37 +81,34 @@ public class LightPhoton {
             }
             return Optional.of(newCell);
         } else {
-            return Optional.of(cell);
+            return Optional.empty();
         }
     }
 
     private LightPhoton odbicie(LightPhoton przewidywanaNowaPozycja) {
 
-        Granica punktOdbicia = Granica.znajdzGranice(przewidywanaNowaPozycja);
-        int indeksNajblizszejGranicy = Arrays.asList(punktOdbicia.odleglosc).indexOf(Collections.min(Arrays.asList(punktOdbicia.odleglosc)));
-        Position punktZetknieciaZeSciana = punktOdbicia.pozycjaPrzeciecia[indeksNajblizszejGranicy];
-        DirectionCoefficient noweWspolczynnikiKierunkowe;
+        Optional <Position>  newPosition =  przewidywanaNowaPozycja.cell.getCrossedBorderPoint(this.position, this.directCoefficient, przewidywanaNowaPozycja.position);
+        DirectionCoefficient noweWspolczynnikiKierunkowe = this.directCoefficient;
 
-        if (indeksNajblizszejGranicy == 0 || indeksNajblizszejGranicy == 1) {
+        // TODO Czy nie jest tak, że zanim przeprowadze operację "newPosition.get().x" to powinienem sprawdzić, czy dostanę Position, a nie empty?
+        if (newPosition.get().x == this.cell.xMin || newPosition.get().x == this.cell.xMax) {
             noweWspolczynnikiKierunkowe = new DirectionCoefficient(-przewidywanaNowaPozycja.directCoefficient.x, przewidywanaNowaPozycja.directCoefficient.y, przewidywanaNowaPozycja.directCoefficient.z);
-        } else if (indeksNajblizszejGranicy == 2 || indeksNajblizszejGranicy == 3) {
+        } else if (newPosition.get().y == this.cell.yMin || newPosition.get().y == this.cell.yMax) {
             noweWspolczynnikiKierunkowe = new DirectionCoefficient(przewidywanaNowaPozycja.directCoefficient.x, -przewidywanaNowaPozycja.directCoefficient.y, przewidywanaNowaPozycja.directCoefficient.z);
-        } else {
+        } else if (newPosition.get().z == this.cell.zMin || newPosition.get().z == this.cell.zMax){
             noweWspolczynnikiKierunkowe = new DirectionCoefficient(przewidywanaNowaPozycja.directCoefficient.x, przewidywanaNowaPozycja.directCoefficient.y, -przewidywanaNowaPozycja.directCoefficient.z);
         }
-        return new LightPhoton(punktZetknieciaZeSciana, noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, przewidywanaNowaPozycja.saved);
+        return new LightPhoton(newPosition.get(), noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, przewidywanaNowaPozycja.saved);
     }
 
 
     private Optional<LightPhoton> przejscie(LightPhoton przewidywanaNowaPozycja, Constants constants) {
 
+        Optional <Position> newPosition = przewidywanaNowaPozycja.cell.getCrossedBorderPoint(this.position, this.directCoefficient, przewidywanaNowaPozycja.position);
+
         DirectionCoefficient noweWspolczynnikiKierunkowe = przewidywanaNowaPozycja.directCoefficient;
-
-        Granica punktOdbicia = Granica.znajdzGranice(przewidywanaNowaPozycja);
-        int indeksNajblizszejGranicy = Arrays.asList(punktOdbicia.odleglosc).indexOf(Collections.min(Arrays.asList(punktOdbicia.odleglosc)));
-        Position punktZetknieciaZeSciana = punktOdbicia.pozycjaPrzeciecia[indeksNajblizszejGranicy];
-
-        LightPhoton newLightPhoton = new LightPhoton(punktZetknieciaZeSciana, noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, false);
+        // TODO Czy nie jest tak, że zanim przeprowadze operację "newPosition.get().x" to powinienem sprawdzić, czy dostanę Position, a nie empty?
+        LightPhoton newLightPhoton = new LightPhoton(newPosition.get(), noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, false);
 
         Optional<Cell> newCell = currentCell(newLightPhoton, constants);
 

@@ -21,9 +21,9 @@ public class Cell {
         this.zMax = zMax;
     }
 
-    public Optional<Position> getCrossedBorder (Cell currentCell,Position currentPosition, DirectionCoefficient currentDirectionCoefficient, Position predictedPosition){
+    public Optional<Position> getCrossedBorderPoint (Position currentPosition, DirectionCoefficient currentDirectionCoefficient, Position predictedPosition){
 
-        ArrayList<Position> coordinatesOfCrossing;
+        ArrayList<Position> coordinatesOfCrossing = new ArrayList<>();
 
         if ((wGranicy(currentPosition) && wGranicy(predictedPosition))||
                 (!wGranicy(currentPosition) && !wGranicy(predictedPosition))){
@@ -31,42 +31,53 @@ public class Cell {
         }
         else if ((wGranicy(currentPosition) && !wGranicy(predictedPosition))){
 
-            if (predictedPosition.x < currentCell.xMin) {
-                Double wsp = (currentPosition.x - currentCell.xMin) / currentDirectionCoefficient.x;
+            if (predictedPosition.x < this.xMin) {
+                Double wsp = (currentPosition.x - this.xMin) / currentDirectionCoefficient.x;
                 coordinatesOfCrossing.add(getCrossingPosition (currentPosition, wsp, currentDirectionCoefficient));
             }
-            else if (predictedPosition.x > currentCell.xMax){
-                Double wsp = (currentPosition.x - currentCell.xMax) / currentDirectionCoefficient.x;
+            else if (predictedPosition.x > this.xMax){
+                Double wsp = (currentPosition.x - this.xMax) / currentDirectionCoefficient.x;
                 coordinatesOfCrossing.add(getCrossingPosition (currentPosition, wsp, currentDirectionCoefficient));
             }
-            else if (predictedPosition.y < currentCell.yMin) {
-                Double wsp = (currentPosition.y - currentCell.yMin) / currentDirectionCoefficient.y;
+            else if (predictedPosition.y < this.yMin) {
+                Double wsp = (currentPosition.y - this.yMin) / currentDirectionCoefficient.y;
                 coordinatesOfCrossing.add(getCrossingPosition (currentPosition, wsp, currentDirectionCoefficient));
             }
-            else if (predictedPosition.y > currentCell.yMax) {
-                Double wsp = (currentPosition.y - currentCell.yMax) / currentDirectionCoefficient.y;
+            else if (predictedPosition.y > this.yMax) {
+                Double wsp = (currentPosition.y - this.yMax) / currentDirectionCoefficient.y;
                 coordinatesOfCrossing.add(getCrossingPosition (currentPosition, wsp, currentDirectionCoefficient));
             }
-            else if (predictedPosition.z < currentCell.zMin) {
-                Double wsp = (currentPosition.z - currentCell.zMin) / currentDirectionCoefficient.z;
+            else if (predictedPosition.z < this.zMin) {
+                Double wsp = (currentPosition.z - this.zMin) / currentDirectionCoefficient.z;
                 coordinatesOfCrossing.add(getCrossingPosition(currentPosition, wsp, currentDirectionCoefficient));
             }
-            else if (predictedPosition.z > currentCell.zMax) {
-                Double wsp = (currentPosition.z - currentCell.zMax) / currentDirectionCoefficient.z;
+            else if (predictedPosition.z > this.zMax) {
+                Double wsp = (currentPosition.z - this.zMax) / currentDirectionCoefficient.z;
                 coordinatesOfCrossing.add(getCrossingPosition (currentPosition, wsp, currentDirectionCoefficient));
             }
         }
-        return coordinatesOfCrossing.stream().min();
+        return Optional.of(getClosestCrossBorderPoint(coordinatesOfCrossing,currentPosition));
+    }
+
+    public Position getClosestCrossBorderPoint( ArrayList <Position> coordinatesOfCrossing, Position currentPosition){
+        Position closestCrossBorderPoint = coordinatesOfCrossing.get(0);
+        Double firstDistance = currentPosition.getDistanceBetweenTwoPositions(closestCrossBorderPoint);
+        // coordinatesOfCrossing.forEach(Position -> getDistanceBetweenTwoPositions(currentPosition));
+        for ( Position position : coordinatesOfCrossing){
+            Double pretendingDistance = currentPosition.getDistanceBetweenTwoPositions(position);
+            if (pretendingDistance>firstDistance){
+                closestCrossBorderPoint = position;
+            }
+        }
+        return closestCrossBorderPoint;
     }
 
     public  Boolean wGranicy(Position position) {
         return position.x > xMin && position.x < xMax && position.y > yMin && position.y < yMax && position.z > zMin && position.z < zMax;
     }
 
-
     public Position getCrossingPosition (Position currentPosition, Double wsp, DirectionCoefficient currentDirectionCoefficient){
         return  new Position(currentPosition.x - wsp * currentDirectionCoefficient.x, currentPosition.x - wsp * currentDirectionCoefficient.y, currentPosition.z - wsp * currentDirectionCoefficient.z);
     }
-
 
 }
