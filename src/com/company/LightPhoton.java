@@ -6,7 +6,7 @@ public class LightPhoton {
     private Position position;
     private DirectionCoefficient directCoefficient;
     private Cell cell;
-    private Boolean saved;
+    public Boolean saved;
 
     public LightPhoton(Position position, DirectionCoefficient directCoefficient, Cell cell, Boolean saved) {
         this.position = position;
@@ -18,22 +18,27 @@ public class LightPhoton {
     public Optional<LightPhoton> simulate(Constants constants) {
         if (!saved) {
             LightPhoton photonInNewPosition = losujDrogeSwobodna(constants);
-            if (photonInNewPosition.wgranicyKomorki()) {
-                if (photonInNewPosition.czyAbsorbowany(constants)) {
-                    return Optional.empty();
-                } else {
-                    return Optional.of(rozproszony(photonInNewPosition));
-                }
-            } else {
-                Double r = Math.random();
-                if (r <= constants.probabilityOfReflection) {
-                    return Optional.of(odbicie(photonInNewPosition));
-                } else {
-                    return przejscie(photonInNewPosition, constants);
-                }
-            }
+            if (photonInNewPosition.wgranicyKomorki()) return absorbcjaLubRozproszenie(constants, photonInNewPosition);
+            else return przejscieLubOdbicie(constants, photonInNewPosition);
         } else {
             return Optional.of(this);
+        }
+    }
+
+    private Optional<LightPhoton> przejscieLubOdbicie(Constants constants, LightPhoton photonInNewPosition) {
+        Double r = Math.random();
+        if (r <= constants.probabilityOfReflection) {
+            return Optional.of(odbicie(photonInNewPosition));
+        } else {
+            return przejscie(photonInNewPosition, constants);
+        }
+    }
+
+    private Optional<LightPhoton> absorbcjaLubRozproszenie(Constants constants, LightPhoton photonInNewPosition) {
+        if (photonInNewPosition.czyAbsorbowany(constants)) {
+            return Optional.empty();
+        } else {
+            return Optional.of(rozproszony(photonInNewPosition));
         }
     }
 
@@ -61,7 +66,6 @@ public class LightPhoton {
         return position.x > cell.xMin && position.x < cell.xMax && position.y > cell.yMin && position.y < cell.yMax && position.z > cell.zMin && position.z < cell.zMax;
     }
 
-    //TODO: czy to nie powinno czasem zwracać Optional.empty <- jeśli wypadnie poza pole?
     private Optional<Cell> currentCell(LightPhoton newLightPhoton, Constants constants) {
         if (newLightPhoton.position.x > 0 && newLightPhoton.position.x < constants.cellWallLength * constants.numberOfColumns &&
                 newLightPhoton.position.y > 0 && newLightPhoton.position.y < constants.cellWallLength * constants.numberOfRows && newLightPhoton.position.z > 0) {
@@ -86,16 +90,15 @@ public class LightPhoton {
     }
 
     private LightPhoton odbicie(LightPhoton przewidywanaNowaPozycja) {
-
-        Optional <Position>  newPosition =  przewidywanaNowaPozycja.cell.getCrossedBorderPoint(this.position, this.directCoefficient, przewidywanaNowaPozycja.position);
+        Optional<Position> newPosition = przewidywanaNowaPozycja.cell.getCrossedBorderPoint(this.position, this.directCoefficient, przewidywanaNowaPozycja.position);
         DirectionCoefficient noweWspolczynnikiKierunkowe = this.directCoefficient;
 
-        // TODO Czy nie jest tak, że zanim przeprowadze operację "newPosition.get().x" to powinienem sprawdzić, czy dostanę Position, a nie empty?
+        //TODO: NEVER!STRZEŻ SIĘ! Nigdy nie robimy coścojestoptional.get()! od tego masz .map(), żeby zaglądać do środka Optionala, robić magię w środku i nigdy nie musieć wyciągać z środka :)
         if (newPosition.get().x == this.cell.xMin || newPosition.get().x == this.cell.xMax) {
             noweWspolczynnikiKierunkowe = new DirectionCoefficient(-przewidywanaNowaPozycja.directCoefficient.x, przewidywanaNowaPozycja.directCoefficient.y, przewidywanaNowaPozycja.directCoefficient.z);
         } else if (newPosition.get().y == this.cell.yMin || newPosition.get().y == this.cell.yMax) {
             noweWspolczynnikiKierunkowe = new DirectionCoefficient(przewidywanaNowaPozycja.directCoefficient.x, -przewidywanaNowaPozycja.directCoefficient.y, przewidywanaNowaPozycja.directCoefficient.z);
-        } else if (newPosition.get().z == this.cell.zMin || newPosition.get().z == this.cell.zMax){
+        } else if (newPosition.get().z == this.cell.zMin || newPosition.get().z == this.cell.zMax) {
             noweWspolczynnikiKierunkowe = new DirectionCoefficient(przewidywanaNowaPozycja.directCoefficient.x, przewidywanaNowaPozycja.directCoefficient.y, -przewidywanaNowaPozycja.directCoefficient.z);
         }
         return new LightPhoton(newPosition.get(), noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, przewidywanaNowaPozycja.saved);
@@ -104,7 +107,7 @@ public class LightPhoton {
 
     private Optional<LightPhoton> przejscie(LightPhoton przewidywanaNowaPozycja, Constants constants) {
 
-        Optional <Position> newPosition = przewidywanaNowaPozycja.cell.getCrossedBorderPoint(this.position, this.directCoefficient, przewidywanaNowaPozycja.position);
+        Optional<Position> newPosition = przewidywanaNowaPozycja.cell.getCrossedBorderPoint(this.position, this.directCoefficient, przewidywanaNowaPozycja.position);
 
         System.out.println(newPosition.toString());
 

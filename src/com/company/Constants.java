@@ -7,27 +7,27 @@ public class Constants {
     int numberOfRows;
     int numberOfColumns;
     int photonXEnergy;
-    Double  RTGConversionCoefficient;
+    Double RTGConversionCoefficient;
     int lengthOfLightWave;
     Double massAttenuationCoefficientOfLight;
     Double massAttenuationCoefficientOfXray;
     Double probabilityOfAbsorption;
-    Double  probabilityOfDispersion;
-    Double  probabilityOfReflection;
+    Double probabilityOfDispersion;
+    Double probabilityOfReflection;
 
-    public Constants(int newAreaWallLength, int newCellWallLength,int newCellHeight,int newNumberOfRows,
-                      int newNumberOfColumns, int newPhotonXEnergy, Double RTGConversionCoefficient,
-                      int newLengthOfLightWave, Double newMassAttenuationCoefficientOfLight,
-                      Double newMassAttenuationCoefficientOfXray, Double newProbabilityOfAbsorption,
-                      Double  newProbabilityOfDispersion,Double  newProbabilityOfReflection){
+    public Constants(int newAreaWallLength, int newCellWallLength, int newCellHeight, int newNumberOfRows,
+                     int newNumberOfColumns, int newPhotonXEnergy, Double RTGConversionCoefficient,
+                     int newLengthOfLightWave, Double newMassAttenuationCoefficientOfLight,
+                     Double newMassAttenuationCoefficientOfXray, Double newProbabilityOfAbsorption,
+                     Double newProbabilityOfDispersion, Double newProbabilityOfReflection) {
         this.areaWallLength = newAreaWallLength;
-        this.cellWallLength= newCellWallLength;
-        this.cellHeight= newCellHeight;
-        this.numberOfRows= newNumberOfRows;
-        this.numberOfColumns= newNumberOfColumns;
-        this.photonXEnergy= newPhotonXEnergy;
+        this.cellWallLength = newCellWallLength;
+        this.cellHeight = newCellHeight;
+        this.numberOfRows = newNumberOfRows;
+        this.numberOfColumns = newNumberOfColumns;
+        this.photonXEnergy = newPhotonXEnergy;
         this.RTGConversionCoefficient = RTGConversionCoefficient;
-        this.lengthOfLightWave=newLengthOfLightWave;
+        this.lengthOfLightWave = newLengthOfLightWave;
         this.massAttenuationCoefficientOfLight = newMassAttenuationCoefficientOfLight;
         this.massAttenuationCoefficientOfXray = newMassAttenuationCoefficientOfXray;
         this.probabilityOfAbsorption = newProbabilityOfAbsorption;
