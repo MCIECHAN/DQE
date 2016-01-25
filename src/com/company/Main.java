@@ -3,6 +3,7 @@ package com.company;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Main {
 
@@ -17,16 +18,16 @@ public class Main {
 
         PhotonX fotonX = new PhotonX(pozycja, wspkier, komorka, zmienne.massAttenuationCoefficientOfXray, 10000000);
 
+        //TODO: a co tu robi ten smutny, nie używany, samotny light photon? :(
         LightPhoton fotonSwiatla = new LightPhoton(pozycja, wspkier, komorka, false);
 
-        ArrayList<LightPhoton> lista = fotonX.generateLightPhotons();
-        while (!lista.stream().allMatch((lightPhoton -> lightPhoton.saved))) {
+        Stream<LightPhoton> lista = fotonX.generateLightPhotons().stream();
+        while (!lista.allMatch((lightPhoton -> lightPhoton.saved))) {
             lista = lista
-                    .stream()
                     .map(lightPhoton -> lightPhoton.simulate(zmienne))
                     .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .collect(Collectors.toCollection(ArrayList::new));
+                    .map(Optional::get);
         }
+        ArrayList<LightPhoton> listaZapisanych = lista.collect(Collectors.toCollection(ArrayList::new));
     }
 }
