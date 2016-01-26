@@ -28,7 +28,6 @@ public class Cell {
         if ((wGranicy(currentPosition) && wGranicy(predictedPosition)) || (!wGranicy(currentPosition) && !wGranicy(predictedPosition))) {
             return Optional.empty();
         } else if ((wGranicy(currentPosition) && !wGranicy(predictedPosition))) {
-            System.out.println("badanie wielu granic");
             if (predictedPosition.x < this.xMin) {
                 Double wsp = (currentPosition.x - this.xMin) / currentDirectionCoefficient.x;
                 coordinatesOfCrossing.add(getCrossingPosition(currentPosition, wsp, currentDirectionCoefficient));
@@ -44,9 +43,10 @@ public class Cell {
             } else if (predictedPosition.z < this.zMin) {
                 Double wsp = (currentPosition.z - this.zMin) / currentDirectionCoefficient.z;
                 coordinatesOfCrossing.add(getCrossingPosition(currentPosition, wsp, currentDirectionCoefficient));
-            } else if (predictedPosition.z > this.zMax) {
+            } else{
                 Double wsp = (currentPosition.z - this.zMax) / currentDirectionCoefficient.z;
                 coordinatesOfCrossing.add(getCrossingPosition(currentPosition, wsp, currentDirectionCoefficient));
+                //TODO tablica nigdy nie może byc pusta
             }
         }
 

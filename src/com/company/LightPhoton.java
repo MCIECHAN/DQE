@@ -28,6 +28,7 @@ public class LightPhoton {
     private Optional<LightPhoton> przejscieLubOdbicie(Constants constants, LightPhoton photonInNewPosition) {
         Double r = Math.random();
         if (r <= constants.probabilityOfReflection) {
+            //todo TO MA SIE ZMIENIC
             return Optional.of(odbicie(photonInNewPosition));
         } else {
             return przejscie(photonInNewPosition, constants);
@@ -93,6 +94,8 @@ public class LightPhoton {
         Optional<Position> newPosition = przewidywanaNowaPozycja.cell.getCrossedBorderPoint(this.position, this.directCoefficient, przewidywanaNowaPozycja.position);
         DirectionCoefficient noweWspolczynnikiKierunkowe = this.directCoefficient;
 
+        newPosition = newPosition.map
+
         //TODO: NEVER!STRZEŻ SIĘ! Nigdy nie robimy coścojestoptional.get()! od tego masz .map(), żeby zaglądać do środka Optionala, robić magię w środku i nigdy nie musieć wyciągać z środka :)
         if (newPosition.get().x == this.cell.xMin || newPosition.get().x == this.cell.xMax) {
             noweWspolczynnikiKierunkowe = new DirectionCoefficient(-przewidywanaNowaPozycja.directCoefficient.x, przewidywanaNowaPozycja.directCoefficient.y, przewidywanaNowaPozycja.directCoefficient.z);
@@ -101,6 +104,7 @@ public class LightPhoton {
         } else if (newPosition.get().z == this.cell.zMin || newPosition.get().z == this.cell.zMax) {
             noweWspolczynnikiKierunkowe = new DirectionCoefficient(przewidywanaNowaPozycja.directCoefficient.x, przewidywanaNowaPozycja.directCoefficient.y, -przewidywanaNowaPozycja.directCoefficient.z);
         }
+
         return new LightPhoton(newPosition.get(), noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, przewidywanaNowaPozycja.saved);
     }
 
@@ -108,13 +112,10 @@ public class LightPhoton {
     private Optional<LightPhoton> przejscie(LightPhoton przewidywanaNowaPozycja, Constants constants) {
 
         Optional<Position> newPosition = przewidywanaNowaPozycja.cell.getCrossedBorderPoint(this.position, this.directCoefficient, przewidywanaNowaPozycja.position);
-
-        System.out.println(newPosition.toString());
-
         DirectionCoefficient noweWspolczynnikiKierunkowe = przewidywanaNowaPozycja.directCoefficient;
+
         // TODO Czy nie jest tak, że zanim przeprowadze operację "newPosition.get().x" to powinienem sprawdzić, czy dostanę Position, a nie empty?
         LightPhoton newLightPhoton = new LightPhoton(newPosition.get(), noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, false);
-
         Optional<Cell> newCell = currentCell(newLightPhoton, constants);
 
         return newCell.map(cell -> {
