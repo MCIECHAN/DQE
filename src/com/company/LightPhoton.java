@@ -28,8 +28,7 @@ public class LightPhoton {
     private Optional<LightPhoton> przejscieLubOdbicie(Constants constants, LightPhoton photonInNewPosition) {
         Double r = Math.random();
         if (r <= constants.probabilityOfReflection) {
-            //todo TO MA SIE ZMIENIC
-            return Optional.of(odbicie(photonInNewPosition));
+            return odbicie(photonInNewPosition);
         } else {
             return przejscie(photonInNewPosition, constants);
         }
@@ -90,22 +89,21 @@ public class LightPhoton {
         }
     }
 
-    private LightPhoton odbicie(LightPhoton przewidywanaNowaPozycja) {
+    private Optional<LightPhoton> odbicie(LightPhoton przewidywanaNowaPozycja) {
         Optional<Position> newPosition = przewidywanaNowaPozycja.cell.getCrossedBorderPoint(this.position, this.directCoefficient, przewidywanaNowaPozycja.position);
-        DirectionCoefficient noweWspolczynnikiKierunkowe = this.directCoefficient;
 
-        newPosition = newPosition.map
+        return newPosition.map(position -> {
+            DirectionCoefficient noweWspolczynnikiKierunkowe = this.directCoefficient;
+            if (position.x == this.cell.xMin || position.x == this.cell.xMax) {
+                noweWspolczynnikiKierunkowe = new DirectionCoefficient(-przewidywanaNowaPozycja.directCoefficient.x, przewidywanaNowaPozycja.directCoefficient.y, przewidywanaNowaPozycja.directCoefficient.z);
+            } else if (position.y == this.cell.yMin || position.y == this.cell.yMax) {
+                noweWspolczynnikiKierunkowe = new DirectionCoefficient(przewidywanaNowaPozycja.directCoefficient.x, -przewidywanaNowaPozycja.directCoefficient.y, przewidywanaNowaPozycja.directCoefficient.z);
+            } else if (position.z == this.cell.zMin || position.z == this.cell.zMax) {
+                noweWspolczynnikiKierunkowe = new DirectionCoefficient(przewidywanaNowaPozycja.directCoefficient.x, przewidywanaNowaPozycja.directCoefficient.y, -przewidywanaNowaPozycja.directCoefficient.z);
+            }
+            return new LightPhoton(position, noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, przewidywanaNowaPozycja.saved);
 
-        //TODO: NEVER!STRZEŻ SIĘ! Nigdy nie robimy coścojestoptional.get()! od tego masz .map(), żeby zaglądać do środka Optionala, robić magię w środku i nigdy nie musieć wyciągać z środka :)
-        if (newPosition.get().x == this.cell.xMin || newPosition.get().x == this.cell.xMax) {
-            noweWspolczynnikiKierunkowe = new DirectionCoefficient(-przewidywanaNowaPozycja.directCoefficient.x, przewidywanaNowaPozycja.directCoefficient.y, przewidywanaNowaPozycja.directCoefficient.z);
-        } else if (newPosition.get().y == this.cell.yMin || newPosition.get().y == this.cell.yMax) {
-            noweWspolczynnikiKierunkowe = new DirectionCoefficient(przewidywanaNowaPozycja.directCoefficient.x, -przewidywanaNowaPozycja.directCoefficient.y, przewidywanaNowaPozycja.directCoefficient.z);
-        } else if (newPosition.get().z == this.cell.zMin || newPosition.get().z == this.cell.zMax) {
-            noweWspolczynnikiKierunkowe = new DirectionCoefficient(przewidywanaNowaPozycja.directCoefficient.x, przewidywanaNowaPozycja.directCoefficient.y, -przewidywanaNowaPozycja.directCoefficient.z);
-        }
-
-        return new LightPhoton(newPosition.get(), noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, przewidywanaNowaPozycja.saved);
+        });
     }
 
 
