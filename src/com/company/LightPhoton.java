@@ -112,17 +112,33 @@ public class LightPhoton {
         Optional<Position> newPosition = przewidywanaNowaPozycja.cell.getCrossedBorderPoint(this.position, this.directCoefficient, przewidywanaNowaPozycja.position);
         DirectionCoefficient noweWspolczynnikiKierunkowe = przewidywanaNowaPozycja.directCoefficient;
 
-        // TODO Czy nie jest tak, że zanim przeprowadze operację "newPosition.get().x" to powinienem sprawdzić, czy dostanę Position, a nie empty?
-        LightPhoton newLightPhoton = new LightPhoton(newPosition.get(), noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, false);
-        Optional<Cell> newCell = currentCell(newLightPhoton, constants);
+        return newPosition.map(pozycja -> {
+            LightPhoton newLightPhoton = new LightPhoton(pozycja, noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, false);
+            Optional<Cell> newCell = currentCell(newLightPhoton, constants);
 
-        return newCell.map(cell -> {
+             newCell.map(cell -> {
+                Boolean newSaved = false;
+                if (przewidywanaNowaPozycja.position.z >= constants.cellHeight) {
+                    newSaved = true;
+                }
+                newLightPhoton.saved = newSaved;
+                return newLightPhoton;
+            });
+            return newLightPhoton;
+        });
+
+
+        //LightPhoton newLightPhoton = new LightPhoton(newPosition.get(), noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, false);
+
+        //Optional<Cell> newCell = currentCell(newLightPhoton, constants);
+
+/*        return newCell.map(cell -> {
             Boolean newSaved = false;
             if (przewidywanaNowaPozycja.position.z >= constants.cellHeight) {
                 newSaved = true;
             }
             newLightPhoton.saved = newSaved;
             return newLightPhoton;
-        });
+        });*/
     }
 }

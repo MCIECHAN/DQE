@@ -14,7 +14,7 @@ public class Main {
         DirectionCoefficient wspkier = new DirectionCoefficient(0.0, 0.0, 1.0);
         Cell komorka = new Cell(10, 20, 10, 20, 0, 150);
 
-        PhotonX fotonX = new PhotonX(pozycja, wspkier, komorka, zmienne.massAttenuationCoefficientOfXray, 100);
+        PhotonX fotonX = new PhotonX(pozycja, wspkier, komorka, zmienne.massAttenuationCoefficientOfXray, 100000);
 
         ArrayList<LightPhoton> lista = fotonX.generateLightPhotons();
 
