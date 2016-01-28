@@ -23,10 +23,17 @@ public class DirectionCoefficient {
         Double sinusTheta = Math.sin(theta);
         Double sinusFi = Math.sin(fi);
         Double wsp = sinusTheta / Math.sqrt(1 - oldDirectionCoefficient.z * oldDirectionCoefficient.z);
+        //System.out.print(wsp);
 
         Double x = wsp * (oldDirectionCoefficient.x * oldDirectionCoefficient.z * cosinusFi - oldDirectionCoefficient.y * sinusFi) + oldDirectionCoefficient.x * cosinusTheta;
         Double y = wsp * (oldDirectionCoefficient.y * oldDirectionCoefficient.z * cosinusFi + oldDirectionCoefficient.x * sinusFi) + oldDirectionCoefficient.y * cosinusFi;
         Double z = -sinusTheta * cosinusFi * Math.sqrt(1 - oldDirectionCoefficient.z * oldDirectionCoefficient.z) + oldDirectionCoefficient.z * cosinusFi;
         return new DirectionCoefficient(x, y, z);
+    }
+
+    public void wyswietldc() {
+        System.out.println(this.x.toString());
+        System.out.println(this.y.toString());
+        System.out.println(this.z.toString());
     }
 }

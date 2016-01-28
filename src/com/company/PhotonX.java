@@ -30,7 +30,7 @@ public class PhotonX {
     public ArrayList<LightPhoton> generateLightPhotons() {
         ArrayList<LightPhoton> listOfLightPhotons = new ArrayList<>();
         for (int i = 0; i < this.numberOfLPhotons; i++) {
-            listOfLightPhotons.add(i, new LightPhoton(position, directCoefficient, cell, false));
+            listOfLightPhotons.add(i, new LightPhoton(position, DirectionCoefficient.getRandomDirectionCoefficient(directCoefficient), cell, false));
         }
         return listOfLightPhotons;
     }

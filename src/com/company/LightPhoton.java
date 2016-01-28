@@ -16,6 +16,8 @@ public class LightPhoton {
     }
 
     public Optional<LightPhoton> simulate(Constants constants) {
+        this.wyswietl();
+        //this.directCoefficient.wyswietldc();
         if (!saved) {
             LightPhoton photonInNewPosition = losujDrogeSwobodna(constants);
             if (photonInNewPosition.wgranicyKomorki()) return absorbcjaLubRozproszenie(constants, photonInNewPosition);
@@ -36,6 +38,7 @@ public class LightPhoton {
 
     private Optional<LightPhoton> absorbcjaLubRozproszenie(Constants constants, LightPhoton photonInNewPosition) {
         if (photonInNewPosition.czyAbsorbowany(constants)) {
+            System.out.println("absorpcja");
             return Optional.empty();
         } else {
             return Optional.of(rozproszony(photonInNewPosition));
@@ -43,21 +46,26 @@ public class LightPhoton {
     }
 
     private LightPhoton losujDrogeSwobodna(Constants constants) {
+        System.out.println("loauje droge swobodna");
         Double r = Math.random();
         Double s = -1 / constants.massAttenuationCoefficientOfLight * Math.log(r);
         Double newX = position.x + directCoefficient.x * s;
         Double newY = position.y + directCoefficient.y * s;
         Double newZ = position.z + directCoefficient.z * s;
         Position newPosition = new Position(newX, newY, newZ);
+        System.out.println(newX.toString());
+        System.out.println(newY.toString());
+        System.out.println(newZ.toString());
         return new LightPhoton(newPosition, directCoefficient, cell, saved);
     }
 
     private Boolean czyAbsorbowany(Constants constants) {
         Double r = Math.random();
-        return r <= constants.probabilityOfDispersion;
+        return r >= constants.probabilityOfDispersion;
     }
 
     private LightPhoton rozproszony(LightPhoton przewidywanaNowaPozycja) {
+        System.out.println("Rozproszony");
         DirectionCoefficient noweWspolczynnikiKierunkowe = DirectionCoefficient.getRandomDirectionCoefficient(przewidywanaNowaPozycja.directCoefficient);
         return new LightPhoton(przewidywanaNowaPozycja.position, noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, przewidywanaNowaPozycja.saved);
     }
@@ -90,6 +98,7 @@ public class LightPhoton {
     }
 
     private Optional<LightPhoton> odbicie(LightPhoton przewidywanaNowaPozycja) {
+        System.out.println("Odbicie");
         Optional<Position> newPosition = przewidywanaNowaPozycja.cell.getCrossedBorderPoint(this.position, this.directCoefficient, przewidywanaNowaPozycja.position);
 
         return newPosition.map(position -> {
@@ -107,6 +116,7 @@ public class LightPhoton {
 
 
     private Optional<LightPhoton> przejscie(LightPhoton przewidywanaNowaPozycja, Constants constants) {
+        System.out.println("Przejście");
         Optional<Position> newPosition = przewidywanaNowaPozycja.cell.getCrossedBorderPoint(this.position, this.directCoefficient, przewidywanaNowaPozycja.position);
         DirectionCoefficient noweWspolczynnikiKierunkowe = przewidywanaNowaPozycja.directCoefficient;
 
@@ -114,6 +124,7 @@ public class LightPhoton {
             LightPhoton newLightPhoton = new LightPhoton(pozycja, noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, false);
             return currentCell(newLightPhoton, constants).map(cell -> {
                 newLightPhoton.cell = cell;
+                System.out.println("Nowa komórka");
                 if (przewidywanaNowaPozycja.position.z >= constants.cellHeight) {
                     newLightPhoton.saved = true;
                     System.out.println("DETEKCJA");
@@ -123,4 +134,9 @@ public class LightPhoton {
         });
     }
 
+    public void wyswietl(){
+        System.out.println(this.position.x.toString());
+        System.out.println(this.position.y.toString());
+        System.out.println(this.position.z.toString());
+    }
 }
