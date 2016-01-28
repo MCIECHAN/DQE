@@ -116,29 +116,19 @@ public class LightPhoton {
             LightPhoton newLightPhoton = new LightPhoton(pozycja, noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, false);
             Optional<Cell> newCell = currentCell(newLightPhoton, constants);
 
-             newCell.ifPresent(cell -> {
-                 //TODO: zmieniłem map na ifPresent, dlatego że nic nie robisz z rezultatem, a ifPre to taka mapa nie zwracająca nic
-                 //TODO: ale dalej nie rozumiem, czemu te dwie poniższe linijki odbywają się w środku newCell, skoro z cell nie korzystają
-                 //TODO: wytłumacz się ;)
+            newCell.map(cell -> {
+                newLightPhoton.cell = cell;
                 if (przewidywanaNowaPozycja.position.z >= constants.cellHeight) {
                     newLightPhoton.saved = true;
+                    System.out.println("DETEKCJA");
                 }
+                return newLightPhoton;
             });
             return newLightPhoton;
         });
 
 
-        //LightPhoton newLightPhoton = new LightPhoton(newPosition.get(), noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, false);
-
-        //Optional<Cell> newCell = currentCell(newLightPhoton, constants);
-
-/*        return newCell.map(cell -> {
-            Boolean newSaved = false;
-            if (przewidywanaNowaPozycja.position.z >= constants.cellHeight) {
-                newSaved = true;
-            }
-            newLightPhoton.saved = newSaved;
-            return newLightPhoton;
-        });*/
     }
+
+
 }

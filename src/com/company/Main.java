@@ -28,9 +28,6 @@ public class Main {
 
         System.out.println(listaZapisanych.size());
 
-        for(LightPhoton foton : listaZapisanych){
-            foton.wyswietl();
-        }
 
     }
 }
