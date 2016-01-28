@@ -102,21 +102,17 @@ public class LightPhoton {
                 noweWspolczynnikiKierunkowe = new DirectionCoefficient(przewidywanaNowaPozycja.directCoefficient.x, przewidywanaNowaPozycja.directCoefficient.y, -przewidywanaNowaPozycja.directCoefficient.z);
             }
             return new LightPhoton(position, noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, przewidywanaNowaPozycja.saved);
-
         });
     }
 
 
     private Optional<LightPhoton> przejscie(LightPhoton przewidywanaNowaPozycja, Constants constants) {
-
         Optional<Position> newPosition = przewidywanaNowaPozycja.cell.getCrossedBorderPoint(this.position, this.directCoefficient, przewidywanaNowaPozycja.position);
         DirectionCoefficient noweWspolczynnikiKierunkowe = przewidywanaNowaPozycja.directCoefficient;
 
-        return newPosition.map(pozycja -> {
+        return newPosition.flatMap(pozycja -> {
             LightPhoton newLightPhoton = new LightPhoton(pozycja, noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, false);
-            Optional<Cell> newCell = currentCell(newLightPhoton, constants);
-
-            newCell.map(cell -> {
+            return currentCell(newLightPhoton, constants).map(cell -> {
                 newLightPhoton.cell = cell;
                 if (przewidywanaNowaPozycja.position.z >= constants.cellHeight) {
                     newLightPhoton.saved = true;
@@ -124,11 +120,7 @@ public class LightPhoton {
                 }
                 return newLightPhoton;
             });
-            return newLightPhoton;
         });
-
-
     }
-
 
 }
