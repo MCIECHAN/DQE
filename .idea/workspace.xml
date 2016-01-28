@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="31a1ba8d-1e9d-4120-a834-762d8983f92a" name="Default" comment="correcting">
+    <list default="true" id="31a1ba8d-1e9d-4120-a834-762d8983f92a" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/symulacja/com/company/LightPhoton.class" afterPath="$PROJECT_DIR$/out/production/symulacja/com/company/LightPhoton.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/symulacja/com/company/Main.class" afterPath="$PROJECT_DIR$/out/production/symulacja/com/company/Main.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/company/Cell.java" afterPath="$PROJECT_DIR$/src/com/company/Cell.java" />
@@ -528,7 +528,7 @@
       <workItem from="1453832858425" duration="10729000" />
       <workItem from="1453921291327" duration="5540000" />
       <workItem from="1453935344923" duration="380000" />
-      <workItem from="1454002278245" duration="11257000" />
+      <workItem from="1454002278245" duration="11294000" />
     </task>
     <task id="LOCAL-00001" summary="little changes">
       <created>1453322974757</created>
@@ -608,11 +608,17 @@
       <option name="project" value="LOCAL" />
       <updated>1453644127561</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="correcting">
+      <created>1454014388695</created>
+      <option name="number" value="00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1454014388695</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="130940000" />
+    <option name="totallyTimeSpent" value="130977000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -661,7 +667,8 @@
     <MESSAGE value="little changes" />
     <MESSAGE value="Working over position file" />
     <MESSAGE value="Working over position file, Cell and Light photon" />
-    <option name="LAST_COMMIT_MESSAGE" value="Working over position file, Cell and Light photon" />
+    <MESSAGE value="correcting" />
+    <option name="LAST_COMMIT_MESSAGE" value="correcting" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
