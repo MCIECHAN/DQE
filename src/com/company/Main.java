@@ -9,13 +9,13 @@ public class Main {
     public static void main(String[] args) {
         // write your code here
 
-        Constants zmienne = new Constants(100, 10, 150, 3, 3, 10000, 0.2, 545, 0.27, 0.27, 0.1, 0.9, 0.9);
-        Position pozycja = new Position(15.0, 15.0, 75.0);
-        DirectionCoefficient wspkier = new DirectionCoefficient(0.0, 0.0, 1.0);
+        Constants zmienne = new Constants(100, 10, 150, 3, 3, 10000, 0.2, 545, 0.1, 0.1, 0.1, 0.9, 0.9);
+        Position pozycja = new Position(15.0, 15.0, 125.0);
+        DirectionCoefficient wspkier = new DirectionCoefficient(Math.random(), Math.random(), 0.3);
         Cell komorka = new Cell(10, 20, 10, 20, 0, 150);
 
-        PhotonX fotonX = new PhotonX(pozycja, wspkier, komorka, zmienne.massAttenuationCoefficientOfXray, 100000);
 
+        PhotonX fotonX = new PhotonX(pozycja, wspkier, komorka, zmienne.massAttenuationCoefficientOfXray, 100000);
         ArrayList<LightPhoton> lista = fotonX.generateLightPhotons();
 
         while (!lista.stream().allMatch((lightPhoton -> lightPhoton.saved))) {
@@ -26,17 +26,11 @@ public class Main {
         }
         ArrayList<LightPhoton> listaZapisanych = lista;
 
+        System.out.println(listaZapisanych.size());
+
+        for(LightPhoton foton : listaZapisanych){
+            foton.wyswietl();
+        }
+
     }
 }
-/*        Supplier <Stream<LightPhoton>> lista = () ->  fotonX.generateLightPhotons().stream();
-
-        while (!lista.get().allMatch((lightPhoton -> lightPhoton.saved))) {
-            lista = lista.get()
-                    .map(lightPhoton -> lightPhoton.simulate(zmienne))
-                    .filter(Optional::isPresent)
-                    .;
-
-        ArrayList<LightPhoton> listaZapisanych = lista.get().collect(Collectors.toCollection(ArrayList::new));
-        }
-        http://winterbe.com/posts/2014/07/31/java8-stream-tutorial-examples/
-        */

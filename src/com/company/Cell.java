@@ -56,7 +56,6 @@ public class Cell {
     public Position getClosestCrossBorderPoint(ArrayList<Position> coordinatesOfCrossing, Position currentPosition) {
         Position closestCrossBorderPoint = coordinatesOfCrossing.get(0);
         Double firstDistance = currentPosition.getDistanceBetweenTwoPositions(closestCrossBorderPoint);
-        // coordinatesOfCrossing.forEach(Position -> getDistanceBetweenTwoPositions(currentPosition));
         for (Position position : coordinatesOfCrossing) {
             Double pretendingDistance = currentPosition.getDistanceBetweenTwoPositions(position);
             if (pretendingDistance > firstDistance) closestCrossBorderPoint = position;
