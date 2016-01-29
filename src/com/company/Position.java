@@ -12,6 +12,7 @@ public class Position {
     }
 
     public Double getDistanceBetweenTwoPositions (Position position2){
+        System.out.println("Licze odległosc miedzy fotonami");
         return Math.sqrt(Math.pow(this.x - position2.x, 2) + Math.pow(this.y - position2.y, 2) + Math.pow(this.z - position2.z, 2));
     }
 

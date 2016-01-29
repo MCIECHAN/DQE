@@ -46,7 +46,6 @@ public class Cell {
             } else{
                 Double wsp = (currentPosition.z - this.zMax) / currentDirectionCoefficient.z;
                 coordinatesOfCrossing.add(getCrossingPosition(currentPosition, wsp, currentDirectionCoefficient));
-                //TODO tablica nigdy nie może byc pusta
             }
         }
 

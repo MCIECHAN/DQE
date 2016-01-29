@@ -16,8 +16,6 @@ public class LightPhoton {
     }
 
     public Optional<LightPhoton> simulate(Constants constants) {
-        this.wyswietl();
-        //this.directCoefficient.wyswietldc();
         if (!saved) {
             LightPhoton photonInNewPosition = losujDrogeSwobodna(constants);
             if (photonInNewPosition.wgranicyKomorki()) return absorbcjaLubRozproszenie(constants, photonInNewPosition);
@@ -53,9 +51,6 @@ public class LightPhoton {
         Double newY = position.y + directCoefficient.y * s;
         Double newZ = position.z + directCoefficient.z * s;
         Position newPosition = new Position(newX, newY, newZ);
-        System.out.println(newX.toString());
-        System.out.println(newY.toString());
-        System.out.println(newZ.toString());
         return new LightPhoton(newPosition, directCoefficient, cell, saved);
     }
 
@@ -65,7 +60,7 @@ public class LightPhoton {
     }
 
     private LightPhoton rozproszony(LightPhoton przewidywanaNowaPozycja) {
-        System.out.println("Rozproszony");
+        //System.out.println("Rozproszony");
         DirectionCoefficient noweWspolczynnikiKierunkowe = DirectionCoefficient.getRandomDirectionCoefficient(przewidywanaNowaPozycja.directCoefficient);
         return new LightPhoton(przewidywanaNowaPozycja.position, noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, przewidywanaNowaPozycja.saved);
     }
@@ -100,14 +95,16 @@ public class LightPhoton {
     private Optional<LightPhoton> odbicie(LightPhoton przewidywanaNowaPozycja) {
         System.out.println("Odbicie");
         Optional<Position> newPosition = przewidywanaNowaPozycja.cell.getCrossedBorderPoint(this.position, this.directCoefficient, przewidywanaNowaPozycja.position);
-
         return newPosition.map(position -> {
             DirectionCoefficient noweWspolczynnikiKierunkowe = this.directCoefficient;
             if (position.x == this.cell.xMin || position.x == this.cell.xMax) {
+                System.out.println("oodbicie X");
                 noweWspolczynnikiKierunkowe = new DirectionCoefficient(-przewidywanaNowaPozycja.directCoefficient.x, przewidywanaNowaPozycja.directCoefficient.y, przewidywanaNowaPozycja.directCoefficient.z);
             } else if (position.y == this.cell.yMin || position.y == this.cell.yMax) {
+                System.out.println("oodbicie Y");
                 noweWspolczynnikiKierunkowe = new DirectionCoefficient(przewidywanaNowaPozycja.directCoefficient.x, -przewidywanaNowaPozycja.directCoefficient.y, przewidywanaNowaPozycja.directCoefficient.z);
             } else if (position.z == this.cell.zMin || position.z == this.cell.zMax) {
+                System.out.println("oodbicie Z");
                 noweWspolczynnikiKierunkowe = new DirectionCoefficient(przewidywanaNowaPozycja.directCoefficient.x, przewidywanaNowaPozycja.directCoefficient.y, -przewidywanaNowaPozycja.directCoefficient.z);
             }
             return new LightPhoton(position, noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, przewidywanaNowaPozycja.saved);

@@ -22,13 +22,19 @@ public class DirectionCoefficient {
         Double cosinusTheta = Math.cos(theta);
         Double sinusTheta = Math.sin(theta);
         Double sinusFi = Math.sin(fi);
-        Double wsp = sinusTheta / Math.sqrt(1 - oldDirectionCoefficient.z * oldDirectionCoefficient.z);
-        //System.out.print(wsp);
 
-        Double x = wsp * (oldDirectionCoefficient.x * oldDirectionCoefficient.z * cosinusFi - oldDirectionCoefficient.y * sinusFi) + oldDirectionCoefficient.x * cosinusTheta;
-        Double y = wsp * (oldDirectionCoefficient.y * oldDirectionCoefficient.z * cosinusFi + oldDirectionCoefficient.x * sinusFi) + oldDirectionCoefficient.y * cosinusFi;
-        Double z = -sinusTheta * cosinusFi * Math.sqrt(1 - oldDirectionCoefficient.z * oldDirectionCoefficient.z) + oldDirectionCoefficient.z * cosinusFi;
-        return new DirectionCoefficient(x, y, z);
+        if (Math.abs(oldDirectionCoefficient.z)> 0.99999){
+            return new DirectionCoefficient(sinusTheta*cosinusFi, sinusTheta*sinusFi, oldDirectionCoefficient.z/Math.abs(oldDirectionCoefficient.z)*cosinusTheta);
+        }
+        else{
+            Double wsp = sinusTheta / Math.sqrt(1 - oldDirectionCoefficient.z * oldDirectionCoefficient.z);
+            Double x = wsp * (oldDirectionCoefficient.x * oldDirectionCoefficient.z * cosinusFi - oldDirectionCoefficient.y * sinusFi) + oldDirectionCoefficient.x * cosinusTheta;
+            Double y = wsp * (oldDirectionCoefficient.y * oldDirectionCoefficient.z * cosinusFi + oldDirectionCoefficient.x * sinusFi) + oldDirectionCoefficient.y * cosinusFi;
+            Double z = -sinusTheta * cosinusFi * Math.sqrt(1 - oldDirectionCoefficient.z * oldDirectionCoefficient.z) + oldDirectionCoefficient.z * cosinusFi;
+            return new DirectionCoefficient(x, y, z);
+        }
+
+
     }
 
     public void wyswietldc() {
