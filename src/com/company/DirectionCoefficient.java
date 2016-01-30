@@ -30,7 +30,7 @@ public class DirectionCoefficient {
             Double wsp = sinusTheta / Math.sqrt(1 - oldDirectionCoefficient.z * oldDirectionCoefficient.z);
             Double x = wsp * (oldDirectionCoefficient.x * oldDirectionCoefficient.z * cosinusFi - oldDirectionCoefficient.y * sinusFi) + oldDirectionCoefficient.x * cosinusTheta;
             Double y = wsp * (oldDirectionCoefficient.y * oldDirectionCoefficient.z * cosinusFi + oldDirectionCoefficient.x * sinusFi) + oldDirectionCoefficient.y * cosinusFi;
-            Double z = -sinusTheta * cosinusFi * Math.sqrt(1 - oldDirectionCoefficient.z * oldDirectionCoefficient.z) + oldDirectionCoefficient.z * cosinusFi;
+            Double z = -sinusTheta * cosinusFi * Math.sqrt(1 - Math.pow(oldDirectionCoefficient.z, 2.0)) + oldDirectionCoefficient.z * cosinusFi;
             return new DirectionCoefficient(x, y, z);
         }
 

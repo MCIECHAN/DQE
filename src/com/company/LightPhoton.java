@@ -36,7 +36,7 @@ public class LightPhoton {
 
     private Optional<LightPhoton> absorbcjaLubRozproszenie(Constants constants, LightPhoton photonInNewPosition) {
         if (photonInNewPosition.czyAbsorbowany(constants)) {
-            System.out.println("absorpcja");
+            //System.out.println("absorpcja");
             return Optional.empty();
         } else {
             return Optional.of(rozproszony(photonInNewPosition));
@@ -71,8 +71,6 @@ public class LightPhoton {
 
     private Optional<Cell> currentCell(LightPhoton newLightPhoton, Constants constants) {
 
-        System.out.println("Wszedłem w current cell");
-
         if (newLightPhoton.position.x > 0 && newLightPhoton.position.x < constants.cellWallLength * constants.numberOfColumns &&
                 newLightPhoton.position.y > 0 && newLightPhoton.position.y < constants.cellWallLength * constants.numberOfRows && newLightPhoton.position.z > 0) {
             Cell newCell = new Cell(newLightPhoton.cell.xMin, newLightPhoton.cell.xMax, newLightPhoton.cell.yMin,newLightPhoton.cell.yMax,newLightPhoton.cell.zMin,newLightPhoton.cell.zMax);
@@ -103,6 +101,7 @@ public class LightPhoton {
             return Optional.of(newCell);
         } else {
             System.out.println("Nie utworzyłem nowej komorki, foton światła poza detektorem");
+            newLightPhoton.wyswietl();
             return Optional.empty();
         }
     }
