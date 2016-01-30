@@ -30,7 +30,7 @@ public class Cell {
         System.out.println(this.xMax);
         System.out.println(this.yMin);
         System.out.println(this.yMax);
-        System.out.println(this.yMin);
+        System.out.println(this.zMin);
         System.out.println(this.zMax);
 
         if ((wGranicy(currentPosition) && wGranicy(predictedPosition)) || (!wGranicy(currentPosition) && !wGranicy(predictedPosition))) {

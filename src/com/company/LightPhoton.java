@@ -60,13 +60,13 @@ public class LightPhoton {
     }
 
     private LightPhoton rozproszony(LightPhoton przewidywanaNowaPozycja) {
-        //System.out.println("Rozproszony");
+        System.out.println("Rozproszony");
         DirectionCoefficient noweWspolczynnikiKierunkowe = DirectionCoefficient.getRandomDirectionCoefficient(przewidywanaNowaPozycja.directCoefficient);
         return new LightPhoton(przewidywanaNowaPozycja.position, noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, przewidywanaNowaPozycja.saved);
     }
 
     private Boolean wgranicyKomorki() {
-        return position.x > cell.xMin && position.x < cell.xMax && position.y > cell.yMin && position.y < cell.yMax && position.z > cell.zMin && position.z < cell.zMax;
+        return position.x >= cell.xMin && position.x <= cell.xMax && position.y >= cell.yMin && position.y <= cell.yMax && position.z >= cell.zMin && position.z <= cell.zMax;
     }
 
     private Optional<Cell> currentCell(LightPhoton newLightPhoton, Constants constants) {
@@ -75,9 +75,7 @@ public class LightPhoton {
 
         if (newLightPhoton.position.x > 0 && newLightPhoton.position.x < constants.cellWallLength * constants.numberOfColumns &&
                 newLightPhoton.position.y > 0 && newLightPhoton.position.y < constants.cellWallLength * constants.numberOfRows && newLightPhoton.position.z > 0) {
-            Cell newCell = newLightPhoton.cell;
-            newCell.zMin=0;
-            newCell.zMax=constants.cellHeight;
+            Cell newCell = new Cell(newLightPhoton.cell.xMin, newLightPhoton.cell.xMax, newLightPhoton.cell.yMin,newLightPhoton.cell.yMax,newLightPhoton.cell.zMin,newLightPhoton.cell.zMax);
             System.out.println("Utworzyłem nowa komorke");
             if (newLightPhoton.position.x <= newLightPhoton.cell.xMin) {
                 newCell.xMax = newCell.xMin;
@@ -97,7 +95,7 @@ public class LightPhoton {
             System.out.println(newCell.xMax);
             System.out.println(newCell.yMin);
             System.out.println(newCell.yMax);
-            System.out.println(newCell.yMin);
+            System.out.println(newCell.zMin);
             System.out.println(newCell.zMax);
             return Optional.of(newCell);
         } else {
@@ -143,7 +141,7 @@ public class LightPhoton {
                 System.out.println(newLightPhoton.cell.xMax);
                 System.out.println(newLightPhoton.cell.yMin);
                 System.out.println(newLightPhoton.cell.yMax);
-                System.out.println(newLightPhoton.cell.yMin);
+                System.out.println(newLightPhoton.cell.zMin);
                 System.out.println(newLightPhoton.cell.zMax);
                 if (przewidywanaNowaPozycja.position.z >= constants.cellHeight) {
                     newLightPhoton.saved = true;
