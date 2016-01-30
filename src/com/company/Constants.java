@@ -19,7 +19,8 @@ public class Constants {
                      int newNumberOfColumns, int newPhotonXEnergy, Double RTGConversionCoefficient,
                      int newLengthOfLightWave, Double newMassAttenuationCoefficientOfLight,
                      Double newMassAttenuationCoefficientOfXray, Double newProbabilityOfAbsorption,
-                     Double newProbabilityOfDispersion, Double newProbabilityOfReflection) {
+                     Double newProbabilityOfDispersion, Double newProbabilityOfReflection)
+    {
         this.areaWallLength = newAreaWallLength;
         this.cellWallLength = newCellWallLength;
         this.cellHeight = newCellHeight;
