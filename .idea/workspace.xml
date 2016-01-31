@@ -2,14 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="31a1ba8d-1e9d-4120-a834-762d8983f92a" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="C:\Users\ciechan\symulacja\out\production\symulacja\com\company\Constants.class" afterPath="C:\Users\ciechan\symulacja\out\production\symulacja\com\company\Constants.class" />
-      <change type="MODIFICATION" beforePath="C:\Users\ciechan\symulacja\out\production\symulacja\com\company\Main.class" afterPath="C:\Users\ciechan\symulacja\out\production\symulacja\com\company\Main.class" />
-      <change type="MODIFICATION" beforePath="C:\Users\ciechan\symulacja\out\production\symulacja\com\company\PhotonX.class" afterPath="C:\Users\ciechan\symulacja\out\production\symulacja\com\company\PhotonX.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/company/Cell.java" afterPath="$PROJECT_DIR$/src/com/company/Cell.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/company/Constants.java" afterPath="$PROJECT_DIR$/src/com/company/Constants.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/company/LightPhoton.java" afterPath="$PROJECT_DIR$/src/com/company/LightPhoton.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/company/Main.java" afterPath="$PROJECT_DIR$/src/com/company/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/company/PhotonX.java" afterPath="$PROJECT_DIR$/src/com/company/PhotonX.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="symulacja.iws" />
@@ -533,7 +525,7 @@
       <workItem from="1454089111203" duration="6057000" />
       <workItem from="1454150587576" duration="24868000" />
       <workItem from="1454187805307" duration="1283000" />
-      <workItem from="1454237766837" duration="12507000" />
+      <workItem from="1454237766837" duration="12576000" />
     </task>
     <task id="LOCAL-00001" summary="little changes">
       <created>1453322974757</created>
@@ -685,11 +677,17 @@
       <option name="project" value="LOCAL" />
       <updated>1454189068276</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="testing results. Project works on artificially small number of light photons">
+      <created>1454269657347</created>
+      <option name="number" value="00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1454269657347</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="179999000" />
+    <option name="totallyTimeSpent" value="180068000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -744,7 +742,8 @@
     <MESSAGE value="Little improvements" />
     <MESSAGE value="Drastic methods in Cell file. Project works. Maximum 1000000 photons to simulate" />
     <MESSAGE value="little improvements" />
-    <option name="LAST_COMMIT_MESSAGE" value="little improvements" />
+    <MESSAGE value="testing results. Project works on artificially small number of light photons" />
+    <option name="LAST_COMMIT_MESSAGE" value="testing results. Project works on artificially small number of light photons" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
