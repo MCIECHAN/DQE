@@ -8,7 +8,7 @@ public class Constants {
     int numberOfColumns;
     int photonXEnergy;
     Double RTGConversionCoefficient;
-    int lengthOfLightWave;
+    Double lengthOfLightWave;
     Double massAttenuationCoefficientOfLight;
     Double massAttenuationCoefficientOfXray;
     Double probabilityOfAbsorption;
@@ -28,11 +28,11 @@ public class Constants {
         this.numberOfColumns = newNumberOfColumns;
         this.photonXEnergy = newPhotonXEnergy;
         this.RTGConversionCoefficient = RTGConversionCoefficient;
-        this.lengthOfLightWave = newLengthOfLightWave;
+        this.lengthOfLightWave = newLengthOfLightWave*Math.pow(10,8);
         this.massAttenuationCoefficientOfLight = newMassAttenuationCoefficientOfLight;
         this.massAttenuationCoefficientOfXray = newMassAttenuationCoefficientOfXray;
-        this.probabilityOfAbsorption = newProbabilityOfAbsorption;
-        this.probabilityOfDispersion = newProbabilityOfDispersion;
+        this.probabilityOfAbsorption = newProbabilityOfAbsorption/(newProbabilityOfAbsorption+newProbabilityOfDispersion);
+        this.probabilityOfDispersion = newProbabilityOfDispersion/(newProbabilityOfAbsorption+newProbabilityOfDispersion);
         this.probabilityOfReflection = newProbabilityOfReflection;
     }
 }

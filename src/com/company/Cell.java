@@ -35,23 +35,6 @@ public class Cell {
 
         if ((wGranicy(currentPosition) && wGranicy(predictedPosition)) || (!wGranicy(currentPosition) && !wGranicy(predictedPosition))) {
 
-            System.out.println("Oba w lub poza");
-                        System.out.println("Granice utworzonej komórki:");
-            System.out.println(this.xMin);
-            System.out.println(this.xMax);
-            System.out.println(this.yMin);
-            System.out.println(this.yMax);
-            System.out.println(this.zMin);
-            System.out.println(this.zMax);
-            System.out.println("Pierwotna pozycja");
-            System.out.println(currentPosition.x.toString());
-            System.out.println(currentPosition.y.toString());
-            System.out.println(currentPosition.z.toString());
-            System.out.println("Przewidywana pozycja");
-            System.out.println(predictedPosition.x.toString());
-            System.out.println(predictedPosition.y.toString());
-            System.out.println(predictedPosition.z.toString());
-
             return Optional.empty();
         } else if ((wGranicy(currentPosition) && !wGranicy(predictedPosition))) {
             //System.out.println("Jeden w komorce, drugi poza");

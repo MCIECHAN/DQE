@@ -36,7 +36,7 @@ public class PhotonX {
     }
 
     private long wyznaczLiczbeGenerowanychFotonowSwiatla(Constants constants){
-        int sredniaenergiaPromieniowaniaSwietlnego = 12410/constants.lengthOfLightWave;
+        Double sredniaenergiaPromieniowaniaSwietlnego = 12410/constants.lengthOfLightWave;
         return Math.round(constants.photonXEnergy*constants.RTGConversionCoefficient/sredniaenergiaPromieniowaniaSwietlnego);
     }
 

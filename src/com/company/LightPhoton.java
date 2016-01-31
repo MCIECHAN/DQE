@@ -100,8 +100,8 @@ public class LightPhoton {
             System.out.println(newCell.zMax);*/
             return Optional.of(newCell);
         } else {
-            System.out.println("Nie utworzyłem nowej komorki, foton światła poza detektorem");
-            newLightPhoton.wyswietl();
+/*            System.out.println("Nie utworzyłem nowej komorki, foton światła poza detektorem");
+            newLightPhoton.wyswietl();*/
             return Optional.empty();
         }
     }
@@ -131,7 +131,7 @@ public class LightPhoton {
 
 
     private Optional<LightPhoton> przejscie(LightPhoton przewidywanaNowaPozycja, Constants constants) {
-        System.out.println("Przejście");
+        //System.out.println("Przejście");
         Optional<Position> newPosition = przewidywanaNowaPozycja.cell.getCrossedBorderPoint(this.position, this.directCoefficient, przewidywanaNowaPozycja.position);
         DirectionCoefficient noweWspolczynnikiKierunkowe = przewidywanaNowaPozycja.directCoefficient;
         //System.out.println("Wchodze w flatmap przejscia!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -148,7 +148,8 @@ public class LightPhoton {
                 System.out.println(newLightPhoton.cell.zMax);*/
                 if (przewidywanaNowaPozycja.position.z >= constants.cellHeight) {
                     newLightPhoton.saved = true;
-                    System.out.println("DETEKCJA");
+                    //System.out.println("DETEKCJA");
+                    newLightPhoton.wyswietl();
                 }
                 return newLightPhoton;
             });
