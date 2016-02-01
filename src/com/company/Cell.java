@@ -68,7 +68,7 @@ public class Cell {
                 Double wsp = (currentPosition.z - this.zMin) / currentDirectionCoefficient.z;
                 coordinatesOfCrossing.add(new Position(currentPosition.x - wsp * currentDirectionCoefficient.x, currentPosition.y - wsp * currentDirectionCoefficient.y, p));
             }
-            if((predictedPosition.z > this.zMax)){
+            if ((predictedPosition.z > this.zMax)) {
                 //System.out.println("Przekroczony Zmax");
                 double p = ((double) this.zMax);
                 Double wsp = (currentPosition.z - this.zMax) / currentDirectionCoefficient.z;
@@ -81,9 +81,9 @@ public class Cell {
 
     public Position getClosestCrossBorderPoint(ArrayList<Position> coordinatesOfCrossing, Position currentPosition) {
         Position closestCrossBorderPoint = coordinatesOfCrossing.get(0);
-        Double firstDistance = currentPosition.getDistanceBetweenTwoPositions(closestCrossBorderPoint);
+        Double firstDistance = currentPosition.distanceBetween(closestCrossBorderPoint);
         for (Position position : coordinatesOfCrossing) {
-            Double pretendingDistance = currentPosition.getDistanceBetweenTwoPositions(position);
+            Double pretendingDistance = currentPosition.distanceBetween(position);
             if (pretendingDistance < firstDistance) closestCrossBorderPoint = position;
         }
 /*        System.out.println("Punkt przecięcia:");
@@ -97,8 +97,7 @@ public class Cell {
         return position.x >= xMin && position.x <= xMax && position.y >= yMin && position.y <= yMax && position.z >= zMin && position.z <= zMax;
     }
 
-    public Position getCrossingPosition(Position currentPosition, Double wsp, DirectionCoefficient currentDirectionCoefficient) {
-        return new Position(currentPosition.x - wsp * currentDirectionCoefficient.x, currentPosition.y - wsp * currentDirectionCoefficient.y, currentPosition.z - wsp * currentDirectionCoefficient.z);
-    }
-
+//    public Position getCrossingPosition(Position currentPosition, Double wsp, DirectionCoefficient currentDirectionCoefficient) {
+//        return new Position(currentPosition.x - wsp * currentDirectionCoefficient.x, currentPosition.y - wsp * currentDirectionCoefficient.y, currentPosition.z - wsp * currentDirectionCoefficient.z);
+//    }
 }

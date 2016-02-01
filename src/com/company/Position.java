@@ -11,8 +11,8 @@ public class Position {
         this.z = z;
     }
 
-    public Double getDistanceBetweenTwoPositions (Position position2){
-        return Math.sqrt(Math.pow(this.x - position2.x, 2) + Math.pow(this.y - position2.y, 2) + Math.pow(this.z - position2.z, 2));
+    public Double distanceBetween(Position that){
+        return Math.sqrt(Math.pow(this.x - that.x, 2) + Math.pow(this.y - that.y, 2) + Math.pow(this.z - that.z, 2));
     }
 
 }
