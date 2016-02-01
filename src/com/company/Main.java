@@ -29,7 +29,7 @@ public class Main {
 
         System.out.println(listaZapisanych.size());
 
-        //FileOutputStream plik = new FileOutputStream(plikDoZapisow);
+/*        //FileOutputStream plik = new FileOutputStream(plikDoZapisow);
         Cell komorka2 = new Cell(0, 50, 0, 50, 0, zmienne.cellHeight);
 
 
@@ -45,7 +45,7 @@ public class Main {
         }
         ArrayList<LightPhoton> listaZapisanych2 = lista2;
 
-        System.out.println(listaZapisanych2.size());
+        System.out.println(listaZapisanych2.size());*/
 
 
 
