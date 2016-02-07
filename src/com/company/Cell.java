@@ -24,14 +24,6 @@ public class Cell {
     public Optional<Position> getCrossedBorderPoint(Position currentPosition, DirectionCoefficient currentDirectionCoefficient, Position predictedPosition) {
 
         ArrayList<Position> coordinatesOfCrossing = new ArrayList<>();
-/*        System.out.println("Szukam granicy odbicia lub rozzproszenia");
-        System.out.println("Granice komórki:");
-        System.out.println(this.xMin);
-        System.out.println(this.xMax);
-        System.out.println(this.yMin);
-        System.out.println(this.yMax);
-        System.out.println(this.zMin);
-        System.out.println(this.zMax);*/
 
         if ((wGranicy(currentPosition) && wGranicy(predictedPosition)) || (!wGranicy(currentPosition) && !wGranicy(predictedPosition))) {
 
@@ -86,10 +78,6 @@ public class Cell {
             Double pretendingDistance = currentPosition.distanceBetween(position);
             if (pretendingDistance < firstDistance) closestCrossBorderPoint = position;
         }
-/*        System.out.println("Punkt przecięcia:");
-        System.out.println(closestCrossBorderPoint.x.toString());
-        System.out.println(closestCrossBorderPoint.y.toString());
-        System.out.println(closestCrossBorderPoint.z.toString());*/
         return closestCrossBorderPoint;
     }
 
@@ -97,7 +85,4 @@ public class Cell {
         return position.x >= xMin && position.x <= xMax && position.y >= yMin && position.y <= yMax && position.z >= zMin && position.z <= zMax;
     }
 
-//    public Position getCrossingPosition(Position currentPosition, Double wsp, DirectionCoefficient currentDirectionCoefficient) {
-//        return new Position(currentPosition.x - wsp * currentDirectionCoefficient.x, currentPosition.y - wsp * currentDirectionCoefficient.y, currentPosition.z - wsp * currentDirectionCoefficient.z);
-//    }
 }

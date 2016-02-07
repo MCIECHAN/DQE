@@ -10,12 +10,12 @@ public class PhotonX {
     Double massAttenuationCoefficientOfXray;
     long numberOfLightPhotons;
 
-    public PhotonX(Position position, DirectionCoefficient directCoefficient, Cell cell, Double massAttenuationCoefficientOfXray, Constants constants) {
+    public PhotonX(Position position, DirectionCoefficient directCoefficient, Cell cell, Double massAttenuationCoefficientOfXray, long newNumberOfLightPhotons) {
         this.position = position;
         this.directCoefficient = directCoefficient;
         this.cell = cell;
         this.massAttenuationCoefficientOfXray = massAttenuationCoefficientOfXray;
-        this.numberOfLightPhotons = wyznaczLiczbeGenerowanychFotonowSwiatla(constants);
+        this.numberOfLightPhotons = newNumberOfLightPhotons;
     }
 
     public ArrayList<LightPhoton> generateLightPhotons() {
@@ -24,11 +24,6 @@ public class PhotonX {
             listOfLightPhotons.add(i, new LightPhoton(position, DirectionCoefficient.getRandomDirectionCoefficient(directCoefficient), cell, false));
         }
         return listOfLightPhotons;
-    }
-
-    private long wyznaczLiczbeGenerowanychFotonowSwiatla(Constants constants) {
-        Double sredniaEnergiaPromieniowaniaSwietlnego = 12410 / constants.lengthOfLightWave;
-        return Math.round(constants.photonXEnergy * constants.RTGConversionCoefficient / sredniaEnergiaPromieniowaniaSwietlnego);
     }
 
 //    private PhotonX losujDrogeSwobodna(Constants constants) {

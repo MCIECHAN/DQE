@@ -26,9 +26,14 @@ public class LightPhoton {
     }
 
     private Optional<LightPhoton> przejscieLubOdbicie(Constants constants, LightPhoton photonInNewPosition) {
-        Double r = Math.random();
-        if (r <= constants.probabilityOfReflection) return odbicie(photonInNewPosition);
-        else return przejscie(photonInNewPosition, constants);
+        if(photonInNewPosition.position.z>=constants.cellHeight){
+            return przejscie(photonInNewPosition, constants);
+        }
+        else {
+            Double r = Math.random();
+            if (r <= constants.probabilityOfReflection) return odbicie(photonInNewPosition);
+            else return przejscie(photonInNewPosition, constants);
+        }
     }
 
     private Optional<LightPhoton> absorbcjaLubRozproszenie(Constants constants, LightPhoton photonInNewPosition) {
@@ -66,7 +71,6 @@ public class LightPhoton {
         if (newLightPhoton.position.x > 0 && newLightPhoton.position.x < constants.cellWallLength * constants.numberOfColumns &&
                 newLightPhoton.position.y > 0 && newLightPhoton.position.y < constants.cellWallLength * constants.numberOfRows && newLightPhoton.position.z > 0) {
             Cell newCell = new Cell(newLightPhoton.cell.xMin, newLightPhoton.cell.xMax, newLightPhoton.cell.yMin, newLightPhoton.cell.yMax, newLightPhoton.cell.zMin, newLightPhoton.cell.zMax);
-            //System.out.println("Utworzyłem nowa komorke");
             if (newLightPhoton.position.x <= newLightPhoton.cell.xMin) {
                 newCell.xMax = newCell.xMin;
                 newCell.xMin = newCell.xMin - constants.cellWallLength;
@@ -83,27 +87,13 @@ public class LightPhoton {
                 newCell.yMin = newCell.yMax;
                 newCell.yMax = newCell.yMax + constants.cellWallLength;
             }
-/*            System.out.println("Granice utworzonej komórki:");
-            System.out.println(newCell.xMin);
-            System.out.println(newCell.xMax);
-            System.out.println(newCell.yMin);
-            System.out.println(newCell.yMax);
-            System.out.println(newCell.zMin);
-            System.out.println(newCell.zMax);*/
             return Optional.of(newCell);
         } else {
-/*            System.out.println("Nie utworzyłem nowej komorki, foton światła poza detektorem");
-            newLightPhoton.wyswietl();*/
             return Optional.empty();
         }
     }
 
     private Optional<LightPhoton> odbicie(LightPhoton przewidywanaNowaPozycja) {
-        //System.out.println("Odbicie");
-/*        System.out.println("Odbicie: stara pozycja");
-        this.wyswietl();
-        System.out.println("Odbicie: nowa pozycja");
-        przewidywanaNowaPozycja.wyswietl();*/
         Optional<Position> newPosition = przewidywanaNowaPozycja.cell.getCrossedBorderPoint(this.position, this.directCoefficient, przewidywanaNowaPozycja.position);
         return newPosition.map(position -> {
             DirectionCoefficient noweWspolczynnikiKierunkowe = this.directCoefficient;
@@ -123,24 +113,15 @@ public class LightPhoton {
 
 
     private Optional<LightPhoton> przejscie(LightPhoton przewidywanaNowaPozycja, Constants constants) {
-        //System.out.println("Przejście");
         Optional<Position> newPosition = przewidywanaNowaPozycja.cell.getCrossedBorderPoint(this.position, this.directCoefficient, przewidywanaNowaPozycja.position);
         DirectionCoefficient noweWspolczynnikiKierunkowe = przewidywanaNowaPozycja.directCoefficient;
-        //System.out.println("Wchodze w flatmap przejscia!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         return newPosition.flatMap(pozycja -> {
             LightPhoton newLightPhoton = new LightPhoton(pozycja, noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, false);
             return currentCell(newLightPhoton, constants).map(cell -> {
                 newLightPhoton.cell = cell;
-/*                System.out.println("Nowa komórka");
-                System.out.println(newLightPhoton.cell.xMin);
-                System.out.println(newLightPhoton.cell.xMax);
-                System.out.println(newLightPhoton.cell.yMin);
-                System.out.println(newLightPhoton.cell.yMax);
-                System.out.println(newLightPhoton.cell.zMin);
-                System.out.println(newLightPhoton.cell.zMax);*/
                 if (przewidywanaNowaPozycja.position.z >= constants.cellHeight) {
                     newLightPhoton.saved = true;
-                    //System.out.println("DETEKCJA");
+                    System.out.println("DETEKCJA");
                     newLightPhoton.wyswietl();
                 }
                 return newLightPhoton;
@@ -150,5 +131,11 @@ public class LightPhoton {
 
     public void wyswietl() {
         System.out.println("x: " + position.x + " y: " + position.y + " z: " + position.z);
+    }
+
+    public String naString() {
+        String str = new String(position.x.toString()+" "+position.y.toString())+"\n";
+
+        return str;
     }
 }

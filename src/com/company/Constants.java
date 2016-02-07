@@ -14,6 +14,7 @@ public class Constants {
     Double probabilityOfAbsorption;
     Double probabilityOfDispersion;
     Double probabilityOfReflection;
+    long numberOfLightPhotons;
 
     public Constants(int newAreaWallLength, int newCellWallLength, int newCellHeight, int newNumberOfRows,
                      int newNumberOfColumns, int newPhotonXEnergy, Double RTGConversionCoefficient,
@@ -34,5 +35,12 @@ public class Constants {
         this.probabilityOfAbsorption = newProbabilityOfAbsorption/(newProbabilityOfAbsorption+newProbabilityOfDispersion);
         this.probabilityOfDispersion = newProbabilityOfDispersion/(newProbabilityOfAbsorption+newProbabilityOfDispersion);
         this.probabilityOfReflection = newProbabilityOfReflection;
+        this.numberOfLightPhotons = wyznaczLiczbeGenerowanychFotonowSwiatla();
     }
+
+    private long wyznaczLiczbeGenerowanychFotonowSwiatla(){
+        Double sredniaEnergiaPromieniowaniaSwietlnego = 12410 / this.lengthOfLightWave;
+        return Math.round(this.photonXEnergy * this.RTGConversionCoefficient / sredniaEnergiaPromieniowaniaSwietlnego);
+    }
+
 }
