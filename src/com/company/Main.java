@@ -15,11 +15,15 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        Constants zmienne = new Constants(100, 50, 100, 1, 1, 10, 0.2, 545, 13.1, 13.1, 0.9, 499.55, 0.8);
-        Position pozycja = new Position(25.0, 25.0, 90.0);
+        Constants zmienne = new Constants(100, 10, 100, 5, 5, 200000, 0.2, 545.0, 13.1, 13.1, 0.9, 499.55, 0.9);
+        Position pozycja = new Position(25.0, 25.0, 95.0);
         DirectionCoefficient wspkier = new DirectionCoefficient(Math.random(), Math.random(), Math.random());
         Cell komorka = new Cell(20, 30, 20, 30, 0, zmienne.cellHeight);
-
+        PhotonX fotonX = new PhotonX(pozycja, wspkier, komorka, zmienne.massAttenuationCoefficientOfXray, zmienne.numberOfLightPhotons);
+        System.out.println(fotonX.numberOfLightPhotons);
+        ArrayList<LightPhoton> lista = fotonX.generateLightPhotons();
+        ArrayList<LightPhoton> listaZapisanych = mainLoop(zmienne, lista);
+        System.out.println(listaZapisanych.size());
         try
         {
             File plik = new File("C:\\Users\\ciechan\\Desktop\\DQE - user story\\plik.txt");
@@ -29,11 +33,6 @@ public class Main {
             FileWriter fw = new FileWriter(plik.getAbsoluteFile());
             BufferedWriter bw = new BufferedWriter(fw);
 
-            for (int i = 0; i <= zmienne.numberOfLightPhotons ; i=i+100000) {
-                PhotonX fotonX = new PhotonX(pozycja, wspkier, komorka, zmienne.massAttenuationCoefficientOfXray, 100000);
-                ArrayList<LightPhoton> lista = fotonX.generateLightPhotons();
-                ArrayList<LightPhoton> listaZapisanych = mainLoop(zmienne, lista);
-
                 listaZapisanych.forEach(lightPhoton -> {
                     try{
                         bw.write(lightPhoton.naString() );
@@ -42,7 +41,7 @@ public class Main {
                         e.printStackTrace();
                     }
                 });
-            }
+
             bw.close();
         }catch (IOException e) {
             e.printStackTrace();

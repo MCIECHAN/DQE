@@ -22,11 +22,10 @@ public class Cell {
     }
 
     public Optional<Position> getCrossedBorderPoint(Position currentPosition, DirectionCoefficient currentDirectionCoefficient, Position predictedPosition) {
-
         ArrayList<Position> coordinatesOfCrossing = new ArrayList<>();
 
         if ((wGranicy(currentPosition) && wGranicy(predictedPosition)) || (!wGranicy(currentPosition) && !wGranicy(predictedPosition))) {
-
+            System.out.println("OBA POZA KOMORKA");
             return Optional.empty();
         } else if ((wGranicy(currentPosition) && !wGranicy(predictedPosition))) {
             //System.out.println("Jeden w komorce, drugi poza");
@@ -55,13 +54,13 @@ public class Cell {
                 coordinatesOfCrossing.add(new Position(currentPosition.x - wsp * currentDirectionCoefficient.x, p, currentPosition.z - wsp * currentDirectionCoefficient.z));
             }
             if (predictedPosition.z < this.zMin) {
-                //System.out.println("Przekroczony Zmin");
+                System.out.println("Przekroczony Zmin");
                 double p = ((double) this.zMin);
                 Double wsp = (currentPosition.z - this.zMin) / currentDirectionCoefficient.z;
                 coordinatesOfCrossing.add(new Position(currentPosition.x - wsp * currentDirectionCoefficient.x, currentPosition.y - wsp * currentDirectionCoefficient.y, p));
             }
             if ((predictedPosition.z > this.zMax)) {
-                //System.out.println("Przekroczony Zmax");
+                System.out.println("Przekroczony Zmax");
                 double p = ((double) this.zMax);
                 Double wsp = (currentPosition.z - this.zMax) / currentDirectionCoefficient.z;
                 coordinatesOfCrossing.add(new Position(currentPosition.x - wsp * currentDirectionCoefficient.x, currentPosition.y - wsp * currentDirectionCoefficient.y, p));

@@ -18,7 +18,7 @@ public class Constants {
 
     public Constants(int newAreaWallLength, int newCellWallLength, int newCellHeight, int newNumberOfRows,
                      int newNumberOfColumns, int newPhotonXEnergy, Double RTGConversionCoefficient,
-                     int newLengthOfLightWave, Double newMassAttenuationCoefficientOfLight,
+                     Double newLengthOfLightWave, Double newMassAttenuationCoefficientOfLight,
                      Double newMassAttenuationCoefficientOfXray, Double newProbabilityOfAbsorption,
                      Double newProbabilityOfDispersion, Double newProbabilityOfReflection)
     {
@@ -29,7 +29,8 @@ public class Constants {
         this.numberOfColumns = newNumberOfColumns;
         this.photonXEnergy = newPhotonXEnergy;
         this.RTGConversionCoefficient = RTGConversionCoefficient;
-        this.lengthOfLightWave = newLengthOfLightWave*Math.pow(10,9);
+        this.lengthOfLightWave = newLengthOfLightWave;
+       // this.lengthOfLightWave = newLengthOfLightWave*Math.pow(10,9);
         this.massAttenuationCoefficientOfLight = newMassAttenuationCoefficientOfLight;
         this.massAttenuationCoefficientOfXray = newMassAttenuationCoefficientOfXray;
         this.probabilityOfAbsorption = newProbabilityOfAbsorption/(newProbabilityOfAbsorption+newProbabilityOfDispersion);
@@ -39,7 +40,7 @@ public class Constants {
     }
 
     private long wyznaczLiczbeGenerowanychFotonowSwiatla(){
-        Double sredniaEnergiaPromieniowaniaSwietlnego = 12410 / this.lengthOfLightWave;
+        Double sredniaEnergiaPromieniowaniaSwietlnego = 1240 / this.lengthOfLightWave;
         return Math.round(this.photonXEnergy * this.RTGConversionCoefficient / sredniaEnergiaPromieniowaniaSwietlnego);
     }
 

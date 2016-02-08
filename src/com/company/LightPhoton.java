@@ -27,6 +27,7 @@ public class LightPhoton {
 
     private Optional<LightPhoton> przejscieLubOdbicie(Constants constants, LightPhoton photonInNewPosition) {
         if(photonInNewPosition.position.z>=constants.cellHeight){
+            //System.out.println("Przekroczenie granicy Z!!!!!!!!!");
             return przejscie(photonInNewPosition, constants);
         }
         else {
@@ -37,7 +38,9 @@ public class LightPhoton {
     }
 
     private Optional<LightPhoton> absorbcjaLubRozproszenie(Constants constants, LightPhoton photonInNewPosition) {
-        if (photonInNewPosition.czyAbsorbowany(constants)) return Optional.empty();
+        if (photonInNewPosition.czyAbsorbowany(constants)){
+            //System.out.println("ABSORPCJA");
+            return Optional.empty();}
         else return Optional.of(rozproszony(photonInNewPosition));
     }
 
@@ -94,6 +97,8 @@ public class LightPhoton {
     }
 
     private Optional<LightPhoton> odbicie(LightPhoton przewidywanaNowaPozycja) {
+        //System.out.println("oodbicie");
+        //przewidywanaNowaPozycja.wyswietl();
         Optional<Position> newPosition = przewidywanaNowaPozycja.cell.getCrossedBorderPoint(this.position, this.directCoefficient, przewidywanaNowaPozycja.position);
         return newPosition.map(position -> {
             DirectionCoefficient noweWspolczynnikiKierunkowe = this.directCoefficient;
@@ -113,6 +118,7 @@ public class LightPhoton {
 
 
     private Optional<LightPhoton> przejscie(LightPhoton przewidywanaNowaPozycja, Constants constants) {
+        System.out.println("przejście");
         Optional<Position> newPosition = przewidywanaNowaPozycja.cell.getCrossedBorderPoint(this.position, this.directCoefficient, przewidywanaNowaPozycja.position);
         DirectionCoefficient noweWspolczynnikiKierunkowe = przewidywanaNowaPozycja.directCoefficient;
         return newPosition.flatMap(pozycja -> {
