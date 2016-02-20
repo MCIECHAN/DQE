@@ -67,8 +67,7 @@ public class LightPhoton {
     }
 
     private Optional<Cell> currentCell(LightPhoton newLightPhoton, Constants constants) {
-        if (newLightPhoton.position.x > 0 && newLightPhoton.position.x < constants.cellWallLength * constants.numberOfColumns &&
-                newLightPhoton.position.y > 0 && newLightPhoton.position.y < constants.cellWallLength * constants.numberOfRows && newLightPhoton.position.z > 0) {
+        if (newLightPhoton.position.z > 0) {
             Cell newCell = new Cell(newLightPhoton.cell.xMin, newLightPhoton.cell.xMax, newLightPhoton.cell.yMin, newLightPhoton.cell.yMax, newLightPhoton.cell.zMin, newLightPhoton.cell.zMax);
             if (newLightPhoton.position.x <= newLightPhoton.cell.xMin) {
                 newCell.xMax = newCell.xMin;

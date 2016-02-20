@@ -30,7 +30,6 @@ public class Constants {
         this.photonXEnergy = newPhotonXEnergy;
         this.RTGConversionCoefficient = RTGConversionCoefficient;
         this.lengthOfLightWave = newLengthOfLightWave;
-       // this.lengthOfLightWave = newLengthOfLightWave*Math.pow(10,9);
         this.massAttenuationCoefficientOfLight = newMassAttenuationCoefficientOfLight;
         this.massAttenuationCoefficientOfXray = newMassAttenuationCoefficientOfXray;
         this.probabilityOfAbsorption = newProbabilityOfAbsorption/(newProbabilityOfAbsorption+newProbabilityOfDispersion);
