@@ -15,10 +15,10 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        Constants zmienne = new Constants(100, 10, 100, 5, 5, 200000, 0.2, 545.0, 13.1, 13.1, 0.9, 499.55, 0.9);
-        Position pozycja = new Position(25.0, 25.0, 95.0);
+        Constants zmienne = new Constants(100, 10, 100, 50, 50, 200000, 0.2, 545.0, 2.1, 2.1, 0.9, 499.55, 0.9);
+        Position pozycja = new Position(255.0, 255.0, 80.0);
         DirectionCoefficient wspkier = new DirectionCoefficient(Math.random(), Math.random(), Math.random());
-        Cell komorka = new Cell(20, 30, 20, 30, 0, zmienne.cellHeight);
+        Cell komorka = new Cell(250, 260, 250, 2600, 0, zmienne.cellHeight);
         PhotonX fotonX = new PhotonX(pozycja, wspkier, komorka, zmienne.massAttenuationCoefficientOfXray, zmienne.numberOfLightPhotons);
         System.out.println(fotonX.numberOfLightPhotons);
         ArrayList<LightPhoton> lista = fotonX.generateLightPhotons();

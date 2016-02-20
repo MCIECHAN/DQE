@@ -27,7 +27,6 @@ public class LightPhoton {
 
     private Optional<LightPhoton> przejscieLubOdbicie(Constants constants, LightPhoton photonInNewPosition) {
         if(photonInNewPosition.position.z>=constants.cellHeight){
-            //System.out.println("Przekroczenie granicy Z!!!!!!!!!");
             return przejscie(photonInNewPosition, constants);
         }
         else {
@@ -39,13 +38,11 @@ public class LightPhoton {
 
     private Optional<LightPhoton> absorbcjaLubRozproszenie(Constants constants, LightPhoton photonInNewPosition) {
         if (photonInNewPosition.czyAbsorbowany(constants)){
-            //System.out.println("ABSORPCJA");
             return Optional.empty();}
         else return Optional.of(rozproszony(photonInNewPosition));
     }
 
     private LightPhoton losujDrogeSwobodna(Constants constants) {
-        //System.out.println("losuje droge swobodna");
         Double r = Math.random();
         Double s = -1 / constants.massAttenuationCoefficientOfLight * Math.log(r);
         Double newX = position.x + directCoefficient.x * s;
@@ -61,7 +58,6 @@ public class LightPhoton {
     }
 
     private LightPhoton rozproszony(LightPhoton przewidywanaNowaPozycja) {
-        //System.out.println("Rozproszony");
         DirectionCoefficient noweWspolczynnikiKierunkowe = DirectionCoefficient.getRandomDirectionCoefficient(przewidywanaNowaPozycja.directCoefficient);
         return new LightPhoton(przewidywanaNowaPozycja.position, noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, przewidywanaNowaPozycja.saved);
     }
@@ -97,19 +93,14 @@ public class LightPhoton {
     }
 
     private Optional<LightPhoton> odbicie(LightPhoton przewidywanaNowaPozycja) {
-        //System.out.println("oodbicie");
-        //przewidywanaNowaPozycja.wyswietl();
         Optional<Position> newPosition = przewidywanaNowaPozycja.cell.getCrossedBorderPoint(this.position, this.directCoefficient, przewidywanaNowaPozycja.position);
         return newPosition.map(position -> {
             DirectionCoefficient noweWspolczynnikiKierunkowe = this.directCoefficient;
             if (position.x == this.cell.xMin || position.x == this.cell.xMax) {
-                //System.out.println("oodbicie X");
                 noweWspolczynnikiKierunkowe = new DirectionCoefficient(-przewidywanaNowaPozycja.directCoefficient.x, przewidywanaNowaPozycja.directCoefficient.y, przewidywanaNowaPozycja.directCoefficient.z);
             } else if (position.y == this.cell.yMin || position.y == this.cell.yMax) {
-                //System.out.println("oodbicie Y");
                 noweWspolczynnikiKierunkowe = new DirectionCoefficient(przewidywanaNowaPozycja.directCoefficient.x, -przewidywanaNowaPozycja.directCoefficient.y, przewidywanaNowaPozycja.directCoefficient.z);
             } else {
-                //System.out.println("oodbicie Z");
                 noweWspolczynnikiKierunkowe = new DirectionCoefficient(przewidywanaNowaPozycja.directCoefficient.x, przewidywanaNowaPozycja.directCoefficient.y, -przewidywanaNowaPozycja.directCoefficient.z);
             }
             return new LightPhoton(position, noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, przewidywanaNowaPozycja.saved);
@@ -118,7 +109,6 @@ public class LightPhoton {
 
 
     private Optional<LightPhoton> przejscie(LightPhoton przewidywanaNowaPozycja, Constants constants) {
-        System.out.println("przejście");
         Optional<Position> newPosition = przewidywanaNowaPozycja.cell.getCrossedBorderPoint(this.position, this.directCoefficient, przewidywanaNowaPozycja.position);
         DirectionCoefficient noweWspolczynnikiKierunkowe = przewidywanaNowaPozycja.directCoefficient;
         return newPosition.flatMap(pozycja -> {
@@ -127,8 +117,7 @@ public class LightPhoton {
                 newLightPhoton.cell = cell;
                 if (przewidywanaNowaPozycja.position.z >= constants.cellHeight) {
                     newLightPhoton.saved = true;
-                    System.out.println("DETEKCJA");
-                    newLightPhoton.wyswietl();
+                    //newLightPhoton.wyswietl();
                 }
                 return newLightPhoton;
             });

@@ -23,44 +23,35 @@ public class Cell {
 
     public Optional<Position> getCrossedBorderPoint(Position currentPosition, DirectionCoefficient currentDirectionCoefficient, Position predictedPosition) {
         ArrayList<Position> coordinatesOfCrossing = new ArrayList<>();
-
         if ((wGranicy(currentPosition) && wGranicy(predictedPosition)) || (!wGranicy(currentPosition) && !wGranicy(predictedPosition))) {
-            System.out.println("OBA POZA KOMORKA");
             return Optional.empty();
         } else if ((wGranicy(currentPosition) && !wGranicy(predictedPosition))) {
-            //System.out.println("Jeden w komorce, drugi poza");
             if (predictedPosition.x < this.xMin) {
-                //System.out.println("Przekroczony Xmin");
                 double p = ((double) this.xMin);
                 Double wsp = (currentPosition.x - this.xMin) / currentDirectionCoefficient.x;
                 coordinatesOfCrossing.add(new Position(p, currentPosition.y - wsp * currentDirectionCoefficient.y, currentPosition.z - wsp * currentDirectionCoefficient.z));
             }
             if (predictedPosition.x > this.xMax) {
-                //System.out.println("Przekroczony Xmax");
                 double p = ((double) this.xMax);
                 Double wsp = (currentPosition.x - this.xMax) / currentDirectionCoefficient.x;
                 coordinatesOfCrossing.add(new Position(p, currentPosition.y - wsp * currentDirectionCoefficient.y, currentPosition.z - wsp * currentDirectionCoefficient.z));
             }
             if (predictedPosition.y < this.yMin) {
-                //System.out.println("Przekroczony Ymin");
                 double p = ((double) this.yMin);
                 Double wsp = (currentPosition.y - this.yMin) / currentDirectionCoefficient.y;
                 coordinatesOfCrossing.add(new Position(currentPosition.x - wsp * currentDirectionCoefficient.x, p, currentPosition.z - wsp * currentDirectionCoefficient.z));
             }
             if (predictedPosition.y > this.yMax) {
-                //System.out.println("Przekroczony Ymax");
                 double p = ((double) this.yMax);
                 Double wsp = (currentPosition.y - this.yMax) / currentDirectionCoefficient.y;
                 coordinatesOfCrossing.add(new Position(currentPosition.x - wsp * currentDirectionCoefficient.x, p, currentPosition.z - wsp * currentDirectionCoefficient.z));
             }
             if (predictedPosition.z < this.zMin) {
-                System.out.println("Przekroczony Zmin");
                 double p = ((double) this.zMin);
                 Double wsp = (currentPosition.z - this.zMin) / currentDirectionCoefficient.z;
                 coordinatesOfCrossing.add(new Position(currentPosition.x - wsp * currentDirectionCoefficient.x, currentPosition.y - wsp * currentDirectionCoefficient.y, p));
             }
             if ((predictedPosition.z > this.zMax)) {
-                System.out.println("Przekroczony Zmax");
                 double p = ((double) this.zMax);
                 Double wsp = (currentPosition.z - this.zMax) / currentDirectionCoefficient.z;
                 coordinatesOfCrossing.add(new Position(currentPosition.x - wsp * currentDirectionCoefficient.x, currentPosition.y - wsp * currentDirectionCoefficient.y, p));

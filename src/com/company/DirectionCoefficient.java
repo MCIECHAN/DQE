@@ -34,7 +34,4 @@ public class DirectionCoefficient {
         }
     }
 
-    public void wyswietl() {
-        System.out.println("x: " + x + " y: " + y + " z: " + z);
-    }
 }
