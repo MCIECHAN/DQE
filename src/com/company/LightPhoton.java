@@ -129,7 +129,6 @@ public class LightPhoton {
 
     public String naString() {
         String str = new String(position.x.toString()+" "+position.y.toString())+"\n";
-
         return str;
     }
 }

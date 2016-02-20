@@ -6,6 +6,7 @@ public class Constants {
     int cellHeight;
     int numberOfRows;
     int numberOfColumns;
+    int numberOfParticleLSFFunctions;
     int photonXEnergy;
     Double RTGConversionCoefficient;
     Double lengthOfLightWave;
@@ -17,16 +18,17 @@ public class Constants {
     long numberOfLightPhotons;
 
     public Constants(int newAreaWallLength, int newCellWallLength, int newCellHeight, int newNumberOfRows,
-                     int newNumberOfColumns, int newPhotonXEnergy, Double RTGConversionCoefficient,
-                     Double newLengthOfLightWave, Double newMassAttenuationCoefficientOfLight,
-                     Double newMassAttenuationCoefficientOfXray, Double newProbabilityOfAbsorption,
-                     Double newProbabilityOfDispersion, Double newProbabilityOfReflection)
+                     int newNumberOfColumns, int newNumberOfParticleLSFFunctions, int newPhotonXEnergy,
+                     Double RTGConversionCoefficient, Double newLengthOfLightWave,
+                     Double newMassAttenuationCoefficientOfLight, Double newMassAttenuationCoefficientOfXray,
+                     Double newProbabilityOfAbsorption, Double newProbabilityOfDispersion, Double newProbabilityOfReflection)
     {
         this.areaWallLength = newAreaWallLength;
         this.cellWallLength = newCellWallLength;
         this.cellHeight = newCellHeight;
         this.numberOfRows = newNumberOfRows;
         this.numberOfColumns = newNumberOfColumns;
+        this.numberOfParticleLSFFunctions = newNumberOfParticleLSFFunctions;
         this.photonXEnergy = newPhotonXEnergy;
         this.RTGConversionCoefficient = RTGConversionCoefficient;
         this.lengthOfLightWave = newLengthOfLightWave;

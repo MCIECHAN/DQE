@@ -15,12 +15,12 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        Constants zmienne = new Constants(100, 10, 100, 50, 50, 200000, 0.2, 545.0, 2.1, 2.1, 0.9, 499.55, 0.9);
+        Constants zmienne = new Constants(100, 10, 100, 50, 50, 200000, 20, 0.2, 545.0, 2.1, 2.1, 0.9, 499.55, 0.9);
 
         Position pozycja = new Position(0.0, 0.0, 90.0);
         DirectionCoefficient wspkier = new DirectionCoefficient(Math.random(), Math.random(), Math.random());
 
-        Cell komorka = new Cell(-500, 500, -500, 500, 0, zmienne.cellHeight);
+        Cell komorka = new Cell(-5, 5, -5, 5, 0, zmienne.cellHeight);
 
         PhotonX fotonX = new PhotonX(pozycja, wspkier, komorka, zmienne.massAttenuationCoefficientOfXray, zmienne.numberOfLightPhotons);
         //System.out.println(fotonX.numberOfLightPhotons);
@@ -53,8 +53,6 @@ public class Main {
         }catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
     private static ArrayList<LightPhoton> mainLoop(Constants zmienne, ArrayList<LightPhoton> lista) {
