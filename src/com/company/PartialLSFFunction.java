@@ -16,7 +16,7 @@ public class PartialLSFFunction {
     PartialLSFFunction (Constants constants,Double newPositionZ){
         this.positonZ = newPositionZ;
         this.listOfPositionsOfDetection = generateListOfPositionsOfDetection(constants, newPositionZ);
-        this.setPropablityOfDetection( , this.listOfPositionsOfDetection);
+        this.setPropablityOfDetection( (double) this.listOfPositionsOfDetection.size(), (double) constants.numberOfLightPhotons);
     }
 
 
