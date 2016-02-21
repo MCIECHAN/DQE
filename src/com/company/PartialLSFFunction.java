@@ -16,8 +16,7 @@ public class PartialLSFFunction {
     PartialLSFFunction (Constants constants,Double newPositionZ){
         this.positonZ = newPositionZ;
         this.listOfPositionsOfDetection = generateListOfPositionsOfDetection(constants, newPositionZ);
-
-        //this.setPropablityOfDetection(,listaZapisanych.size());
+        this.setPropablityOfDetection( , this.listOfPositionsOfDetection);
     }
 
 
@@ -31,6 +30,7 @@ public class PartialLSFFunction {
         ArrayList<LightPhoton> lista = fotonX.generateLightPhotons();
         ArrayList<LightPhoton> listaZapisanych = mainLSFLoop(constants, lista);
 
+        return setListOfPositionsOfDetection(listaZapisanych);
     }
 
     private static ArrayList<LightPhoton> mainLSFLoop(Constants zmienne, ArrayList<LightPhoton> lista) {
@@ -43,7 +43,15 @@ public class PartialLSFFunction {
         return lista;
     }
 
-/*    private Double setPropablityOfDetection (Double No, Double Nd){
+    private ArrayList<PositionOfDetection> setListOfPositionsOfDetection (ArrayList<LightPhoton> listaZapisanych){
+
+        ArrayList<PositionOfDetection> outputList = new ArrayList<PositionOfDetection>();
+        listaZapisanych.forEach((lightPhoton) ->{outputList.add(lightPhoton.getPositionOfDetection());} );
+        return outputList;
+    }
+
+
+    private Double setPropablityOfDetection (Double No, Double Nd){
         return No/Nd;
-    }*/
+    }
 }

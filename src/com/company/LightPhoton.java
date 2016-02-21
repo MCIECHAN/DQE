@@ -131,4 +131,9 @@ public class LightPhoton {
         String str = new String(position.x.toString()+" "+position.y.toString())+"\n";
         return str;
     }
+
+    public PositionOfDetection getPositionOfDetection (){
+        return new PositionOfDetection( this.position.x.intValue(), this.position.y.intValue());
+    }
+
 }
