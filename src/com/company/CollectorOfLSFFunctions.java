@@ -9,7 +9,7 @@ public class CollectorOfLSFFunctions {
 
     private ArrayList <PartialLSFFunction> listOfPartialLSFFunctions;
 
-    CollectorOfLSFFunctions (){
+    CollectorOfLSFFunctions (Constants constants){
 
     }
 

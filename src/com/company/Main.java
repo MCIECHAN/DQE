@@ -17,21 +17,18 @@ public class Main {
 
         Constants zmienne = new Constants(100, 10, 100, 50, 50, 200000, 20, 0.2, 545.0, 2.1, 2.1, 0.9, 499.55, 0.9);
 
-        Position pozycja = new Position(0.0, 0.0, 90.0);
-        DirectionCoefficient wspkier = new DirectionCoefficient(Math.random(), Math.random(), Math.random());
 
+
+
+/*        Position pozycja = new Position(0.0, 0.0, 90.0);
+        DirectionCoefficient wspkier = new DirectionCoefficient(Math.random(), Math.random(), Math.random());
         Cell komorka = new Cell(-5, 5, -5, 5, 0, zmienne.cellHeight);
 
         PhotonX fotonX = new PhotonX(pozycja, wspkier, komorka, zmienne.massAttenuationCoefficientOfXray, zmienne.numberOfLightPhotons);
-        //System.out.println(fotonX.numberOfLightPhotons);
         ArrayList<LightPhoton> lista = fotonX.generateLightPhotons();
-        ArrayList<LightPhoton> listaZapisanych = mainLoop(zmienne, lista);
+        ArrayList<LightPhoton> listaZapisanych = mainLoop(zmienne, lista);*/
 
-
-
-
-        System.out.println(listaZapisanych.size());
-        try
+       /* try
         {
             File plik = new File("C:\\Users\\ciechan\\Desktop\\DQE - user story\\plik3.txt");
             if (!plik.exists()) {
@@ -52,10 +49,10 @@ public class Main {
             bw.close();
         }catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
-    private static ArrayList<LightPhoton> mainLoop(Constants zmienne, ArrayList<LightPhoton> lista) {
+/*    private static ArrayList<LightPhoton> mainLoop(Constants zmienne, ArrayList<LightPhoton> lista) {
         while (!lista.stream().allMatch((lightPhoton -> lightPhoton.saved))) {
             lista = lista.stream()
                     .map(lightPhoton -> lightPhoton.simulate(zmienne))
@@ -63,5 +60,5 @@ public class Main {
                     .map(Optional::get).collect(Collectors.toCollection(ArrayList::new));
         }
         return lista;
-    }
+    }*/
 }
