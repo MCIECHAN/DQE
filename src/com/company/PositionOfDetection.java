@@ -12,4 +12,8 @@ public class PositionOfDetection {
         this.Y = newY;
     }
 
+    public String naString() {
+        String str = new String(this.X+" "+this.Y)+"\n";
+        return str;
+    }
 }

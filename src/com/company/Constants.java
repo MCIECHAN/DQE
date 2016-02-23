@@ -37,7 +37,7 @@ public class Constants {
         this.probabilityOfAbsorption = newProbabilityOfAbsorption/(newProbabilityOfAbsorption+newProbabilityOfDispersion);
         this.probabilityOfDispersion = newProbabilityOfDispersion/(newProbabilityOfAbsorption+newProbabilityOfDispersion);
         this.probabilityOfReflection = newProbabilityOfReflection;
-        this.numberOfLightPhotons = 200000;
+        this.numberOfLightPhotons = 2000;
     }
 
 /*
