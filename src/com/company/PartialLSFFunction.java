@@ -16,7 +16,9 @@ public class PartialLSFFunction {
     PartialLSFFunction (Constants constants,Double newPositionZ){
         this.positonZ = newPositionZ;
         this.listOfPositionsOfDetection = generateListOfPositionsOfDetection(constants, newPositionZ);
-        this.setPropablityOfDetection( (double) this.listOfPositionsOfDetection.size(), (double) constants.numberOfLightPhotons);
+        this.propablityOfDetection = setPropablityOfDetection( (double) this.listOfPositionsOfDetection.size(), (double) constants.numberOfLightPhotons);
+
+        System.out.println(this.positonZ +" "+ this.propablityOfDetection);
     }
 
 
@@ -25,7 +27,7 @@ public class PartialLSFFunction {
     private ArrayList<PositionOfDetection> generateListOfPositionsOfDetection(Constants constants, Double newPositionZ){
         Position pozycja = new Position(0.0, 0.0, newPositionZ);
         DirectionCoefficient wspkier = new DirectionCoefficient(Math.random(), Math.random(), Math.random());
-        Cell komorka = new Cell(-(constants.cellWallLength/2), constants.cellWallLength/2, -(constants.cellWallLength/2),constants.cellWallLength/2, 0, constants.cellHeight);
+        Cell komorka = new Cell(-(constants.cellWallLength/2), constants.cellWallLength/2, -(constants.cellWallLength/2),constants.cellWallLength/2, 0,  constants.cellHeight.intValue());
         PhotonX fotonX = new PhotonX(pozycja, wspkier, komorka, constants.massAttenuationCoefficientOfXray, constants.numberOfLightPhotons);
         ArrayList<LightPhoton> lista = fotonX.generateLightPhotons();
         ArrayList<LightPhoton> listaZapisanych = mainLSFLoop(constants, lista);
@@ -54,4 +56,23 @@ public class PartialLSFFunction {
     private Double setPropablityOfDetection (Double No, Double Nd){
         return No/Nd;
     }
+
+    public Double getPositonZ(){return this.positonZ;}
+
+
+    public void getDetectorLSFFunction(Constants constants){
+
+        CollectorOfLSFFunctions kolektorLSF = new CollectorOfLSFFunctions(constants);
+        kolektorLSF.saveLSFfunctions();
+
+        ArrayList<Position>XPhotonsPositions= new ArrayList<Position>();
+
+        for (int i = 1; i<=constants.numberOfXPhotons;i++){
+            XPhotonsPositions.add(new Position(constants));
+            System.out.println("Utworzono nowy foton X");
+        }
+    }
+
+
+
 }

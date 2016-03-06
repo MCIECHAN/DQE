@@ -3,11 +3,12 @@ package com.company;
 public class Constants {
     int areaWallLength;
     int cellWallLength;
-    int cellHeight;
+    Double cellHeight;
     int numberOfRows;
     int numberOfColumns;
     int numberOfParticleLSFFunctions;
     int photonXEnergy;
+    int numberOfXPhotons;
     Double RTGConversionCoefficient;
     Double lengthOfLightWave;
     Double massAttenuationCoefficientOfLight;
@@ -17,8 +18,8 @@ public class Constants {
     Double probabilityOfReflection;
     int numberOfLightPhotons;
 
-    public Constants(int newAreaWallLength, int newCellWallLength, int newCellHeight, int newNumberOfRows,
-                     int newNumberOfColumns, int newNumberOfParticleLSFFunctions, int newPhotonXEnergy,
+    public Constants(int newAreaWallLength, int newCellWallLength, Double newCellHeight, int newNumberOfRows,
+                     int newNumberOfColumns, int newNumberOfParticleLSFFunctions, int newPhotonXEnergy, int newNumberOfXPhotons,
                      Double RTGConversionCoefficient, Double newLengthOfLightWave,
                      Double newMassAttenuationCoefficientOfLight, Double newMassAttenuationCoefficientOfXray,
                      Double newProbabilityOfAbsorption, Double newProbabilityOfDispersion, Double newProbabilityOfReflection)
@@ -30,6 +31,7 @@ public class Constants {
         this.numberOfColumns = newNumberOfColumns;
         this.numberOfParticleLSFFunctions = newNumberOfParticleLSFFunctions;
         this.photonXEnergy = newPhotonXEnergy;
+        this.numberOfXPhotons = newNumberOfXPhotons;
         this.RTGConversionCoefficient = RTGConversionCoefficient;
         this.lengthOfLightWave = newLengthOfLightWave;
         this.massAttenuationCoefficientOfLight = newMassAttenuationCoefficientOfLight;
@@ -37,14 +39,15 @@ public class Constants {
         this.probabilityOfAbsorption = newProbabilityOfAbsorption/(newProbabilityOfAbsorption+newProbabilityOfDispersion);
         this.probabilityOfDispersion = newProbabilityOfDispersion/(newProbabilityOfAbsorption+newProbabilityOfDispersion);
         this.probabilityOfReflection = newProbabilityOfReflection;
-        this.numberOfLightPhotons = 2000;
+        this.numberOfLightPhotons = wyznaczLiczbeGenerowanychFotonowSwiatla();
+        //this.numberOfLightPhotons = 2000;
     }
 
-/*
-    private long wyznaczLiczbeGenerowanychFotonowSwiatla(){
+
+    private int wyznaczLiczbeGenerowanychFotonowSwiatla(){
         Double sredniaEnergiaPromieniowaniaSwietlnego = 1240 / this.lengthOfLightWave;
-        return Math.round(this.photonXEnergy * this.RTGConversionCoefficient / sredniaEnergiaPromieniowaniaSwietlnego);
+        return (int) Math.round(this.photonXEnergy * this.RTGConversionCoefficient / sredniaEnergiaPromieniowaniaSwietlnego);
     }
-*/
+
 
 }

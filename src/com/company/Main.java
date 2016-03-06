@@ -12,16 +12,28 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        //Constants zmienne = new Constants(100, 10, 100, 50, 50, 200000, 20, 0.2, 545.0, 2.1, 2.1, 0.9, 499.55, 0.9);
-        Constants zmienne = new Constants(100, 10000, 100, 1, 1, 20, 200000, 0.2, 545.0, 2.1, 2.1, 0.9, 499.55, 0.9);
+        long time1 = System.nanoTime();
 
-        PartialLSFFunction funkcjaLSF = new PartialLSFFunction(zmienne,95.0);
+        Constants zmienne = new Constants(100, 10, 100.0, 50, 50, 20, 2000, 2, 0.2, 545.0, 2.1, 2.1, 0.9, 499.55, 0.9);
+        //Constants zmienne = new Constants(100, 1000000000, 100.0, 1, 1, 20, 200000, 2, 0.2, 545.0, 2.1, 2.1, 0.9, 499.55, 0.9);
 
-        CollectorOfLSFFunctions kolektorLSF = new CollectorOfLSFFunctions(zmienne);
+        //PartialLSFFunction funkcjaLSF = new PartialLSFFunction(zmienne,90.0);
 
-       try
+        //CollectorOfLSFFunctions kolektorLSF = new CollectorOfLSFFunctions(zmienne);
+        //kolektorLSF.saveLSFfunctions();
+        LSF lsf = new LSF(zmienne);
+        lsf.getDetectorLSFFunction(zmienne);
+
+
+
+
+        long time2 = System.nanoTime();
+        long timeTaken = time2 - time1;
+        System.out.println("Time taken " + timeTaken + " ns");
+
+/*       try
         {
-            File plik = new File("C:\\Users\\ciechan\\Desktop\\DQE - user story\\plik3.txt");
+            File plik = new File("C:\\Users\\ciechan\\Desktop\\DQE - user story\\plik.txt");
             if (!plik.exists()) {
                 plik.createNewFile();
             }
@@ -39,8 +51,8 @@ public class Main {
 
             bw.close();
         }catch (IOException e) {
-            e.printStackTrace();
+e.printStackTrace();
+        }*/
         }
-    }
 
-}
+        }
