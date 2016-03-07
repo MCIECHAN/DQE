@@ -22,8 +22,6 @@ public class PartialLSFFunction {
     }
 
 
-
-
     private ArrayList<PositionOfDetection> generateListOfPositionsOfDetection(Constants constants, Double newPositionZ){
         Position pozycja = new Position(0.0, 0.0, newPositionZ);
         DirectionCoefficient wspkier = new DirectionCoefficient(Math.random(), Math.random(), Math.random());
@@ -58,20 +56,6 @@ public class PartialLSFFunction {
     }
 
     public Double getPositonZ(){return this.positonZ;}
-
-
-    public void getDetectorLSFFunction(Constants constants){
-
-        CollectorOfLSFFunctions kolektorLSF = new CollectorOfLSFFunctions(constants);
-        kolektorLSF.saveLSFfunctions();
-
-        ArrayList<Position>XPhotonsPositions= new ArrayList<Position>();
-
-        for (int i = 1; i<=constants.numberOfXPhotons;i++){
-            XPhotonsPositions.add(new Position(constants));
-            System.out.println("Utworzono nowy foton X");
-        }
-    }
 
 
 

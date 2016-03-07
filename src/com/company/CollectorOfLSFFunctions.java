@@ -24,7 +24,6 @@ public class CollectorOfLSFFunctions {
         for (Double i = 3.0; i<=constants.cellHeight; i=i+ tmp){
             listOfPartialLSFFunctions.add(new PartialLSFFunction(constants,i));
         }
-        System.out.print(listOfPartialLSFFunctions.size());
         return listOfPartialLSFFunctions;
     }
 
@@ -32,6 +31,20 @@ public class CollectorOfLSFFunctions {
         Double tmp =  ((constants.cellHeight-3.0)-3.0)/(constants.numberOfParticleLSFFunctions-1);
         return tmp;
     }
+
+    public int getIndexOfClosestZPosition(Double positionZ){
+        int indeks=0;
+        Double currentDistance = Math.abs(positionZ-this.listOfPartialLSFFunctions.get(0).getPositonZ());
+        for (int i =0;i< this.listOfPartialLSFFunctions.size();i++ ){
+            Double pretendingDistance = Math.abs(positionZ - this.listOfPartialLSFFunctions.get(i).getPositonZ());
+            if (pretendingDistance<currentDistance){
+                currentDistance = pretendingDistance;
+                indeks=i;
+            }
+        }
+        return indeks;
+    }
+
 
     public void saveLSFfunctions (){
 

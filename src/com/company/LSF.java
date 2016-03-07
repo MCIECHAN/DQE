@@ -1,9 +1,5 @@
 package com.company;
 
-import com.company.CollectorOfLSFFunctions;
-import com.company.Constants;
-import com.company.Position;
-
 import java.util.ArrayList;
 
 /**
@@ -11,20 +7,25 @@ import java.util.ArrayList;
  */
 public class LSF {
 
-    LSF (Constants constants){
+    private ArrayList<PositionOfDetection>DetectorLSFFunction;
 
+    LSF (Constants constants){
+        //this.DetectorLSFFunction=getDetectorLSFFunction(constants);
     }
 
-    public void getDetectorLSFFunction(Constants constants){
+    //private ArrayList<PositionOfDetection> getDetectorLSFFunction(Constants constants){
+        public void getDetectorLSFFunction(Constants constants){
 
-        CollectorOfLSFFunctions kolektorLSF = new CollectorOfLSFFunctions(constants);
-        kolektorLSF.saveLSFfunctions();
+        CollectorOfLSFFunctions LSFcollector = new CollectorOfLSFFunctions(constants);
+        LSFcollector.saveLSFfunctions();
 
         ArrayList<Position> XPhotonsPositions= new ArrayList<Position>();
 
         for (int i = 1; i<=constants.numberOfXPhotons;i++){
-            XPhotonsPositions.add(new Position(constants));
-            System.out.println("Utworzono nowy foton X");
+            Position nowaPozycja = new Position(constants);
+            XPhotonsPositions.add(nowaPozycja);
         }
+
+        //return ;
     }
 }
