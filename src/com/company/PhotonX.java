@@ -1,6 +1,7 @@
 package com.company;
 
 import java.util.ArrayList;
+
 import static java.lang.Math.toIntExact;
 
 public class PhotonX {
@@ -26,13 +27,4 @@ public class PhotonX {
         return listOfLightPhotons;
     }
 
-//    private PhotonX losujDrogeSwobodna(Constants constants) {
-//        Double r = Math.random();
-//        Double s = -1 / constants.massAttenuationCoefficientOfXray * Math.log(r);
-//        Double newX = position.x + directCoefficient.x * s;
-//        Double newY = position.y + directCoefficient.y * s;
-//        Double newZ = position.z + directCoefficient.z * s;
-//        Position newPosition = new Position(newX, newY, newZ);
-//        return new PhotonX(newPosition, directCoefficient, cell, massAttenuationCoefficientOfXray, constants);
-//    }
 }

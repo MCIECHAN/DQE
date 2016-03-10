@@ -2,6 +2,7 @@ package com.company;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -13,19 +14,19 @@ public class PartialLSFFunction {
     private Double propablityOfDetection;
     public ArrayList<PositionOfDetection> listOfPositionsOfDetection;
 
-    PartialLSFFunction (Constants constants,Double newPositionZ){
+    PartialLSFFunction(Constants constants, Double newPositionZ) {
         this.positonZ = newPositionZ;
         this.listOfPositionsOfDetection = generateListOfPositionsOfDetection(constants, newPositionZ);
-        this.propablityOfDetection = setPropablityOfDetection( (double) this.listOfPositionsOfDetection.size(), (double) constants.numberOfLightPhotons);
+        this.propablityOfDetection = setPropablityOfDetection((double) this.listOfPositionsOfDetection.size(), (double) constants.numberOfLightPhotons);
 
-        System.out.println(this.positonZ +" "+ this.propablityOfDetection);
+        System.out.println(this.positonZ + " " + this.propablityOfDetection);
     }
 
 
-    private ArrayList<PositionOfDetection> generateListOfPositionsOfDetection(Constants constants, Double newPositionZ){
+    private ArrayList<PositionOfDetection> generateListOfPositionsOfDetection(Constants constants, Double newPositionZ) {
         Position pozycja = new Position(0.0, 0.0, newPositionZ);
         DirectionCoefficient wspkier = new DirectionCoefficient(Math.random(), Math.random(), Math.random());
-        Cell komorka = new Cell(-(constants.cellWallLength/2), constants.cellWallLength/2, -(constants.cellWallLength/2),constants.cellWallLength/2, 0,  constants.cellHeight.intValue());
+        Cell komorka = new Cell(-(constants.cellWallLength / 2), constants.cellWallLength / 2, -(constants.cellWallLength / 2), constants.cellWallLength / 2, 0, constants.cellHeight.intValue());
         PhotonX fotonX = new PhotonX(pozycja, wspkier, komorka, constants.massAttenuationCoefficientOfXray, constants.numberOfLightPhotons);
         ArrayList<LightPhoton> lista = fotonX.generateLightPhotons();
         ArrayList<LightPhoton> listaZapisanych = mainLSFLoop(constants, lista);
@@ -43,20 +44,31 @@ public class PartialLSFFunction {
         return lista;
     }
 
-    private ArrayList<PositionOfDetection> setListOfPositionsOfDetection (ArrayList<LightPhoton> listaZapisanych){
+    private ArrayList<PositionOfDetection> setListOfPositionsOfDetection(ArrayList<LightPhoton> listaZapisanych) {
 
         ArrayList<PositionOfDetection> outputList = new ArrayList<PositionOfDetection>();
-        listaZapisanych.forEach((lightPhoton) ->{outputList.add(lightPhoton.getPositionOfDetection());} );
+        listaZapisanych.forEach((lightPhoton) -> {
+            outputList.add(lightPhoton.getPositionOfDetection());
+        });
         return outputList;
     }
 
 
-    private Double setPropablityOfDetection (Double No, Double Nd){
-        return No/Nd;
+    private Double setPropablityOfDetection(Double No, Double Nd) {
+        return No / Nd;
     }
 
-    public Double getPositonZ(){return this.positonZ;}
+    public Double getPositonZ() {
+        return this.positonZ;
+    }
 
+    public Double getPropablityOfDetection() {
+        return this.propablityOfDetection;
+    }
 
+    public PositionOfDetection getRandomPositionOfDetection() {
+        int idx = new Random().nextInt(this.listOfPositionsOfDetection.size());
+        return this.listOfPositionsOfDetection.get(idx);
+    }
 
 }
