@@ -20,14 +20,16 @@ public class LSF {
     private ArrayList<PositionOfDetection> getDetectorLSFFunction(Constants constants) {
 
         ArrayList<PositionOfDetection> listOfPositionsOfDetection = new ArrayList<PositionOfDetection>();
+        long time1 = System.currentTimeMillis();
         ArrayList<PartialLSFFunction> ListOfPartialLSFFunctions = createListOfPartialLSFFunctions(constants);
+        long time2 = System.currentTimeMillis();
+        long timeTaken = time2 - time1;
+        System.out.println("Czas symuacji cząstkowych LSF: " + timeTaken + " milisekund");
+
         saveLSFfunctions(ListOfPartialLSFFunctions);
         ArrayList<PhotonXPosition> XPhotonsPositions = generateXPhotonsPositions(constants);
-
         XPhotonsPositions.forEach(position -> {
             int index = getIndexOfClosestZPosition(position.getPositonZ(), ListOfPartialLSFFunctions);
-
-            System.out.println(ListOfPartialLSFFunctions.get(index).getPropablityOfDetection().toString());
             for (int i = 0; i < constants.numberOfLightPhotons; i++) {
                 Double rnd = Math.random();
                 if (rnd <= ListOfPartialLSFFunctions.get(index).getPropablityOfDetection()) {
@@ -35,15 +37,16 @@ public class LSF {
                 }
             }
         });
-        System.out.println(listOfPositionsOfDetection.size());
         savePositionsOfDetection(listOfPositionsOfDetection);
+        long time3 = System.currentTimeMillis();
+        long timeTaken2 = time3 - time1;
+        System.out.println("Czas generowanie LSF detektora: " + timeTaken2 + " milisekund");
         return listOfPositionsOfDetection;
     }
 
     private ArrayList<PhotonXPosition> generateXPhotonsPositions(Constants constants) {
         ArrayList<PhotonXPosition> XPhotonsPositions = new ArrayList<PhotonXPosition>();
-
-        for (int i = 1; i <= constants.numberOfXPhotons; i++) {
+        for (int i = 0; i < constants.numberOfXPhotons; i++) {
             PhotonXPosition nowaPozycja = new PhotonXPosition(constants);
             XPhotonsPositions.add(nowaPozycja);
         }

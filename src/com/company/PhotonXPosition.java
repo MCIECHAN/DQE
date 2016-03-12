@@ -13,10 +13,9 @@ public class PhotonXPosition {
     public PhotonXPosition(Constants constants) {
         this.X = getSingleCoordinate(0, constants.numberOfColumns * constants.cellWallLength);
         this.Y = getSingleCoordinate(0, constants.numberOfRows * constants.cellWallLength);
-        this.Z = getSingleCoordinate(90, constants.cellHeight.intValue());
-        System.out.print(this.X + "\n");
-        System.out.print(this.Y + "\n");
-        System.out.print(this.Z + "\n");
+/*        this.X = getSingleCoordinate(0, 500);
+        this.Y = getSingleCoordinate(0, 500);*/
+        this.Z = getSingleCoordinate(0, constants.cellHeight.intValue());
     }
 
     private int getSingleCoordinate(int rangeMin, int rangeMax) {

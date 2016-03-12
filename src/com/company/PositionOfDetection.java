@@ -17,18 +17,7 @@ public class PositionOfDetection {
     }
 
     public PositionOfDetection translationOfPositionOfDetection(PhotonXPosition photonXPosition) {
-        System.out.println("Pozycja fotonu X:");
-        System.out.print(photonXPosition.getPositonX() + "\n");
-        System.out.print(photonXPosition.getPositonY() + "\n");
-        System.out.println("Stare LSF:");
-        System.out.print(this.X + "\n");
-        System.out.print(this.Y + "\n");
-        this.X = photonXPosition.getPositonX() + this.X;
-        this.Y = photonXPosition.getPositonY() + this.Y;
-        System.out.println("Pozycja Detekcji:");
-        System.out.print(this.X + "\n");
-        System.out.print(this.Y + "\n");
-        return this;
+        return new PositionOfDetection(this.X + photonXPosition.getPositonX(), this.Y +photonXPosition.getPositonY());
     }
 
 
