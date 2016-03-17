@@ -20,27 +20,20 @@ public class LSF {
     private ArrayList<PositionOfDetection> getDetectorLSFFunction(Constants constants) {
 
         ArrayList<PositionOfDetection> listOfPositionsOfDetection = new ArrayList<PositionOfDetection>();
-        long time1 = System.currentTimeMillis();
         ArrayList<PartialLSFFunction> ListOfPartialLSFFunctions = createListOfPartialLSFFunctions(constants);
-        long time2 = System.currentTimeMillis();
-        long timeTaken = time2 - time1;
-        System.out.println("Czas symuacji cząstkowych LSF: " + timeTaken + " milisekund");
 
-        saveLSFfunctions(ListOfPartialLSFFunctions);
+        //saveLSFfunctions(ListOfPartialLSFFunctions);
         ArrayList<PhotonXPosition> XPhotonsPositions = generateXPhotonsPositions(constants);
         XPhotonsPositions.forEach(position -> {
             int index = getIndexOfClosestZPosition(position.getPositonZ(), ListOfPartialLSFFunctions);
             for (int i = 0; i < constants.numberOfLightPhotons; i++) {
                 Double rnd = Math.random();
                 if (rnd <= ListOfPartialLSFFunctions.get(index).getPropablityOfDetection()) {
-                    listOfPositionsOfDetection.add(ListOfPartialLSFFunctions.get(index).getRandomPositionOfDetection().translationOfPositionOfDetection(position));
+                   //listOfPositionsOfDetection.add(ListOfPartialLSFFunctions.get(index).getRandomPositionOfDetection().translationOfPositionOfDetection(position));
                 }
             }
         });
-        savePositionsOfDetection(listOfPositionsOfDetection);
-        long time3 = System.currentTimeMillis();
-        long timeTaken2 = time3 - time1;
-        System.out.println("Czas generowanie LSF detektora: " + timeTaken2 + " milisekund");
+       // savePositionsOfDetection(listOfPositionsOfDetection);
         return listOfPositionsOfDetection;
     }
 
@@ -80,7 +73,7 @@ public class LSF {
         return indeks;
     }
 
-    private void saveLSFfunctions(ArrayList<PartialLSFFunction> ListOfPartialLSFFunctions) {
+/*    private void saveLSFfunctions(ArrayList<PartialLSFFunction> ListOfPartialLSFFunctions) {
 
         String sciezka = new String("C:\\Users\\ciechan\\Desktop\\DQE - user story\\");
 
@@ -141,5 +134,5 @@ public class LSF {
         }
 
 
-    }
+    }*/
 }

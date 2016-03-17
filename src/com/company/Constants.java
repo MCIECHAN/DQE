@@ -40,7 +40,7 @@ public class Constants {
         this.probabilityOfDispersion = newProbabilityOfDispersion/(newProbabilityOfAbsorption+newProbabilityOfDispersion);
         this.probabilityOfReflection = newProbabilityOfReflection;
         //this.numberOfLightPhotons = wyznaczLiczbeGenerowanychFotonowSwiatla();
-        this.numberOfLightPhotons = 1000000;
+        this.numberOfLightPhotons = 20000;
     }
 
 

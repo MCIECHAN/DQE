@@ -1,9 +1,8 @@
 package com.company;
 
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Created by ciechan on 2016-02-20.
@@ -12,18 +11,20 @@ public class PartialLSFFunction {
 
     private Double positonZ;
     private Double propablityOfDetection;
-    public ArrayList<PositionOfDetection> listOfPositionsOfDetection;
+    public ArrayList<Integer> listOfPositionsOfDetection;
+    //public ArrayList<PositionOfDetection> listOfPositionsOfDetection;
 
     PartialLSFFunction(Constants constants, Double newPositionZ) {
         this.positonZ = newPositionZ;
-        this.listOfPositionsOfDetection = generateListOfPositionsOfDetection(constants, newPositionZ);
+        this.listOfPositionsOfDetection = generateListOfXPositions(constants, newPositionZ);
         this.propablityOfDetection = setPropablityOfDetection((double) this.listOfPositionsOfDetection.size(), (double) constants.numberOfLightPhotons);
 
         System.out.println(this.positonZ + " " + this.propablityOfDetection);
     }
 
 
-    private ArrayList<PositionOfDetection> generateListOfPositionsOfDetection(Constants constants, Double newPositionZ) {
+    //private ArrayList<PositionOfDetection> generateListOfPositionsOfDetection(Constants constants, Double newPositionZ) {
+    private ArrayList<Integer> generateListOfXPositions(Constants constants, Double newPositionZ) {
         Position pozycja = new Position(0.0, 0.0, newPositionZ);
         DirectionCoefficient wspkier = new DirectionCoefficient(Math.random(), Math.random(), Math.random());
         Cell komorka = new Cell(-(constants.cellWallLength / 2), constants.cellWallLength / 2, -(constants.cellWallLength / 2), constants.cellWallLength / 2, 0, constants.cellHeight.intValue());
@@ -31,7 +32,8 @@ public class PartialLSFFunction {
         ArrayList<LightPhoton> lista = fotonX.generateLightPhotons();
         ArrayList<LightPhoton> listaZapisanych = mainLSFLoop(constants, lista);
 
-        return setListOfPositionsOfDetection(listaZapisanych);
+        return setListOfXPositions(listaZapisanych);
+        //return setListOfPositionsOfDetection(listaZapisanych);
     }
 
     private static ArrayList<LightPhoton> mainLSFLoop(Constants zmienne, ArrayList<LightPhoton> lista) {
@@ -53,6 +55,19 @@ public class PartialLSFFunction {
         return outputList;
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    private ArrayList<Integer> setListOfXPositions(ArrayList<LightPhoton> listaZapisanych) {
+
+        ArrayList<Integer> outputList = new ArrayList<>();
+        listaZapisanych.forEach((lightPhoton) -> {
+            outputList.add(lightPhoton.getPositionX());
+        });
+
+        Map<Integer,List<Integer>> intByValue = outputList.stream().collect(Collectors.groupingBy(p-> p.intValue()));
+        System.out.println(intByValue);
+
+        return outputList;
+    }
 
     private Double setPropablityOfDetection(Double No, Double Nd) {
         return No / Nd;
@@ -66,7 +81,7 @@ public class PartialLSFFunction {
         return this.propablityOfDetection;
     }
 
-    public PositionOfDetection getRandomPositionOfDetection() {
+    public int getRandomPositionOfDetection() {
         int idx = new Random().nextInt(this.listOfPositionsOfDetection.size());
         return this.listOfPositionsOfDetection.get(idx);
     }

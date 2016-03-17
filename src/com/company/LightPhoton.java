@@ -136,4 +136,8 @@ public class LightPhoton {
         return new PositionOfDetection( this.position.x.intValue(), this.position.y.intValue());
     }
 
+    public int getPositionX (){
+        return this.position.x.intValue();
+    }
+
 }
