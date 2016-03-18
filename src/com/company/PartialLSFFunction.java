@@ -2,25 +2,21 @@ package com.company;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class PartialLSFFunction {
 
     private Double positionZ;
-    private Double probabilityOfDetection;
-    public ArrayList<Integer> listOfPositionsOfDetection;
-    //public ArrayList<PositionOfDetection> listOfPositionsOfDetection;
+    public ArrayList<Integer> LSFfuncion;
 
     PartialLSFFunction(Constants constants, Double newPositionZ) {
         this.positionZ = newPositionZ;
-        this.listOfPositionsOfDetection = generateListOfXPositions(constants, newPositionZ);
-        this.probabilityOfDetection = setPropablityOfDetection((double) this.listOfPositionsOfDetection.size(), (double) constants.numberOfLightPhotons);
-
-        System.out.println(this.positionZ + " " + this.probabilityOfDetection);
+        this.LSFfuncion = generateLSFfuncion(constants, newPositionZ);
     }
 
 
     //private ArrayList<PositionOfDetection> generateListOfPositionsOfDetection(Constants constants, Double newPositionZ) {
-    private ArrayList<Integer> generateListOfXPositions(Constants constants, Double newPositionZ) {
+    private ArrayList<Integer> generateLSFfuncion(Constants constants, Double newPositionZ) {
         Position pozycja = new Position(0.0, 0.0, newPositionZ);
         DirectionCoefficient wspkier = new DirectionCoefficient(Math.random(), Math.random(), Math.random());
         Cell komorka = new Cell(-(constants.cellWallLength / 2), constants.cellWallLength / 2, -(constants.cellWallLength / 2), constants.cellWallLength / 2, 0, constants.cellHeight.intValue());
@@ -54,28 +50,19 @@ public class PartialLSFFunction {
 
         ArrayList<Integer> outputList = new ArrayList<>();
         listaZapisanych.forEach((lightPhoton) -> outputList.add(lightPhoton.getPositionX()));
-
-        Map<Integer, List<Integer>> intByValue = outputList.stream().collect(Collectors.groupingBy(p -> p));
-        System.out.println(intByValue);
+        System.out.print(checkNumberOfOccurencesInGivenRange(outputList,-2,2));
 
         return outputList;
-    }
-
-    private Double setPropablityOfDetection(Double No, Double Nd) {
-        return No / Nd;
     }
 
     public Double getPositionZ() {
         return this.positionZ;
     }
 
-    public Double getProbabilityOfDetection() {
-        return this.probabilityOfDetection;
-    }
 
-    public int getRandomPositionOfDetection() {
-        int idx = new Random().nextInt(this.listOfPositionsOfDetection.size());
-        return this.listOfPositionsOfDetection.get(idx);
+    private int checkNumberOfOccurencesInGivenRange(ArrayList<Integer> values,int minValue, int maxValue) {
+         return values.stream().filter(i -> (i < maxValue)&&(i >=minValue))
+                  .collect(Collectors.toList()).size();
     }
 
 }

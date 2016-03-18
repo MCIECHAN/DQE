@@ -20,10 +20,10 @@ public class LSF {
         XPhotonsPositions.forEach(position -> {
             int index = getIndexOfClosestZPosition(position.getPositonZ(), ListOfPartialLSFFunctions);
             for (int i = 0; i < constants.numberOfLightPhotons; i++) {
-                Double rnd = Math.random();
-                if (rnd <= ListOfPartialLSFFunctions.get(index).getProbabilityOfDetection()) {
-                    //listOfPositionsOfDetection.add(ListOfPartialLSFFunctions.get(index).getRandomPositionOfDetection().translationOfPositionOfDetection(position));
-                }
+                    Double rnd = Math.random();
+                     {
+
+                    }
             }
         });
         // savePositionsOfDetection(listOfPositionsOfDetection);
