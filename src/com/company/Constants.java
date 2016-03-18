@@ -22,8 +22,7 @@ public class Constants {
                      int newNumberOfColumns, int newNumberOfParticleLSFFunctions, int newPhotonXEnergy, int newNumberOfXPhotons,
                      Double RTGConversionCoefficient, Double newLengthOfLightWave,
                      Double newMassAttenuationCoefficientOfLight, Double newMassAttenuationCoefficientOfXray,
-                     Double newProbabilityOfAbsorption, Double newProbabilityOfDispersion, Double newProbabilityOfReflection)
-    {
+                     Double newProbabilityOfAbsorption, Double newProbabilityOfDispersion, Double newProbabilityOfReflection) {
         this.areaWallLength = newAreaWallLength;
         this.cellWallLength = newCellWallLength;
         this.cellHeight = newCellHeight;
@@ -36,15 +35,15 @@ public class Constants {
         this.lengthOfLightWave = newLengthOfLightWave;
         this.massAttenuationCoefficientOfLight = newMassAttenuationCoefficientOfLight;
         this.massAttenuationCoefficientOfXray = newMassAttenuationCoefficientOfXray;
-        this.probabilityOfAbsorption = newProbabilityOfAbsorption/(newProbabilityOfAbsorption+newProbabilityOfDispersion);
-        this.probabilityOfDispersion = newProbabilityOfDispersion/(newProbabilityOfAbsorption+newProbabilityOfDispersion);
+        this.probabilityOfAbsorption = newProbabilityOfAbsorption / (newProbabilityOfAbsorption + newProbabilityOfDispersion);
+        this.probabilityOfDispersion = newProbabilityOfDispersion / (newProbabilityOfAbsorption + newProbabilityOfDispersion);
         this.probabilityOfReflection = newProbabilityOfReflection;
         //this.numberOfLightPhotons = wyznaczLiczbeGenerowanychFotonowSwiatla();
         this.numberOfLightPhotons = 20000;
     }
 
 
-    private int wyznaczLiczbeGenerowanychFotonowSwiatla(){
+    private int wyznaczLiczbeGenerowanychFotonowSwiatla() {
         Double sredniaEnergiaPromieniowaniaSwietlnego = 1240 / this.lengthOfLightWave;
         return (int) Math.round(this.photonXEnergy * this.RTGConversionCoefficient / sredniaEnergiaPromieniowaniaSwietlnego);
     }

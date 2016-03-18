@@ -2,9 +2,6 @@ package com.company;
 
 import java.util.Random;
 
-/**
- * Created by ciechan on 2016-03-10.
- */
 public class PhotonXPosition {
     private int X;
     private int Y;

@@ -1,8 +1,5 @@
 package com.company;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 public class Position {
     Double x;
     Double y;

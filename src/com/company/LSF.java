@@ -1,14 +1,7 @@
 package com.company;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- * Created by ciechan on 2016-03-06.
- */
 public class LSF {
 
     private ArrayList<PositionOfDetection> DetectorLSFFunction;
@@ -19,7 +12,7 @@ public class LSF {
 
     private ArrayList<PositionOfDetection> getDetectorLSFFunction(Constants constants) {
 
-        ArrayList<PositionOfDetection> listOfPositionsOfDetection = new ArrayList<PositionOfDetection>();
+        ArrayList<PositionOfDetection> listOfPositionsOfDetection = new ArrayList<>();
         ArrayList<PartialLSFFunction> ListOfPartialLSFFunctions = createListOfPartialLSFFunctions(constants);
 
         //saveLSFfunctions(ListOfPartialLSFFunctions);
@@ -28,17 +21,17 @@ public class LSF {
             int index = getIndexOfClosestZPosition(position.getPositonZ(), ListOfPartialLSFFunctions);
             for (int i = 0; i < constants.numberOfLightPhotons; i++) {
                 Double rnd = Math.random();
-                if (rnd <= ListOfPartialLSFFunctions.get(index).getPropablityOfDetection()) {
-                   //listOfPositionsOfDetection.add(ListOfPartialLSFFunctions.get(index).getRandomPositionOfDetection().translationOfPositionOfDetection(position));
+                if (rnd <= ListOfPartialLSFFunctions.get(index).getProbabilityOfDetection()) {
+                    //listOfPositionsOfDetection.add(ListOfPartialLSFFunctions.get(index).getRandomPositionOfDetection().translationOfPositionOfDetection(position));
                 }
             }
         });
-       // savePositionsOfDetection(listOfPositionsOfDetection);
+        // savePositionsOfDetection(listOfPositionsOfDetection);
         return listOfPositionsOfDetection;
     }
 
     private ArrayList<PhotonXPosition> generateXPhotonsPositions(Constants constants) {
-        ArrayList<PhotonXPosition> XPhotonsPositions = new ArrayList<PhotonXPosition>();
+        ArrayList<PhotonXPosition> XPhotonsPositions = new ArrayList<>();
         for (int i = 0; i < constants.numberOfXPhotons; i++) {
             PhotonXPosition nowaPozycja = new PhotonXPosition(constants);
             XPhotonsPositions.add(nowaPozycja);
@@ -47,7 +40,7 @@ public class LSF {
     }
 
     private ArrayList<PartialLSFFunction> createListOfPartialLSFFunctions(Constants constants) {
-        ArrayList<PartialLSFFunction> listOfPartialLSFFunctions = new ArrayList<PartialLSFFunction>();
+        ArrayList<PartialLSFFunction> listOfPartialLSFFunctions = new ArrayList<>();
         Double tmp = this.getInterval(constants);
         for (Double i = 3.0; i <= constants.cellHeight; i = i + tmp) {
             listOfPartialLSFFunctions.add(new PartialLSFFunction(constants, i));
@@ -56,21 +49,20 @@ public class LSF {
     }
 
     private Double getInterval(Constants constants) {
-        Double tmp = ((constants.cellHeight - 3.0) - 3.0) / (constants.numberOfParticleLSFFunctions - 1);
-        return tmp;
+        return ((constants.cellHeight - 3.0) - 3.0) / (constants.numberOfParticleLSFFunctions - 1);
     }
 
     private int getIndexOfClosestZPosition(int positionZ, ArrayList<PartialLSFFunction> ListOfPartialLSFFunctions) {
-        int indeks = 0;
-        Double currentDistance = Math.abs(positionZ - ListOfPartialLSFFunctions.get(0).getPositonZ());
+        int index = 0;
+        Double currentDistance = Math.abs(positionZ - ListOfPartialLSFFunctions.get(0).getPositionZ());
         for (int i = 0; i < ListOfPartialLSFFunctions.size(); i++) {
-            Double pretendingDistance = Math.abs(positionZ - ListOfPartialLSFFunctions.get(i).getPositonZ());
+            Double pretendingDistance = Math.abs(positionZ - ListOfPartialLSFFunctions.get(i).getPositionZ());
             if (pretendingDistance < currentDistance) {
                 currentDistance = pretendingDistance;
-                indeks = i;
+                index = i;
             }
         }
-        return indeks;
+        return index;
     }
 
 /*    private void saveLSFfunctions(ArrayList<PartialLSFFunction> ListOfPartialLSFFunctions) {
@@ -80,7 +72,7 @@ public class LSF {
         ListOfPartialLSFFunctions.forEach(LSFfunction -> {
 
                     try {
-                        String filename = new String(sciezka + LSFfunction.getPositonZ() + ".txt");
+                        String filename = new String(sciezka + LSFfunction.getPositionZ() + ".txt");
                         File plik = new File(filename);
                         if (!plik.exists()) {
                             plik.createNewFile();

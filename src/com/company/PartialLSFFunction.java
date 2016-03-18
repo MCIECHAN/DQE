@@ -2,24 +2,20 @@ package com.company;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
-/**
- * Created by ciechan on 2016-02-20.
- */
 public class PartialLSFFunction {
 
-    private Double positonZ;
-    private Double propablityOfDetection;
+    private Double positionZ;
+    private Double probabilityOfDetection;
     public ArrayList<Integer> listOfPositionsOfDetection;
     //public ArrayList<PositionOfDetection> listOfPositionsOfDetection;
 
     PartialLSFFunction(Constants constants, Double newPositionZ) {
-        this.positonZ = newPositionZ;
+        this.positionZ = newPositionZ;
         this.listOfPositionsOfDetection = generateListOfXPositions(constants, newPositionZ);
-        this.propablityOfDetection = setPropablityOfDetection((double) this.listOfPositionsOfDetection.size(), (double) constants.numberOfLightPhotons);
+        this.probabilityOfDetection = setPropablityOfDetection((double) this.listOfPositionsOfDetection.size(), (double) constants.numberOfLightPhotons);
 
-        System.out.println(this.positonZ + " " + this.propablityOfDetection);
+        System.out.println(this.positionZ + " " + this.probabilityOfDetection);
     }
 
 
@@ -48,10 +44,8 @@ public class PartialLSFFunction {
 
     private ArrayList<PositionOfDetection> setListOfPositionsOfDetection(ArrayList<LightPhoton> listaZapisanych) {
 
-        ArrayList<PositionOfDetection> outputList = new ArrayList<PositionOfDetection>();
-        listaZapisanych.forEach((lightPhoton) -> {
-            outputList.add(lightPhoton.getPositionOfDetection());
-        });
+        ArrayList<PositionOfDetection> outputList = new ArrayList<>();
+        listaZapisanych.forEach((lightPhoton) -> outputList.add(lightPhoton.getPositionOfDetection()));
         return outputList;
     }
 
@@ -59,11 +53,9 @@ public class PartialLSFFunction {
     private ArrayList<Integer> setListOfXPositions(ArrayList<LightPhoton> listaZapisanych) {
 
         ArrayList<Integer> outputList = new ArrayList<>();
-        listaZapisanych.forEach((lightPhoton) -> {
-            outputList.add(lightPhoton.getPositionX());
-        });
+        listaZapisanych.forEach((lightPhoton) -> outputList.add(lightPhoton.getPositionX()));
 
-        Map<Integer,List<Integer>> intByValue = outputList.stream().collect(Collectors.groupingBy(p-> p.intValue()));
+        Map<Integer, List<Integer>> intByValue = outputList.stream().collect(Collectors.groupingBy(p -> p));
         System.out.println(intByValue);
 
         return outputList;
@@ -73,12 +65,12 @@ public class PartialLSFFunction {
         return No / Nd;
     }
 
-    public Double getPositonZ() {
-        return this.positonZ;
+    public Double getPositionZ() {
+        return this.positionZ;
     }
 
-    public Double getPropablityOfDetection() {
-        return this.propablityOfDetection;
+    public Double getProbabilityOfDetection() {
+        return this.probabilityOfDetection;
     }
 
     public int getRandomPositionOfDetection() {

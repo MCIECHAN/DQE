@@ -72,7 +72,10 @@ public class Cell {
     }
 
     public Boolean wGranicy(Position position) {
-        return position.x >= xMin && position.x <= xMax && position.y >= yMin && position.y <= yMax && position.z >= zMin && position.z <= zMax;
+        boolean xInBoarder = position.x >= xMin && position.x <= xMax;
+        boolean yInBoarder = position.y >= yMin && position.y <= yMax;
+        boolean zInBoarder = position.z >= zMin && position.z <= zMax;
+        return xInBoarder && yInBoarder && zInBoarder;
     }
 
 }

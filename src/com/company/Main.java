@@ -12,7 +12,7 @@ public class Main {
 
         //LSF lsf = new LSF(zmienne);
 
-        PartialLSFFunction lsf = new PartialLSFFunction(zmienne,95.0);
+        PartialLSFFunction lsf = new PartialLSFFunction(zmienne, 95.0);
 
     }
 

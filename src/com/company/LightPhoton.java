@@ -26,10 +26,9 @@ public class LightPhoton {
     }
 
     private Optional<LightPhoton> przejscieLubOdbicie(Constants constants, LightPhoton photonInNewPosition) {
-        if(photonInNewPosition.position.z>=constants.cellHeight){
+        if (photonInNewPosition.position.z >= constants.cellHeight) {
             return przejscie(photonInNewPosition, constants);
-        }
-        else {
+        } else {
             Double r = Math.random();
             if (r <= constants.probabilityOfReflection) return odbicie(photonInNewPosition);
             else return przejscie(photonInNewPosition, constants);
@@ -37,9 +36,9 @@ public class LightPhoton {
     }
 
     private Optional<LightPhoton> absorbcjaLubRozproszenie(Constants constants, LightPhoton photonInNewPosition) {
-        if (photonInNewPosition.czyAbsorbowany(constants)){
-            return Optional.empty();}
-        else return Optional.of(rozproszony(photonInNewPosition));
+        if (photonInNewPosition.czyAbsorbowany(constants)) {
+            return Optional.empty();
+        } else return Optional.of(rozproszony(photonInNewPosition));
     }
 
     private LightPhoton losujDrogeSwobodna(Constants constants) {
@@ -94,10 +93,10 @@ public class LightPhoton {
     private Optional<LightPhoton> odbicie(LightPhoton przewidywanaNowaPozycja) {
         Optional<Position> newPosition = przewidywanaNowaPozycja.cell.getCrossedBorderPoint(this.position, this.directCoefficient, przewidywanaNowaPozycja.position);
         return newPosition.map(position -> {
-            DirectionCoefficient noweWspolczynnikiKierunkowe = this.directCoefficient;
-            if (position.x == this.cell.xMin || position.x == this.cell.xMax) {
+            DirectionCoefficient noweWspolczynnikiKierunkowe = directCoefficient;
+            if (position.x == cell.xMin || position.x == cell.xMax) {
                 noweWspolczynnikiKierunkowe = new DirectionCoefficient(-przewidywanaNowaPozycja.directCoefficient.x, przewidywanaNowaPozycja.directCoefficient.y, przewidywanaNowaPozycja.directCoefficient.z);
-            } else if (position.y == this.cell.yMin || position.y == this.cell.yMax) {
+            } else if (position.y == cell.yMin || position.y == cell.yMax) {
                 noweWspolczynnikiKierunkowe = new DirectionCoefficient(przewidywanaNowaPozycja.directCoefficient.x, -przewidywanaNowaPozycja.directCoefficient.y, przewidywanaNowaPozycja.directCoefficient.z);
             } else {
                 noweWspolczynnikiKierunkowe = new DirectionCoefficient(przewidywanaNowaPozycja.directCoefficient.x, przewidywanaNowaPozycja.directCoefficient.y, -przewidywanaNowaPozycja.directCoefficient.z);
@@ -108,7 +107,7 @@ public class LightPhoton {
 
 
     private Optional<LightPhoton> przejscie(LightPhoton przewidywanaNowaPozycja, Constants constants) {
-        Optional<Position> newPosition = przewidywanaNowaPozycja.cell.getCrossedBorderPoint(this.position, this.directCoefficient, przewidywanaNowaPozycja.position);
+        Optional<Position> newPosition = przewidywanaNowaPozycja.cell.getCrossedBorderPoint(position, directCoefficient, przewidywanaNowaPozycja.position);
         DirectionCoefficient noweWspolczynnikiKierunkowe = przewidywanaNowaPozycja.directCoefficient;
         return newPosition.flatMap(pozycja -> {
             LightPhoton newLightPhoton = new LightPhoton(pozycja, noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, false);
@@ -128,15 +127,14 @@ public class LightPhoton {
     }
 
     public String naString() {
-        String str = new String(position.x.toString()+" "+position.y.toString())+"\n";
-        return str;
+        return position.x + " " + position.y + "\n";
     }
 
-    public PositionOfDetection getPositionOfDetection (){
-        return new PositionOfDetection( this.position.x.intValue(), this.position.y.intValue());
+    public PositionOfDetection getPositionOfDetection() {
+        return new PositionOfDetection(this.position.x.intValue(), this.position.y.intValue());
     }
 
-    public int getPositionX (){
+    public int getPositionX() {
         return this.position.x.intValue();
     }
 

@@ -26,12 +26,16 @@ public class DirectionCoefficient {
         if (Math.abs(oldDirectionCoefficient.z) > 0.99999) {
             return new DirectionCoefficient(sinusTheta * cosinusFi, sinusTheta * sinusFi, oldDirectionCoefficient.z / Math.abs(oldDirectionCoefficient.z) * cosinusTheta);
         } else {
-            Double wsp = sinusTheta / Math.sqrt(1 - oldDirectionCoefficient.z * oldDirectionCoefficient.z);
-            Double x = wsp * (oldDirectionCoefficient.x * oldDirectionCoefficient.z * cosinusFi - oldDirectionCoefficient.y * sinusFi) + oldDirectionCoefficient.x * cosinusTheta;
-            Double y = wsp * (oldDirectionCoefficient.y * oldDirectionCoefficient.z * cosinusFi + oldDirectionCoefficient.x * sinusFi) + oldDirectionCoefficient.y * cosinusFi;
-            Double z = -sinusTheta * cosinusFi * Math.sqrt(1 - Math.pow(oldDirectionCoefficient.z, 2.0)) + oldDirectionCoefficient.z * cosinusFi;
-            return new DirectionCoefficient(x, y, z);
+            return countDirectionCoefficient(oldDirectionCoefficient, cosinusFi, oldDirectionCoefficient.x * cosinusTheta, sinusTheta, sinusFi);
         }
+    }
+
+    private static DirectionCoefficient countDirectionCoefficient(DirectionCoefficient oldDirectionCoefficient, Double cosinusFi, double v, Double sinusTheta, Double sinusFi) {
+        Double wsp = sinusTheta / Math.sqrt(1 - oldDirectionCoefficient.z * oldDirectionCoefficient.z);
+        Double x = wsp * (oldDirectionCoefficient.x * oldDirectionCoefficient.z * cosinusFi - oldDirectionCoefficient.y * sinusFi) + v;
+        Double y = wsp * (oldDirectionCoefficient.y * oldDirectionCoefficient.z * cosinusFi + oldDirectionCoefficient.x * sinusFi) + oldDirectionCoefficient.y * cosinusFi;
+        Double z = -sinusTheta * cosinusFi * Math.sqrt(1 - Math.pow(oldDirectionCoefficient.z, 2.0)) + oldDirectionCoefficient.z * cosinusFi;
+        return new DirectionCoefficient(x, y, z);
     }
 
 }
