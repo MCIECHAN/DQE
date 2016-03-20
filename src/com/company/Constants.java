@@ -17,12 +17,14 @@ public class Constants {
     Double probabilityOfDispersion;
     Double probabilityOfReflection;
     int numberOfLightPhotons;
+    int resolutionOfDetector;
 
     public Constants(int newAreaWallLength, int newCellWallLength, Double newCellHeight, int newNumberOfRows,
                      int newNumberOfColumns, int newNumberOfParticleLSFFunctions, int newPhotonXEnergy, int newNumberOfXPhotons,
                      Double RTGConversionCoefficient, Double newLengthOfLightWave,
                      Double newMassAttenuationCoefficientOfLight, Double newMassAttenuationCoefficientOfXray,
-                     Double newProbabilityOfAbsorption, Double newProbabilityOfDispersion, Double newProbabilityOfReflection) {
+                     Double newProbabilityOfAbsorption, Double newProbabilityOfDispersion, Double newProbabilityOfReflection,
+    int newResolutionOfDetector) {
         this.areaWallLength = newAreaWallLength;
         this.cellWallLength = newCellWallLength;
         this.cellHeight = newCellHeight;
@@ -39,7 +41,8 @@ public class Constants {
         this.probabilityOfDispersion = newProbabilityOfDispersion / (newProbabilityOfAbsorption + newProbabilityOfDispersion);
         this.probabilityOfReflection = newProbabilityOfReflection;
         //this.numberOfLightPhotons = wyznaczLiczbeGenerowanychFotonowSwiatla();
-        this.numberOfLightPhotons = 2000;
+        this.numberOfLightPhotons = 100000;
+        this.resolutionOfDetector = newResolutionOfDetector;
     }
 
 
