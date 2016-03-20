@@ -1,5 +1,9 @@
 package com.company;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -59,38 +63,22 @@ public class PartialLSFFunction {
         } else {
             range = (Math.abs(minValue) + resolutionOfDetector);
         }
-/*        System.out.println("Wyliczony zakres:");
-        System.out.print(range+"\n");*/
         return range;
     }
 
     private ArrayList<Integer> mainLSFLoop(ArrayList<Integer> listOfAllXPositions, Constants constants) {
-/*        System.out.println("Rozmiar listy pozycji:");
-        System.out.print(listOfAllXPositions.size()+"\n");*/
         int minvalue = Collections.min(listOfAllXPositions);
-/*        System.out.println("minvalue");
-        System.out.print(minvalue+"\n");*/
         int maxValue = Collections.max(listOfAllXPositions);
-/*        System.out.println("maxValue");
-        System.out.print(maxValue+"\n");*/
         int range = returnRange(minvalue, maxValue, constants.resolutionOfDetector) + constants.resolutionOfDetector / 2;
         ArrayList<Integer> lsf = new ArrayList<>();
-        //System.out.println("Pętla LSF:");
         for (int i = (-range / constants.resolutionOfDetector - constants.resolutionOfDetector / 2); i <= range / constants.resolutionOfDetector + constants.resolutionOfDetector / 2; i = i + constants.resolutionOfDetector) {
             lsf.add(checkNumberOfOccurencesInGivenRange(listOfAllXPositions, i, i + constants.resolutionOfDetector));
-            System.out.print(checkNumberOfOccurencesInGivenRange(listOfAllXPositions, i, i + constants.resolutionOfDetector));
         }
-/*        System.out.println("Rozmiar lsf:");
-        System.out.print(lsf.size());
-        System.out.println("Zliczenia");*/
-        lsf.forEach(p -> System.out.print(p + "\n"));
         return lsf;
     }
 
     private ArrayList<Double> normalizeLSF(ArrayList<Integer> entryLSF) {
         int sum = entryLSF.stream().mapToInt(i -> i.intValue()).sum();
-        System.out.println("Uwaga suma:" + "\n");
-        System.out.print(sum + "\n");
         ArrayList<Double> normalizedLSF = new ArrayList<>();
         for (int i = 0; i < entryLSF.size(); i++) {
             double norm = (double) entryLSF.get(i);
@@ -99,4 +87,37 @@ public class PartialLSFFunction {
         return normalizedLSF;
     }
 
+    public Double getPositonZ() {
+        return this.positionZ;
+    }
+
+    public void saveLSFfunctions() {
+
+        String sciezka = new String("C:\\Users\\ciechan\\Desktop\\DQE - user story\\");
+
+        try {
+            String filename = new String(sciezka + this.getPositionZ() + ".txt");
+            File plik = new File(filename);
+            if (!plik.exists()) {
+                plik.createNewFile();
+            }
+            FileWriter fw = new FileWriter(plik.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            this.LSFfuncion.forEach(p -> {
+                try {
+                    bw.write(p.toString() + "\n");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
+
+
