@@ -4,30 +4,29 @@ import java.util.ArrayList;
 
 public class LSF {
 
-    private ArrayList<PositionOfDetection> DetectorLSFFunction;
+    private ArrayList<PartialLSFFunction> DetectorLSFFunction;
 
     LSF(Constants constants) {
         this.DetectorLSFFunction = getDetectorLSFFunction(constants);
     }
 
-    private ArrayList<PositionOfDetection> getDetectorLSFFunction(Constants constants) {
+    private ArrayList<PartialLSFFunction> getDetectorLSFFunction(Constants constants) {
 
-        ArrayList<PositionOfDetection> listOfPositionsOfDetection = new ArrayList<>();
         ArrayList<PartialLSFFunction> ListOfPartialLSFFunctions = createListOfPartialLSFFunctions(constants);
+        ListOfPartialLSFFunctions.forEach(fun -> System.out.print(fun.getPositionZ()+"\n"));
 
-        //saveLSFfunctions(ListOfPartialLSFFunctions);
-        ArrayList<PhotonXPosition> XPhotonsPositions = generateXPhotonsPositions(constants);
+/*        ArrayList<PhotonXPosition> XPhotonsPositions = generateXPhotonsPositions(constants);
         XPhotonsPositions.forEach(position -> {
             int index = getIndexOfClosestZPosition(position.getPositonZ(), ListOfPartialLSFFunctions);
             for (int i = 0; i < constants.numberOfLightPhotons; i++) {
-                    Double rnd = Math.random();
-                     {
+                Double rnd = Math.random();
+                {
 
-                    }
+                }
             }
         });
-        // savePositionsOfDetection(listOfPositionsOfDetection);
-        return listOfPositionsOfDetection;
+        // savePositionsOfDetection(listOfPositionsOfDetection);*/
+        return ListOfPartialLSFFunctions;
     }
 
     private ArrayList<PhotonXPosition> generateXPhotonsPositions(Constants constants) {

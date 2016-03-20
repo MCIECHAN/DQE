@@ -115,7 +115,6 @@ public class LightPhoton {
                 newLightPhoton.cell = cell;
                 if (przewidywanaNowaPozycja.position.z >= constants.cellHeight) {
                     newLightPhoton.saved = true;
-                    //newLightPhoton.wyswietl();
                 }
                 return newLightPhoton;
             });
