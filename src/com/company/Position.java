@@ -1,5 +1,8 @@
 package com.company;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class Position {
     Double x;
     Double y;
@@ -15,24 +18,44 @@ public class Position {
         return Math.sqrt(Math.pow(this.x - that.x, 2) + Math.pow(this.y - that.y, 2) + Math.pow(this.z - that.z, 2));
     }
 
-/*    public Position (Constants constants){
-        this.x = getSingleCoordinate(0.0, (double) constants.numberOfColumns*constants.cellWallLength);
-        this.y = getSingleCoordinate(0.0,(double) constants.numberOfRows*constants.cellWallLength);
-        this.z = getSingleCoordinate(90.0, constants.cellHeight);
+    public ArrayList<Position> generatePhotonXPositionsForMTF() {
+
+        return new ArrayList<Position>();
     }
 
-    public Double getSingleCoordinate(Double rangeMin, Double rangeMax){
+    public Position(Constants constants) {
+        this.x = (double) constants.numberOfColumns * constants.cellWallLength / 2;
+        this.y = (double) constants.numberOfRows * constants.cellWallLength / 2;
+        this.z = getSingleCoordinate(0.0, constants.cellHeight);
+    }
+
+    public Double getSingleCoordinate(Double rangeMin, Double rangeMax) {
         Random r = new Random();
         double singleCoordinate = rangeMin + (rangeMax - rangeMin) * r.nextDouble();
         return singleCoordinate;
-    }*/
+    }
 
-/*    public ArrayList<Position> getXPhotonsPositions(Constants constants){
-        ArrayList<Position>XPhotonsPositions= new ArrayList<Position>();
-        for (int i = 1; i<=constants.numberOfXPhotons;i++){
-            XPhotonsPositions.add(generateRandomPosition(constants));
+    public void makeOneStep(Constants constants, DirectionCoefficient directCoefficient) {
+        Double r = Math.random();
+        Double s = -1 / constants.massAttenuationCoefficientOfXray * Math.log(r);
+        this.x = this.x + directCoefficient.x * s;
+        this.y = this.y + directCoefficient.y * s;
+        this.z = this.z + directCoefficient.z * s;
+    }
+
+    public boolean inDetector(Constants constants) {
+        boolean xInBoarder = this.x >= 0 && this.x <= constants.cellWallLength * constants.numberOfColumns;
+        boolean yInBoarder = this.y >= 0 && this.y <= constants.cellWallLength * constants.numberOfRows;
+        boolean zInBoarder = this.z >= 0 && this.z <= constants.cellHeight;
+        if (xInBoarder && yInBoarder && zInBoarder) {
+            return true;
+        } else {
+            return false;
         }
-        return XPhotonsPositions;
-    }*/
+    }
+
+    public void displayPosition() {
+        System.out.println("Pozycja X: " + this.x + " Pozycja Y: " + this.y + " Pozycja Z: " + this.z);
+    }
 
 }

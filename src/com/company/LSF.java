@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class LSF {
 
@@ -17,8 +19,11 @@ public class LSF {
     private ArrayList<PartialLSFFunction> getDetectorLSFFunction(Constants constants) {
 
         ArrayList<PartialLSFFunction> ListOfPartialLSFFunctions = createListOfPartialLSFFunctions(constants);
+        //saveLSFfunctions(ListOfPartialLSFFunctions);
+
+        ArrayList<PhotonXPosition> lista = generatePhotonXPositionsForNPS(constants);
+
         //ArrayList<PhotonXPosition> XPhotonsPositions = generateXPhotonsPositions(constants);
-        saveLSFfunctions(ListOfPartialLSFFunctions);
 /*
         XPhotonsPositions.forEach(position -> {
             int index = getIndexOfClosestZPosition(position.getPositonZ(), ListOfPartialLSFFunctions);
@@ -29,18 +34,20 @@ public class LSF {
                 }
             }
         });
+
         // savePositionsOfDetection(listOfPositionsOfDetection);*/
+
         return ListOfPartialLSFFunctions;
     }
 
-    private ArrayList<PhotonXPosition> generateXPhotonsPositions(Constants constants) {
+/*    private ArrayList<PhotonXPosition> generateXPhotonsPositions(Constants constants) {
         ArrayList<PhotonXPosition> XPhotonsPositions = new ArrayList<>();
         for (int i = 0; i < constants.numberOfXPhotons; i++) {
             PhotonXPosition nowaPozycja = new PhotonXPosition(constants);
             XPhotonsPositions.add(nowaPozycja);
         }
         return XPhotonsPositions;
-    }
+    }*/
 
     private ArrayList<PartialLSFFunction> createListOfPartialLSFFunctions(Constants constants) {
         ArrayList<PartialLSFFunction> listOfPartialLSFFunctions = new ArrayList<>();
@@ -67,6 +74,21 @@ public class LSF {
         }
         return index;
     }
+
+    private ArrayList<PhotonXPosition> generatePhotonXPositionsForNPS(Constants constants) {
+        ArrayList<PhotonXPosition> listOFPhotonXPositionsForNPS = new ArrayList<PhotonXPosition>();
+        for (int i = 0; i < constants.numberOfNPSXPhotons; i++) {
+            Position position = new Position(constants);
+            DirectionCoefficient directionCoefficient = new DirectionCoefficient(Math.random(), Math.random(), Math.random());
+            listOFPhotonXPositionsForNPS.add(new PhotonXPosition(position, directionCoefficient));
+        }
+        listOFPhotonXPositionsForNPS.forEach(photonXPosition -> photonXPosition.position.makeOneStep(constants, photonXPosition.directionCoefficient));
+        listOFPhotonXPositionsForNPS = listOFPhotonXPositionsForNPS.stream()
+                .filter(photonXPosition -> photonXPosition.position.inDetector(constants))
+                .collect(Collectors.toCollection(ArrayList::new));
+        return listOFPhotonXPositionsForNPS;
+    }
+
 
     private void saveLSFfunctions(ArrayList<PartialLSFFunction> ListOfPartialLSFFunctions) {
 
@@ -97,8 +119,9 @@ public class LSF {
                             e.printStackTrace();
                         }
 
+                    } else {
+                        return;
                     }
-                    else{return;}
                 }
 
         );

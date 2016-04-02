@@ -3,18 +3,12 @@ package com.company;
 import java.util.Random;
 
 public class PhotonXPosition {
-    private int X;
-    private int Y;
-    private int Z;
+    public Position position;
+    public DirectionCoefficient directionCoefficient;
 
-    public PhotonXPosition(Constants constants) {
-        this.X = getSingleCoordinate(0, constants.numberOfColumns * constants.cellWallLength);
-        this.Y = getSingleCoordinate(0, constants.numberOfRows * constants.cellWallLength);
-/*        this.X = getSingleCoordinate(0, 5000);
-        this.Y = getSingleCoordinate(0, 5000);*/
-        this.Z = getSingleCoordinate(0, constants.cellHeight.intValue());
-        System.out.println("Pozycja nowego fotonu X:");
-        System.out.print(this.Z);
+    public PhotonXPosition(Position newPosition, DirectionCoefficient newDirectionCoefficient) {
+        this.position = newPosition;
+        this.directionCoefficient = newDirectionCoefficient;
     }
 
     private int getSingleCoordinate(int rangeMin, int rangeMax) {
@@ -22,15 +16,12 @@ public class PhotonXPosition {
         return r.ints(rangeMin, (rangeMax + 1)).findFirst().getAsInt();
     }
 
-    public int getPositonZ() {
-        return this.Z;
+    public void displayPhotonXPosition(){
+        System.out.println("Pozycja X: " + this.position.x+" Pozycja Y: "+this.position.y+" Pozycja Z: "+this.position.z);
     }
 
-    public int getPositonX() {
-        return this.X;
+    public void displayPhotonXDirectionCooficient(){
+        System.out.println("Kier X: " + this.directionCoefficient.x+" Kier Y: "+this.directionCoefficient.y+" Kier Z: "+this.directionCoefficient.z);
     }
 
-    public int getPositonY() {
-        return this.Y;
-    }
 }

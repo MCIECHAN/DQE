@@ -11,17 +11,19 @@ public class PartialLSFFunction {
 
     private Double positionZ;
     public Optional<ArrayList<Double>> LSFfuncion;
+    private boolean type;
 
     PartialLSFFunction(Constants constants, Double newPositionZ) {
         this.positionZ = newPositionZ;
         this.LSFfuncion = generateLSFfuncion(constants, newPositionZ);
+        this.type = constants.detectorType;
     }
 
 
     private Optional<ArrayList<Double>> generateLSFfuncion(Constants constants, Double newPositionZ) {
         Position pozycja = new Position(0.0, 0.0, newPositionZ);
         DirectionCoefficient wspkier = new DirectionCoefficient(Math.random(), Math.random(), Math.random());
-        Cell komorka = new Cell(-(constants.cellWallLength / 2), constants.cellWallLength / 2, -(constants.cellWallLength / 2), constants.cellWallLength / 2, 0, constants.cellHeight.intValue());
+        Cell komorka = returnCellAdjusted(type,constants);
         PhotonX fotonX = new PhotonX(pozycja, wspkier, komorka, constants.massAttenuationCoefficientOfXray, constants.numberOfLightPhotons);
         ArrayList<LightPhoton> lista = fotonX.generateLightPhotons();
         ArrayList<LightPhoton> listaZapisanych = mainSimulationLoop(constants, lista);
@@ -56,26 +58,39 @@ public class PartialLSFFunction {
                 .collect(Collectors.toList()).size());
     }
 
-    private int returnRange(int minValue, int maxValue, int resolutionOfDetector) {
-        int range = 0;
-        if (Math.abs(minValue) <= Math.abs(maxValue)) {
-            range = (Math.abs(maxValue) + resolutionOfDetector);
-        } else {
-            range = (Math.abs(minValue) + resolutionOfDetector);
+    private int returnStartPoint(Constants constants) {
+
+        int overAllLength = constants.numberOfColumns * constants.cellWallLength;
+        int startPoint = 0;
+
+        if ((overAllLength % 2) == 0) { /* x is even */
+
+            //System.out.print("Parzysta" + "\n");
+/*            for (int i = (overAllLength / 2)-(constants.resolutionOfDetector-1)/2; i > -constants.resolutionOfDetector; i = i - constants.resolutionOfDetector) {
+                startPoint = i;
+                System.out.print(startPoint + "\n");
+            }*/
+            startPoint = ((overAllLength / 2)+(constants.resolutionOfDetector-1)/2);
+        } else { /* x is odd */
+            //System.out.print("Nieparzysta" + "\n");
+            int tmp = (((overAllLength - 1) / 2) + 1) - (constants.resolutionOfDetector - 1) / 2;
+            for (int i = tmp; i > 0; i = i - constants.resolutionOfDetector) {
+                startPoint = i;
+                //System.out.print(startPoint + "\n");
+            }
         }
-        return range;
+        return startPoint;
     }
 
     private Optional<ArrayList<Integer>> mainLSFLoop(ArrayList<Integer> listOfAllXPositions, Constants constants) {
         if (listOfAllXPositions.isEmpty()) {
             return Optional.empty();
         } else {
-            int minvalue = Collections.min(listOfAllXPositions);
-            int maxValue = Collections.max(listOfAllXPositions);
-            int range = returnRange(minvalue, maxValue, constants.resolutionOfDetector) + constants.resolutionOfDetector / 2;
+            int start = returnStartPoint(constants);
             ArrayList<Integer> lsf = new ArrayList<>();
-            for (int i = (-range / constants.resolutionOfDetector - constants.resolutionOfDetector / 2); i <= range / constants.resolutionOfDetector + constants.resolutionOfDetector / 2; i = i + constants.resolutionOfDetector) {
+            for (int i = -start; i < start; i = i + constants.resolutionOfDetector) {
                 lsf.add(checkNumberOfOccurencesInGivenRange(listOfAllXPositions, i, i + constants.resolutionOfDetector));
+                //System.out.print(i + "\n");
             }
             return Optional.of(lsf);
         }
@@ -100,6 +115,37 @@ public class PartialLSFFunction {
         return this.positionZ;
     }
 
+    private Cell returnCellAdjusted (boolean detectorType, Constants constants){
+        if (detectorType == true){
+            return new Cell(-(constants.cellWallLength / 2), constants.cellWallLength / 2, -(constants.cellWallLength / 2), constants.cellWallLength / 2, 0, constants.cellHeight.intValue());
+        }
+            else{
+            return new Cell(-2147483647, 2147483647, -2147483647, 2147483647, 0, constants.cellHeight.intValue());
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public void saveLSFfunctions() {
         if (this.LSFfuncion.get().size() == 0) {
             return;
@@ -107,7 +153,8 @@ public class PartialLSFFunction {
             String sciezka = new String("C:\\Users\\ciechan\\Desktop\\DQE - user story\\");
 
             try {
-                String filename = new String(sciezka + this.getPositionZ() + ".txt");
+                String filename = new String(sciezka + this.getPositionZ() + this.type + ".txt");
+
                 File plik = new File(filename);
                 if (!plik.exists()) {
                     plik.createNewFile();
