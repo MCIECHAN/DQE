@@ -18,18 +18,13 @@ public class Position {
         return Math.sqrt(Math.pow(this.x - that.x, 2) + Math.pow(this.y - that.y, 2) + Math.pow(this.z - that.z, 2));
     }
 
-    public ArrayList<Position> generatePhotonXPositionsForMTF() {
-
-        return new ArrayList<Position>();
-    }
-
-    public Position(Constants constants) {
+/*    public Position(Constants constants) {
         this.x = (double) constants.numberOfColumns * constants.cellWallLength / 2;
         this.y = (double) constants.numberOfRows * constants.cellWallLength / 2;
         this.z = getSingleCoordinate(0.0, constants.cellHeight);
-    }
+    }*/
 
-    public Double getSingleCoordinate(Double rangeMin, Double rangeMax) {
+    public static Double getSingleCoordinate(Double rangeMin, Double rangeMax) {
         Random r = new Random();
         double singleCoordinate = rangeMin + (rangeMax - rangeMin) * r.nextDouble();
         return singleCoordinate;

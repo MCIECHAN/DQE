@@ -8,7 +8,7 @@ public class Constants {
     int numberOfColumns;
     int numberOfParticleLSFFunctions;
     int photonXEnergy;
-    int numberOfXPhotons;
+    int numberOfMTFXPhotons;
     Double RTGConversionCoefficient;
     Double lengthOfLightWave;
     Double massAttenuationCoefficientOfLight;
@@ -22,7 +22,7 @@ public class Constants {
     boolean detectorType;
 
     public Constants(int newAreaWallLength, int newCellWallLength, Double newCellHeight, int newNumberOfRows,
-                     int newNumberOfColumns, int newNumberOfParticleLSFFunctions, int newPhotonXEnergy, int newNumberOfXPhotons,
+                     int newNumberOfColumns, int newNumberOfParticleLSFFunctions, int newPhotonXEnergy, int newNumberOfMTFXPhotons,
                      Double RTGConversionCoefficient, Double newLengthOfLightWave,
                      Double newMassAttenuationCoefficientOfLight, Double newMassAttenuationCoefficientOfXray,
                      Double newProbabilityOfAbsorption, Double newProbabilityOfDispersion, Double newProbabilityOfReflection,
@@ -34,7 +34,7 @@ public class Constants {
         this.numberOfColumns = newNumberOfColumns;
         this.numberOfParticleLSFFunctions = newNumberOfParticleLSFFunctions;
         this.photonXEnergy = newPhotonXEnergy;
-        this.numberOfXPhotons = newNumberOfXPhotons;
+        this.numberOfMTFXPhotons = newNumberOfMTFXPhotons;
         this.RTGConversionCoefficient = RTGConversionCoefficient;
         this.lengthOfLightWave = newLengthOfLightWave;
         this.massAttenuationCoefficientOfLight = newMassAttenuationCoefficientOfLight;

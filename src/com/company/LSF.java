@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.company.Position.getSingleCoordinate;
+
 public class LSF {
 
     private ArrayList<PartialLSFFunction> DetectorLSFFunction;
@@ -78,7 +80,7 @@ public class LSF {
     private ArrayList<PhotonXPosition> generatePhotonXPositionsForNPS(Constants constants) {
         ArrayList<PhotonXPosition> listOFPhotonXPositionsForNPS = new ArrayList<PhotonXPosition>();
         for (int i = 0; i < constants.numberOfNPSXPhotons; i++) {
-            Position position = new Position(constants);
+            Position position = new Position((double) constants.numberOfColumns * constants.cellWallLength / 2, (double) constants.numberOfRows * constants.cellWallLength / 2, getSingleCoordinate(0.0, constants.cellHeight));
             DirectionCoefficient directionCoefficient = new DirectionCoefficient(Math.random(), Math.random(), Math.random());
             listOFPhotonXPositionsForNPS.add(new PhotonXPosition(position, directionCoefficient));
         }
@@ -88,6 +90,35 @@ public class LSF {
                 .collect(Collectors.toCollection(ArrayList::new));
         return listOFPhotonXPositionsForNPS;
     }
+
+
+    private ArrayList<PhotonXPosition> generatePhotonXPositionsForMTF(Constants constants) {
+        ArrayList<PhotonXPosition> listOFPhotonXPositionsForMTF = new ArrayList<PhotonXPosition>();
+
+        return listOFPhotonXPositionsForMTF;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     private void saveLSFfunctions(ArrayList<PartialLSFFunction> ListOfPartialLSFFunctions) {
