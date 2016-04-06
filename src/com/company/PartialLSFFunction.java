@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 public class PartialLSFFunction {
 
     private Double positionZ;
-    public Optional<ArrayList<Double>> LSFfuncion;
+    public ArrayList<Double> LSFfuncion;
     private boolean type;
 
     PartialLSFFunction(Constants constants, Double newPositionZ) {
@@ -20,16 +20,17 @@ public class PartialLSFFunction {
     }
 
 
-    private Optional<ArrayList<Double>> generateLSFfuncion(Constants constants, Double newPositionZ) {
+    private ArrayList<Double> generateLSFfuncion(Constants constants, Double newPositionZ) {
         Position pozycja = new Position(0.0, 0.0, newPositionZ);
         DirectionCoefficient wspkier = new DirectionCoefficient(Math.random(), Math.random(), Math.random());
-        Cell komorka = returnCellAdjusted(type,constants);
+        Cell komorka = returnCellAdjusted(type, constants);
         PhotonX fotonX = new PhotonX(pozycja, wspkier, komorka, constants.massAttenuationCoefficientOfXray, constants.numberOfLightPhotons);
         ArrayList<LightPhoton> lista = fotonX.generateLightPhotons();
         ArrayList<LightPhoton> listaZapisanych = mainSimulationLoop(constants, lista);
         ArrayList<Integer> listOfAllXPositions = setListOfXPositions(listaZapisanych);
         Optional<ArrayList<Integer>> nonNormalizedLSF = mainLSFLoop(listOfAllXPositions, constants);
-        return normalizeLSF(nonNormalizedLSF);
+        ArrayList<Double> normalizedLSF = normalizeLSF(nonNormalizedLSF, constants);
+        return normalizedLSF;
     }
 
     private static ArrayList<LightPhoton> mainSimulationLoop(Constants zmienne, ArrayList<LightPhoton> lista) {
@@ -41,7 +42,6 @@ public class PartialLSFFunction {
         }
         return lista;
     }
-
 
     private ArrayList<Integer> setListOfXPositions(ArrayList<LightPhoton> listaZapisanych) {
         ArrayList<Integer> outputList = new ArrayList<>();
@@ -58,56 +58,32 @@ public class PartialLSFFunction {
                 .collect(Collectors.toList()).size());
     }
 
-    private int returnStartPoint(Constants constants) {
-
-        int overAllLength = constants.numberOfColumns * constants.cellWallLength;
-        int startPoint = 0;
-
-        if ((overAllLength % 2) == 0) { /* x is even */
-
-            //System.out.print("Parzysta" + "\n");
-/*            for (int i = (overAllLength / 2)-(constants.resolutionOfDetector-1)/2; i > -constants.resolutionOfDetector; i = i - constants.resolutionOfDetector) {
-                startPoint = i;
-                System.out.print(startPoint + "\n");
-            }*/
-            startPoint = ((overAllLength / 2)+(constants.resolutionOfDetector-1)/2);
-        } else { /* x is odd */
-            //System.out.print("Nieparzysta" + "\n");
-            int tmp = (((overAllLength - 1) / 2) + 1) - (constants.resolutionOfDetector - 1) / 2;
-            for (int i = tmp; i > 0; i = i - constants.resolutionOfDetector) {
-                startPoint = i;
-                //System.out.print(startPoint + "\n");
-            }
-        }
-        return startPoint;
-    }
-
     private Optional<ArrayList<Integer>> mainLSFLoop(ArrayList<Integer> listOfAllXPositions, Constants constants) {
         if (listOfAllXPositions.isEmpty()) {
             return Optional.empty();
         } else {
-            int start = returnStartPoint(constants);
+            int start = constants.startPoint;
             ArrayList<Integer> lsf = new ArrayList<>();
             for (int i = -start; i < start; i = i + constants.resolutionOfDetector) {
                 lsf.add(checkNumberOfOccurencesInGivenRange(listOfAllXPositions, i, i + constants.resolutionOfDetector));
-                //System.out.print(i + "\n");
             }
             return Optional.of(lsf);
         }
     }
 
-    private Optional<ArrayList<Double>> normalizeLSF(Optional<ArrayList<Integer>> entryLSF) {
+    private ArrayList<Double> normalizeLSF(Optional<ArrayList<Integer>> entryLSF, Constants constants) {
+        ArrayList<Double> normalizedLSF = new ArrayList<>();
         if (entryLSF.isPresent()) {
-            int sum = entryLSF.get().stream().mapToInt(i -> i.intValue()).sum();
-            ArrayList<Double> normalizedLSF = new ArrayList<>();
             for (int i = 0; i < entryLSF.get().size(); i++) {
                 double norm = (double) entryLSF.get().get(i);
-                normalizedLSF.add(norm / sum);
+                normalizedLSF.add(norm / constants.numberOfLightPhotons);
             }
-            return Optional.of(normalizedLSF);
+            return normalizedLSF;
         } else {
-
-            return Optional.empty();
+            for (int i = -constants.startPoint; i < constants.startPoint; i = i + constants.resolutionOfDetector) {
+                normalizedLSF.add(0.0);
+            }
+            return normalizedLSF;
         }
     }
 
@@ -115,11 +91,10 @@ public class PartialLSFFunction {
         return this.positionZ;
     }
 
-    private Cell returnCellAdjusted (boolean detectorType, Constants constants){
-        if (detectorType == true){
+    private Cell returnCellAdjusted(boolean detectorType, Constants constants) {
+        if (detectorType == true) {
             return new Cell(-(constants.cellWallLength / 2), constants.cellWallLength / 2, -(constants.cellWallLength / 2), constants.cellWallLength / 2, 0, constants.cellHeight.intValue());
-        }
-            else{
+        } else {
             return new Cell(-2147483647, 2147483647, -2147483647, 2147483647, 0, constants.cellHeight.intValue());
         }
     }
@@ -146,7 +121,7 @@ public class PartialLSFFunction {
 
 
 
-    public void saveLSFfunctions() {
+/*    public void saveLSFfunctions() {
         if (this.LSFfuncion.get().size() == 0) {
             return;
         } else {
@@ -176,7 +151,7 @@ public class PartialLSFFunction {
             }
         }
 
-    }
+    }*/
 }
 
 

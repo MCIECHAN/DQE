@@ -17,16 +17,18 @@ public class Constants {
     Double probabilityOfDispersion;
     Double probabilityOfReflection;
     int numberOfLightPhotons;
-    int numberOfNPSXPhotons;
+    int numberOfNPSXPositions;
+    int numberOfNPSXPhotonsInOnePosition;
     int resolutionOfDetector;
     boolean detectorType;
+    int startPoint;
 
     public Constants(int newAreaWallLength, int newCellWallLength, Double newCellHeight, int newNumberOfRows,
                      int newNumberOfColumns, int newNumberOfParticleLSFFunctions, int newPhotonXEnergy, int newNumberOfMTFXPhotons,
                      Double RTGConversionCoefficient, Double newLengthOfLightWave,
                      Double newMassAttenuationCoefficientOfLight, Double newMassAttenuationCoefficientOfXray,
                      Double newProbabilityOfAbsorption, Double newProbabilityOfDispersion, Double newProbabilityOfReflection,
-    int newResolutionOfDetector, boolean newDetectorType, int newNumberOfNPSXPhotons) {
+    int newResolutionOfDetector, boolean newDetectorType, int newNumberOfNPSXPositions, int newNumberOfNPSXPhotonsInOnePosition) {
         this.areaWallLength = newAreaWallLength;
         this.cellWallLength = newCellWallLength;
         this.cellHeight = newCellHeight;
@@ -43,10 +45,12 @@ public class Constants {
         this.probabilityOfDispersion = newProbabilityOfDispersion / (newProbabilityOfAbsorption + newProbabilityOfDispersion);
         this.probabilityOfReflection = newProbabilityOfReflection;
         //this.numberOfLightPhotons = wyznaczLiczbeGenerowanychFotonowSwiatla();
-        this.numberOfLightPhotons =10000;
-        this.numberOfNPSXPhotons = newNumberOfNPSXPhotons;
+        this.numberOfLightPhotons =30000;
+        this.numberOfNPSXPositions = newNumberOfNPSXPositions;
+        this.numberOfNPSXPhotonsInOnePosition = newNumberOfNPSXPhotonsInOnePosition;
         this.resolutionOfDetector = newResolutionOfDetector;
         this.detectorType=newDetectorType;
+        this.startPoint = returnStartPoint(this);
     }
 
 
@@ -55,5 +59,28 @@ public class Constants {
         return (int) Math.round(this.photonXEnergy * this.RTGConversionCoefficient / sredniaEnergiaPromieniowaniaSwietlnego);
     }
 
+    private int returnStartPoint(Constants constants) {
+
+        int overAllLength = constants.numberOfColumns * constants.cellWallLength;
+        int startPoint = 0;
+
+        if ((overAllLength % 2) == 0) { /* x is even */
+
+            //System.out.print("Parzysta" + "\n");
+/*            for (int i = (overAllLength / 2)-(constants.resolutionOfDetector-1)/2; i > -constants.resolutionOfDetector; i = i - constants.resolutionOfDetector) {
+                startPoint = i;
+                System.out.print(startPoint + "\n");
+            }*/
+            startPoint = ((overAllLength / 2) + (constants.resolutionOfDetector - 1) / 2);
+        } else { /* x is odd */
+            //System.out.print("Nieparzysta" + "\n");
+            int tmp = (((overAllLength - 1) / 2) + 1) - (constants.resolutionOfDetector - 1) / 2;
+            for (int i = tmp; i > 0; i = i - constants.resolutionOfDetector) {
+                startPoint = i;
+                //System.out.print(startPoint + "\n");
+            }
+        }
+        return startPoint;
+    }
 
 }
