@@ -23,7 +23,7 @@ public class PartialLSFFunction {
     private ArrayList<Double> generateLSFfuncion(Constants constants, Double newPositionZ) {
         Position pozycja = new Position(0.0, 0.0, newPositionZ);
         DirectionCoefficient wspkier = new DirectionCoefficient(Math.random(), Math.random(), Math.random());
-        Cell komorka = returnCellAdjusted(type, constants);
+        Cell komorka = returnCellAdjusted(constants);
         PhotonX fotonX = new PhotonX(pozycja, wspkier, komorka, constants.massAttenuationCoefficientOfXray, constants.numberOfLightPhotons);
         ArrayList<LightPhoton> lista = fotonX.generateLightPhotons();
         ArrayList<LightPhoton> listaZapisanych = mainSimulationLoop(constants, lista);
@@ -87,42 +87,47 @@ public class PartialLSFFunction {
         }
     }
 
-    public Double getPositonZ() {
-        return this.positionZ;
-    }
-
-    private Cell returnCellAdjusted(boolean detectorType, Constants constants) {
-        if (detectorType == true) {
+    private Cell returnCellAdjusted(Constants constants) {
+        if (constants.detectorType) {
             return new Cell(-(constants.cellWallLength / 2), constants.cellWallLength / 2, -(constants.cellWallLength / 2), constants.cellWallLength / 2, 0, constants.cellHeight.intValue());
         } else {
-            return new Cell(-2147483647, 2147483647, -2147483647, 2147483647, 0, constants.cellHeight.intValue());
+            return new Cell(-100000, 100000, -100000, 100000, 0, constants.cellHeight.intValue());
         }
     }
 
 
+    public void save(ArrayList<Integer> listOfAllXPositions, Constants constants) {
+        String sciezka = new String("C:\\Users\\ciechan\\Desktop\\DQE - user story\\");
+
+        try {
+            String filename = new String(sciezka +constants.detectorType+ ".txt");
+
+            File plik = new File(filename);
+            if (!plik.exists()) {
+                plik.createNewFile();
+            }
+            FileWriter fw = new FileWriter(plik.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            listOfAllXPositions.forEach(p -> {
+                try {
+                    bw.write(p.toString() + "\n");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
+    }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*    public void saveLSFfunctions() {
-        if (this.LSFfuncion.get().size() == 0) {
+    public void saveLSFfunctions() {
+        if (this.LSFfuncion.size() == 0) {
             return;
         } else {
             String sciezka = new String("C:\\Users\\ciechan\\Desktop\\DQE - user story\\");
@@ -137,7 +142,7 @@ public class PartialLSFFunction {
                 FileWriter fw = new FileWriter(plik.getAbsoluteFile());
                 BufferedWriter bw = new BufferedWriter(fw);
 
-                this.LSFfuncion.get().forEach(p -> {
+                this.LSFfuncion.forEach(p -> {
                     try {
                         bw.write(p.toString() + "\n");
                     } catch (IOException e) {
@@ -151,7 +156,8 @@ public class PartialLSFFunction {
             }
         }
 
-    }*/
+    }
+
 }
 
 

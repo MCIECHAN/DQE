@@ -23,18 +23,9 @@ public class Position {
         return singleCoordinate;
     }
 
-    public void makeOneStep(Constants constants, DirectionCoefficient directCoefficient) {
+    public void makeOneStepForMTForNPS(Constants constants, DirectionCoefficient directCoefficient) {
         Double r = Math.random();
-        Double s = -1 / constants.massAttenuationCoefficientOfXray * Math.log(r);
-        this.x = this.x + directCoefficient.x * s;
-        this.y = this.y + directCoefficient.y * s;
-        this.z = this.z + directCoefficient.z * s;
-    }
-
-    public void makeOneStepForMTF(Constants constants, DirectionCoefficient directCoefficient) {
-        Double r = Math.random();
-        Double s = -1 / constants.massAttenuationCoefficientOfXray * Math.log(r);
-        //this.z = this.z + s;
+        Double s = (-1 * Math.log(r)) / constants.massAttenuationCoefficientOfXray;
         this.z = this.z + directCoefficient.z * s;
     }
 

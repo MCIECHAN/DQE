@@ -18,6 +18,8 @@ public class LightPhoton {
     public Optional<LightPhoton> simulate(Constants constants) {
         if (!saved) {
             LightPhoton photonInNewPosition = losujDrogeSwobodna(constants);
+/*            photonInNewPosition.position.displayPosition();
+            photonInNewPosition.cell.displayBorders();*/
             if (photonInNewPosition.wgranicyKomorki()) return absorbcjaLubRozproszenie(constants, photonInNewPosition);
             else return przejscieLubOdbicie(constants, photonInNewPosition);
         } else {
@@ -91,6 +93,9 @@ public class LightPhoton {
     }
 
     private Optional<LightPhoton> odbicie(LightPhoton przewidywanaNowaPozycja) {
+        //System.out.println("ODBICIE");
+       // przewidywanaNowaPozycja.position.displayPosition();
+       // przewidywanaNowaPozycja.cell.displayBorders();
         Optional<Position> newPosition = przewidywanaNowaPozycja.cell.getCrossedBorderPoint(this.position, this.directCoefficient, przewidywanaNowaPozycja.position);
         return newPosition.map(position -> {
             DirectionCoefficient noweWspolczynnikiKierunkowe = directCoefficient;
@@ -107,12 +112,16 @@ public class LightPhoton {
 
 
     private Optional<LightPhoton> przejscie(LightPhoton przewidywanaNowaPozycja, Constants constants) {
+/*        System.out.println("PRZEJŚCIE");
+        przewidywanaNowaPozycja.position.displayPosition();
+        przewidywanaNowaPozycja.cell.displayBorders();*/
         Optional<Position> newPosition = przewidywanaNowaPozycja.cell.getCrossedBorderPoint(position, directCoefficient, przewidywanaNowaPozycja.position);
         DirectionCoefficient noweWspolczynnikiKierunkowe = przewidywanaNowaPozycja.directCoefficient;
         return newPosition.flatMap(pozycja -> {
             LightPhoton newLightPhoton = new LightPhoton(pozycja, noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, false);
             return currentCell(newLightPhoton, constants).map(cell -> {
                 newLightPhoton.cell = cell;
+                //System.out.println("Utworzyłem nową komórkę po przejsciu");
                 if (przewidywanaNowaPozycja.position.z >= constants.cellHeight) {
                     newLightPhoton.saved = true;
                 }

@@ -19,6 +19,7 @@ public class Cell {
         this.yMax = yMax;
         this.zMin = zMin;
         this.zMax = zMax;
+        //System.out.println("Utworzyłem nową komórkę");
     }
 
     public Optional<Position> getCrossedBorderPoint(Position currentPosition, DirectionCoefficient currentDirectionCoefficient, Position predictedPosition) {
@@ -76,6 +77,10 @@ public class Cell {
         boolean yInBoarder = position.y >= yMin && position.y <= yMax;
         boolean zInBoarder = position.z >= zMin && position.z <= zMax;
         return xInBoarder && yInBoarder && zInBoarder;
+    }
+
+    public void displayBorders() {
+        System.out.println("Pozycja Xmin: " + this.xMin + " Pozycja Xmax: " + this.xMax + " Pozycja ymin: " + this.yMin+ " Pozycja Ymax: " + this.yMax);
     }
 
 }
