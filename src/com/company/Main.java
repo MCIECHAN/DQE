@@ -7,8 +7,8 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        Constants zmienne = new Constants(100, 10, 100.0, 514, 514, 20, 200000, 1000000, 0.2, 545.0, 1.0, 3.2, 7.34, 0.9, 499.55, 0.9,5,true,1000,10000);
-        Constants zmiennek = new Constants(100, 10, 100.0, 514, 514, 20, 200000, 1000000, 0.2, 545.0, 1.0, 3.2, 7.34, 0.9, 499.55, 0.9,5,false,1000,10000);
+        Constants zmienne = new Constants(100, 5, 100.0, 1024, 1024, 20, 200000, 100000, 0.2, 545.0, 1.0, 3.2, 7.34, 0.9, 499.55, 0.9,5,true,100,100000);
+        Constants zmiennek = new Constants(100, 5, 100.0, 1024, 1024, 20, 200000, 100000, 0.2, 545.0, 1.0, 3.2, 7.34, 0.9, 499.55, 0.9,5,false,100,100000);
 
         LSF lsf = new LSF(zmienne);
         LSF lsfk = new LSF(zmiennek);

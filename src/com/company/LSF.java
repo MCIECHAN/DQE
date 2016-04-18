@@ -24,14 +24,12 @@ public class LSF {
         ListOfPartialLSFFunctions = returnEndListOfPartialLSFFunctions(ListOfPartialLSFFunctions);
         saveLSFfunctions(ListOfPartialLSFFunctions, constants);
 
-        //System.out.println("MTF:" + "\n");
         ArrayList<PhotonXPosition> MTFlist = generatePhotonXPositionsForMTF(constants);
         ArrayList<Integer> LSFOfMTF = countMTForNPS(MTFlist, ListOfPartialLSFFunctions, constants);
         saveLSF(LSFOfMTF,constants,true);
-        //System.out.println("NPS:" + "\n");
         ArrayList<PhotonXPosition> NPSlist = generatePhotonXPositionsForNPS(constants);
         ArrayList<Integer> LSFofNPS = countMTForNPS(NPSlist, ListOfPartialLSFFunctions, constants);
-        saveLSF(LSFOfMTF,constants,false);
+        saveLSF(LSFofNPS,constants,false);
         return ListOfPartialLSFFunctions;
     }
 
