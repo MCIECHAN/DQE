@@ -10,7 +10,9 @@ import java.util.stream.Collectors;
 public class PartialLSFFunction {
 
     private Double positionZ;
-    public ArrayList<Double> LSFfuncion;
+    public ArrayList<Integer> LSFfuncion;
+    public ArrayList<Integer> longLSFfuncion;
+    private Double probabilityOfDetection;
     private boolean type;
 
     PartialLSFFunction(Constants constants, Double newPositionZ) {
@@ -20,7 +22,7 @@ public class PartialLSFFunction {
     }
 
 
-    private ArrayList<Double> generateLSFfuncion(Constants constants, Double newPositionZ) {
+    private ArrayList<Integer> generateLSFfuncion(Constants constants, Double newPositionZ) {
         Position pozycja = new Position(0.0, 0.0, newPositionZ);
         DirectionCoefficient wspkier = new DirectionCoefficient(Math.random(), Math.random(), Math.random());
         Cell komorka = returnCellAdjusted(constants);
@@ -28,9 +30,16 @@ public class PartialLSFFunction {
         ArrayList<LightPhoton> lista = fotonX.generateLightPhotons();
         ArrayList<LightPhoton> listaZapisanych = mainSimulationLoop(constants, lista);
         ArrayList<Integer> listOfAllXPositions = setListOfXPositions(listaZapisanych);
-        Optional<ArrayList<Integer>> nonNormalizedLSF = mainLSFLoop(listOfAllXPositions, constants);
-        ArrayList<Double> normalizedLSF = normalizeLSF(nonNormalizedLSF, constants);
-        return normalizedLSF;
+        ArrayList<Integer> nonNormalizedLSF = mainLSFLoop(listOfAllXPositions, constants);
+        this.setLongLSFfuncion(listOfAllXPositions, constants);
+        this.setProbabilityOfDetection(nonNormalizedLSF, constants);
+        return nonNormalizedLSF;
+    }
+
+    private void setProbabilityOfDetection(ArrayList<Integer> listOfAllXPositions, Constants constants) {
+        Double x = (double) listOfAllXPositions.stream().mapToInt(Integer::intValue).sum() / constants.numberOfLightPhotons;
+        System.out.print(x + "\n");
+        this.probabilityOfDetection = x;
     }
 
     private static ArrayList<LightPhoton> mainSimulationLoop(Constants zmienne, ArrayList<LightPhoton> lista) {
@@ -58,20 +67,39 @@ public class PartialLSFFunction {
                 .collect(Collectors.toList()).size());
     }
 
-    private Optional<ArrayList<Integer>> mainLSFLoop(ArrayList<Integer> listOfAllXPositions, Constants constants) {
+    private ArrayList<Integer> mainLSFLoop(ArrayList<Integer> listOfAllXPositions, Constants constants) {
+        ArrayList<Integer> lsf = new ArrayList<>();
         if (listOfAllXPositions.isEmpty()) {
-            return Optional.empty();
+            for (int i = -constants.startPoint; i < constants.startPoint; i = i + constants.resolutionOfDetector) {
+                lsf.add(0);
+            }
+            return lsf;
         } else {
             int start = constants.startPoint;
-            ArrayList<Integer> lsf = new ArrayList<>();
             for (int i = -start; i < start; i = i + constants.resolutionOfDetector) {
                 lsf.add(checkNumberOfOccurencesInGivenRange(listOfAllXPositions, i, i + constants.resolutionOfDetector));
             }
-            return Optional.of(lsf);
+            return lsf;
         }
     }
 
-    private ArrayList<Double> normalizeLSF(Optional<ArrayList<Integer>> entryLSF, Constants constants) {
+    private void setLongLSFfuncion(ArrayList<Integer> listOfAllXPositions, Constants constants) {
+        ArrayList<Integer> lsf = new ArrayList<>();
+        if (listOfAllXPositions.isEmpty()) {
+            for (int i = -constants.startPoint; i < constants.startPoint; i = i + constants.resolutionOfDetector) {
+                lsf.add(0);
+            }
+            this.longLSFfuncion = lsf;
+        } else {
+            int start = constants.startPoint*2;
+            for (int i = -start; i < start; i = i + constants.resolutionOfDetector) {
+                lsf.add(checkNumberOfOccurencesInGivenRange(listOfAllXPositions, i, i + constants.resolutionOfDetector));
+            }
+            this.longLSFfuncion = lsf;
+        }
+    }
+
+/*    private ArrayList<Double> normalizeLSF(Optional<ArrayList<Integer>> entryLSF, Constants constants) {
         ArrayList<Double> normalizedLSF = new ArrayList<>();
         if (entryLSF.isPresent()) {
             for (int i = 0; i < entryLSF.get().size(); i++) {
@@ -85,7 +113,7 @@ public class PartialLSFFunction {
             }
             return normalizedLSF;
         }
-    }
+    }*/
 
     private Cell returnCellAdjusted(Constants constants) {
         if (constants.detectorType) {
@@ -95,12 +123,16 @@ public class PartialLSFFunction {
         }
     }
 
+    public Double getProbablityOfdetection() {
+        return this.probabilityOfDetection;
+    }
+
 
     public void save(ArrayList<Integer> listOfAllXPositions, Constants constants) {
         String sciezka = new String("C:\\Users\\ciechan\\Desktop\\DQE - user story\\");
 
         try {
-            String filename = new String(sciezka +constants.detectorType+ ".txt");
+            String filename = new String(sciezka + constants.detectorType + ".txt");
 
             File plik = new File(filename);
             if (!plik.exists()) {

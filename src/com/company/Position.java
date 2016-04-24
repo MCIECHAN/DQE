@@ -17,6 +17,10 @@ public class Position {
         return Math.sqrt(Math.pow(this.x - that.x, 2) + Math.pow(this.y - that.y, 2) + Math.pow(this.z - that.z, 2));
     }
 
+    public Double distanceInXdimension(Position that) {
+        return this.x-that.x;
+    }
+
     public static Double getSingleCoordinate(Double rangeMin, Double rangeMax) {
         Random r = new Random();
         double singleCoordinate = rangeMin + (rangeMax - rangeMin) * r.nextDouble();

@@ -9,6 +9,7 @@ public class Constants {
     int numberOfParticleLSFFunctions;
     int photonXEnergy;
     int numberOfMTFXPhotons;
+    int numberOfMTFXPhotonsPositions;
     Double RTGConversionCoefficient;
     Double lengthOfLightWave;
     Double massAttenuationCoefficientOfLight;
@@ -27,10 +28,10 @@ public class Constants {
 
     public Constants(int newAreaWallLength, int newCellWallLength, Double newCellHeight, int newNumberOfRows,
                      int newNumberOfColumns, int newNumberOfParticleLSFFunctions, int newPhotonXEnergy, int newNumberOfMTFXPhotons,
-                     Double RTGConversionCoefficient, Double newLengthOfLightWave,
+                     int newNumberOfMTFXPhotonsPositions, Double RTGConversionCoefficient, Double newLengthOfLightWave,
                      Double newMassAttenuationCoefficientOfLight, Double newAttenuationCoefficientOfXray, Double newDetectorDensity,
                      Double newProbabilityOfAbsorption, Double newProbabilityOfDispersion, Double newProbabilityOfReflection,
-    int newResolutionOfDetector, boolean newDetectorType, int newNumberOfNPSXPositions, int newNumberOfNPSXPhotonsInOnePosition) {
+                     int newResolutionOfDetector, boolean newDetectorType, int newNumberOfNPSXPositions, int newNumberOfNPSXPhotonsInOnePosition) {
         this.areaWallLength = newAreaWallLength;
         this.cellWallLength = newCellWallLength;
         this.cellHeight = newCellHeight;
@@ -39,27 +40,28 @@ public class Constants {
         this.numberOfParticleLSFFunctions = newNumberOfParticleLSFFunctions;
         this.photonXEnergy = newPhotonXEnergy;
         this.numberOfMTFXPhotons = newNumberOfMTFXPhotons;
+        this.numberOfMTFXPhotonsPositions = newNumberOfMTFXPhotonsPositions;
         this.RTGConversionCoefficient = RTGConversionCoefficient;
         this.lengthOfLightWave = newLengthOfLightWave;
         this.massAttenuationCoefficientOfLight = newMassAttenuationCoefficientOfLight;
         this.attenuationCoefficientOfXray = newAttenuationCoefficientOfXray;
         this.detectorDensity = newDetectorDensity;
-        this.massAttenuationCoefficientOfXray = setMassAttenuationCoefficientOfXray(detectorDensity,attenuationCoefficientOfXray);
+        this.massAttenuationCoefficientOfXray = setMassAttenuationCoefficientOfXray(detectorDensity, attenuationCoefficientOfXray);
         //this.massAttenuationCoefficientOfXray = 0.01;
-                this.probabilityOfAbsorption = newProbabilityOfAbsorption / (newProbabilityOfAbsorption + newProbabilityOfDispersion);
+        this.probabilityOfAbsorption = newProbabilityOfAbsorption / (newProbabilityOfAbsorption + newProbabilityOfDispersion);
         this.probabilityOfDispersion = newProbabilityOfDispersion / (newProbabilityOfAbsorption + newProbabilityOfDispersion);
         this.probabilityOfReflection = newProbabilityOfReflection;
         //this.numberOfLightPhotons = wyznaczLiczbeGenerowanychFotonowSwiatla();
-        this.numberOfLightPhotons =100000;
+        this.numberOfLightPhotons = 10000;
         this.numberOfNPSXPositions = newNumberOfNPSXPositions;
         this.numberOfNPSXPhotonsInOnePosition = newNumberOfNPSXPhotonsInOnePosition;
         this.resolutionOfDetector = newResolutionOfDetector;
-        this.detectorType=newDetectorType;
+        this.detectorType = newDetectorType;
         this.startPoint = returnStartPoint(this);
     }
 
-    private Double setMassAttenuationCoefficientOfXray (Double detectorDensity, Double attenuationCoefficientOfXray){
-        return detectorDensity/attenuationCoefficientOfXray;
+    private Double setMassAttenuationCoefficientOfXray(Double detectorDensity, Double attenuationCoefficientOfXray) {
+        return detectorDensity / attenuationCoefficientOfXray;
     }
 
     private int wyznaczLiczbeGenerowanychFotonowSwiatla() {
@@ -68,25 +70,15 @@ public class Constants {
     }
 
     private int returnStartPoint(Constants constants) {
-
         int overAllLength = constants.numberOfColumns * constants.cellWallLength;
         int startPoint = 0;
-
         if ((overAllLength % 2) == 0) { /* x is even */
-
-            //System.out.print("Parzysta" + "\n");
-/*            for (int i = (overAllLength / 2)-(constants.resolutionOfDetector-1)/2; i > -constants.resolutionOfDetector; i = i - constants.resolutionOfDetector) {
-                startPoint = i;
-                System.out.print(startPoint + "\n");
-            }*/
             startPoint = ((overAllLength / 2));
-            //startPoint = ((overAllLength / 2) + (constants.resolutionOfDetector - 1) / 2);
-        } else { /* x is odd */
-            //System.out.print("Nieparzysta" + "\n");
+
+        } else {
             int tmp = (((overAllLength - 1) / 2) + 1) - (constants.resolutionOfDetector - 1) / 2;
             for (int i = tmp; i > 0; i = i - constants.resolutionOfDetector) {
                 startPoint = i;
-                //System.out.print(startPoint + "\n");
             }
         }
         return startPoint;
