@@ -113,19 +113,21 @@ public class LSF {
             list.forEach(photonXPosition -> {
                 int idx = getIndexOfClosestZPosition(photonXPosition.position.z, listOfPartialLSFFunctions);
                 if (listOfPartialLSFFunctions.get(idx).LSFfuncion.stream().count() != 0) {
+                    int distance = photonXPosition.position.z.intValue() - listOfPartialLSFFunctions.get(idx).LSFfuncion.size()/2;
                     for (int i = 0; i < constants.numberOfLightPhotons; i++) {
                         Double randomVariable = Math.random();
                         if (randomVariable <= listOfPartialLSFFunctions.get(idx).getProbablityOfdetection()) {
                             Random rand = new Random();
                             int randomPosition = rand.nextInt(((listOfPartialLSFFunctions.get(idx).LSFfuncion.size())));
-                            int distance = randomPosition - listOfPartialLSFFunctions.get(idx).LSFfuncion.size()/2;
-                            while ((listOfPartialLSFFunctions.get(idx).LSFfuncion.size()/2+distance) == 0) {
+                            int diffrence = randomPosition-distance;
+                            while ((listOfPartialLSFFunctions.get(idx).LSFfuncion.size()/2+diffrence) == 0) {
                                 randomPosition = rand.nextInt(((listOfPartialLSFFunctions.get(idx).LSFfuncion.size())));
-                                distance = randomPosition - listOfPartialLSFFunctions.get(idx).LSFfuncion.size()/2;
+                                diffrence = randomPosition-distance;
                             }
                             endVector.set(randomPosition, (endVector.get(randomPosition) + 1));
                         }
                     }
+
                 }
             });
         }
