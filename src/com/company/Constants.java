@@ -25,13 +25,15 @@ public class Constants {
     int resolutionOfDetector;
     boolean detectorType;
     int startPoint;
+    int numberOfNPSLoops;
 
     public Constants(int newAreaWallLength, int newCellWallLength, Double newCellHeight, int newNumberOfRows,
                      int newNumberOfColumns, int newNumberOfParticleLSFFunctions, int newPhotonXEnergy, int newNumberOfMTFXPhotons,
                      int newNumberOfMTFXPhotonsPositions, Double RTGConversionCoefficient, Double newLengthOfLightWave,
-                     Double newMassAttenuationCoefficientOfLight, Double newAttenuationCoefficientOfXray, Double newDetectorDensity,
+                     Double newAttenuationCoefficientOfXray, Double newDetectorDensity,
                      Double newProbabilityOfAbsorption, Double newProbabilityOfDispersion, Double newProbabilityOfReflection,
-                     int newResolutionOfDetector, boolean newDetectorType, int newNumberOfNPSXPositions, int newNumberOfNPSXPhotonsInOnePosition) {
+                     int newResolutionOfDetector, boolean newDetectorType, int newNumberOfNPSXPositions, int newNumberOfNPSXPhotonsInOnePosition,
+                     int newNumberOfNPSLoops) {
         this.areaWallLength = newAreaWallLength;
         this.cellWallLength = newCellWallLength;
         this.cellHeight = newCellHeight;
@@ -43,25 +45,31 @@ public class Constants {
         this.numberOfMTFXPhotonsPositions = newNumberOfMTFXPhotonsPositions;
         this.RTGConversionCoefficient = RTGConversionCoefficient;
         this.lengthOfLightWave = newLengthOfLightWave;
-        this.massAttenuationCoefficientOfLight = newMassAttenuationCoefficientOfLight;
+
         this.attenuationCoefficientOfXray = newAttenuationCoefficientOfXray;
         this.detectorDensity = newDetectorDensity;
         this.massAttenuationCoefficientOfXray = setMassAttenuationCoefficientOfXray(detectorDensity, attenuationCoefficientOfXray);
-        //this.massAttenuationCoefficientOfXray = 0.01;
         this.probabilityOfAbsorption = newProbabilityOfAbsorption / (newProbabilityOfAbsorption + newProbabilityOfDispersion);
         this.probabilityOfDispersion = newProbabilityOfDispersion / (newProbabilityOfAbsorption + newProbabilityOfDispersion);
+        //this.massAttenuationCoefficientOfLight = newMassAttenuationCoefficientOfLight;
+        this.massAttenuationCoefficientOfLight = setMassAttenuationCoefficientOfLight(detectorDensity,newProbabilityOfAbsorption, newProbabilityOfDispersion);
         this.probabilityOfReflection = newProbabilityOfReflection;
         //this.numberOfLightPhotons = wyznaczLiczbeGenerowanychFotonowSwiatla();
-        this.numberOfLightPhotons = 10000;
+        this.numberOfLightPhotons = 1000;
         this.numberOfNPSXPositions = newNumberOfNPSXPositions;
         this.numberOfNPSXPhotonsInOnePosition = newNumberOfNPSXPhotonsInOnePosition;
         this.resolutionOfDetector = newResolutionOfDetector;
         this.detectorType = newDetectorType;
         this.startPoint = returnStartPoint(this);
+        this.numberOfNPSLoops = newNumberOfNPSLoops;
     }
 
     private Double setMassAttenuationCoefficientOfXray(Double detectorDensity, Double attenuationCoefficientOfXray) {
-        return detectorDensity / attenuationCoefficientOfXray;
+        return attenuationCoefficientOfXray*detectorDensity*0.0001;
+    }
+
+    private Double setMassAttenuationCoefficientOfLight(Double detectorDensity, Double newProbabilityOfAbsorption, Double newProbabilityOfDispersion) {
+        return (newProbabilityOfAbsorption + newProbabilityOfDispersion)*detectorDensity*0.0001;
     }
 
     private int wyznaczLiczbeGenerowanychFotonowSwiatla() {

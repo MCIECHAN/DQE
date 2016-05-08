@@ -18,8 +18,6 @@ public class LightPhoton {
     public Optional<LightPhoton> simulate(Constants constants) {
         if (!saved) {
             LightPhoton photonInNewPosition = losujDrogeSwobodna(constants);
-/*            photonInNewPosition.position.displayPosition();
-            photonInNewPosition.cell.displayBorders();*/
             if (photonInNewPosition.wgranicyKomorki()) return absorbcjaLubRozproszenie(constants, photonInNewPosition);
             else return przejscieLubOdbicie(constants, photonInNewPosition);
         } else {
@@ -39,13 +37,14 @@ public class LightPhoton {
 
     private Optional<LightPhoton> absorbcjaLubRozproszenie(Constants constants, LightPhoton photonInNewPosition) {
         if (photonInNewPosition.czyAbsorbowany(constants)) {
+            //System.out.println("ABSORPCJA"+"\n");
             return Optional.empty();
         } else return Optional.of(rozproszony(photonInNewPosition));
     }
 
     private LightPhoton losujDrogeSwobodna(Constants constants) {
         Double r = Math.random();
-        Double s = -1 / constants.massAttenuationCoefficientOfLight * Math.log(r);
+        Double s = (-Math.log(r))/constants.massAttenuationCoefficientOfLight;
         Double newX = position.x + directCoefficient.x * s;
         Double newY = position.y + directCoefficient.y * s;
         Double newZ = position.z + directCoefficient.z * s;
@@ -55,6 +54,9 @@ public class LightPhoton {
 
     private Boolean czyAbsorbowany(Constants constants) {
         Double r = Math.random();
+/*        System.out.print(r+"\n");
+        System.out.print(constants.probabilityOfDispersion+"\n");
+        System.out.print(constants.probabilityOfAbsorption+"\n");*/
         return r >= constants.probabilityOfDispersion;
     }
 
