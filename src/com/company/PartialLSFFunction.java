@@ -11,7 +11,7 @@ public class PartialLSFFunction {
 
     private Double positionZ;
     public ArrayList<Integer> LSFfuncion;
-    public ArrayList<Integer> longLSFfuncion;
+    public ArrayList<pureLSF> listOfPureLSF;
     private Double probabilityOfDetection;
     private boolean type;
 
@@ -31,14 +31,14 @@ public class PartialLSFFunction {
         ArrayList<LightPhoton> listaZapisanych = mainSimulationLoop(constants, lista);
         ArrayList<Integer> listOfAllXPositions = setListOfXPositions(listaZapisanych);
         ArrayList<Integer> nonNormalizedLSF = mainLSFLoop(listOfAllXPositions, constants);
-        this.setLongLSFfuncion(listOfAllXPositions, constants);
         this.setProbabilityOfDetection(nonNormalizedLSF, constants);
+        this.setListOfpureLSF(nonNormalizedLSF);
         return nonNormalizedLSF;
     }
 
     private void setProbabilityOfDetection(ArrayList<Integer> listOfAllXPositions, Constants constants) {
         Double x = (double) listOfAllXPositions.stream().mapToInt(Integer::intValue).sum() / constants.numberOfLightPhotons;
-        System.out.print(x + "\n");
+        System.out.print(x+"\n");
         this.probabilityOfDetection = x;
     }
 
@@ -83,21 +83,16 @@ public class PartialLSFFunction {
         }
     }
 
-    private void setLongLSFfuncion(ArrayList<Integer> listOfAllXPositions, Constants constants) {
-        ArrayList<Integer> lsf = new ArrayList<>();
-        if (listOfAllXPositions.isEmpty()) {
-            for (int i = -constants.startPoint; i < constants.startPoint; i = i + constants.resolutionOfDetector) {
-                lsf.add(0);
+    private void setListOfpureLSF(ArrayList<Integer> nonNormalizedLSF) {
+        ArrayList<pureLSF> list = new ArrayList<>();
+        for (int i = 0; i<nonNormalizedLSF.size();i++){
+            if(nonNormalizedLSF.get(i)!=0){
+                list.add(new pureLSF(i,nonNormalizedLSF.get(i)));
             }
-            this.longLSFfuncion = lsf;
-        } else {
-            int start = constants.startPoint*2;
-            for (int i = -start; i < start; i = i + constants.resolutionOfDetector) {
-                lsf.add(checkNumberOfOccurencesInGivenRange(listOfAllXPositions, i, i + constants.resolutionOfDetector));
-            }
-            this.longLSFfuncion = lsf;
         }
+        this.listOfPureLSF = list;
     }
+
 
 /*    private ArrayList<Double> normalizeLSF(Optional<ArrayList<Integer>> entryLSF, Constants constants) {
         ArrayList<Double> normalizedLSF = new ArrayList<>();

@@ -1,7 +1,5 @@
 package com.company;
 
-import java.util.Random;
-
 public class Position {
     Double x;
     Double y;
@@ -18,7 +16,7 @@ public class Position {
     }
 
     public static Double getSingleCoordinate(Double rangeMin, Double rangeMax) {
-        return rangeMin + (rangeMax - rangeMin) *Math.random();
+        return rangeMin + (rangeMax - rangeMin) * Math.random();
     }
 
     public void makeOneStepForMTForNPS(Constants constants, DirectionCoefficient directCoefficient) {
@@ -36,10 +34,6 @@ public class Position {
         } else {
             return false;
         }
-    }
-
-    public void displayPosition() {
-        System.out.println("Pozycja X: " + this.x + " Pozycja Y: " + this.y + " Pozycja Z: " + this.z);
     }
 
 }
