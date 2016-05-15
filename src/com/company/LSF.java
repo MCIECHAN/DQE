@@ -27,7 +27,7 @@ public class LSF {
         ArrayList<Integer> LSFOfMTF = countMTF(ListOfPartialLSFFunctions, constants);
         saveLSF(LSFOfMTF, constants, true, 0);
 
-        //generateSetOfNPS(ListOfPartialLSFFunctions, constants);
+        generateSetOfNPS(ListOfPartialLSFFunctions, constants);
 
         return ListOfPartialLSFFunctions;
     }
@@ -62,7 +62,7 @@ public class LSF {
         }
         Double etaCounter = 0.0;
         for (int l = 0; l < constants.numberOfMTFXPhotonsPositions; l++) {
-            System.out.println(l+" z "+constants.numberOfMTFXPhotonsPositions+" pętli MTF.");
+            System.out.println(l + " z " + constants.numberOfMTFXPhotonsPositions + " pętli MTF.");
             ArrayList<PhotonXPosition> list = generatePhotonXPositionsForMTF(constants);
             etaCounter = etaCounter + list.size();
             list.forEach(photonXPosition -> {
@@ -113,45 +113,40 @@ public class LSF {
         for (int k = 0; k < listOfPartialLSFFunctions.get(0).LSFfuncion.size(); k++) {
             endVector.add(0);
         }
-        System.out.println("Wchodzę do count NPS" + "\n");
         for (int h = 0; h < constants.numberOfNPSXPositions; h++) {
-            //System.out.println("Wchodzę do pętli NPSXPositions" + "\n");
+            //System.out.println("Wchodzę do pętli "+h+" z "+constants.numberOfNPSXPositions+" NPSXPositions" + "\n");
             ArrayList<PhotonXPosition> list = generatePhotonXPositionsForNPS(constants, endVector.size());
             list.forEach(photonXPosition -> {
                 int idx = getIndexOfClosestZPosition(photonXPosition.position.z, listOfPartialLSFFunctions);
                 if (listOfPartialLSFFunctions.get(idx).LSFfuncion.stream().count() != 0) {
                     int distance = photonXPosition.position.x.intValue() - listOfPartialLSFFunctions.get(idx).LSFfuncion.size() / 2;
-                   // System.out.println("pozycja fotonu X: " + photonXPosition.position.x + "\n");
-                    //System.out.println("Dystans: " + distance + "\n");
-                    //for (int i = 0; i < 10000; i++) {
+                //    System.out.println("pozycja fotonu X: " + photonXPosition.position.x + "\n");
+                //    System.out.println("Dystans: " + distance + "\n");
                     for (int i = 0; i < constants.numberOfLightPhotons; i++) {
-                        //System.out.println("Analizuję " + i + " z 10000 fotonów światła " + listOfPartialLSFFunctions.get(idx).getPositionZ() + "\n");
                         Double randomVariable = Math.random();
                         if (randomVariable <= listOfPartialLSFFunctions.get(idx).getProbablityOfdetection()) {
                             //System.out.println("Foton został zakwalifikowany do zlizenia" + "\n");
-                            Random rand = new Random();
                             //int randomPosition = rand.nextInt(((listOfPartialLSFFunctions.get(idx).LSFfuncion.size())));
                             int randomPosition = returnRandomPosition(distance, listOfPartialLSFFunctions.get(idx).LSFfuncion.size(), listOfPartialLSFFunctions.get(idx).listOfPureLSF);
-                            //System.out.println("Pozycja losowa dla fotonu światła: " + randomPosition + "\n");
+                         //   System.out.println("Pozycja losowa dla fotonu światła: " + randomPosition + "\n");
                             int diffrence = randomPosition + distance;
-                            //System.out.println("Difference: " + diffrence + "\n");
+                         //   System.out.println("Difference: " + diffrence + "\n");
                             double randomVariable2 = 0 + ((listOfPartialLSFFunctions.get(idx).LSFfuncion.stream().collect(Collectors.summarizingInt(Integer::intValue)).getMax() - 0)) * Math.random();
-/*                            System.out.print("Maksymalna wartość w LSF " + listOfPartialLSFFunctions.get(idx).getPositionZ() + " " + listOfPartialLSFFunctions.get(idx).LSFfuncion.stream().collect(Collectors.summarizingInt(Integer::intValue)).getMax() + "\n");
-                            System.out.println("Warunek zliczenia w pozycji: " + randomVariable2 + " " + listOfPartialLSFFunctions.get(idx).LSFfuncion.get(diffrence) + "\n");*/
-                            while (randomVariable2 > listOfPartialLSFFunctions.get(idx).LSFfuncion.get(diffrence)) {
+                          //  System.out.print("Maksymalna wartość w LSF " + listOfPartialLSFFunctions.get(idx).getPositionZ() + " " + listOfPartialLSFFunctions.get(idx).LSFfuncion.stream().collect(Collectors.summarizingInt(Integer::intValue)).getMax() + "\n");
+                           // System.out.println("Warunek zliczenia w pozycji: " +diffrence+ " wartośc losowa "+ randomVariable2 + " " + listOfPartialLSFFunctions.get(idx).LSFfuncion.get(diffrence) + "\n");
+                            while (randomVariable2 > listOfPartialLSFFunctions.get(idx).LSFfuncion.get(randomPosition)) {
                                 //while (randomVariable2 > listOfPartialLSFFunctions.get(idx).LSFfuncion.get(listOfPartialLSFFunctions.get(idx).LSFfuncion.size() / 2 + diffrence)) {
                                 //randomPosition = rand.nextInt(((listOfPartialLSFFunctions.get(idx).LSFfuncion.size())));
                                 randomPosition = returnRandomPosition(distance, listOfPartialLSFFunctions.get(idx).LSFfuncion.size(), listOfPartialLSFFunctions.get(idx).listOfPureLSF);
-                                randomVariable2 = 0 + ((listOfPartialLSFFunctions.get(idx).LSFfuncion.stream().collect(Collectors.summarizingInt(Integer::intValue)).getMax() - 0)) * Math.random();
                                 diffrence = randomPosition + distance;
-/*                                System.out.println("Szukam miejsca zliczenia" + "\n");
-                                System.out.println("Pozycja losowa dla fotonu światła: " + randomPosition + "\n");
-                                System.out.println("Difference: " + diffrence + "\n");
-                                System.out.print("Maksymalna wartość w LSF " + listOfPartialLSFFunctions.get(idx).getPositionZ() + " " + listOfPartialLSFFunctions.get(idx).LSFfuncion.stream().collect(Collectors.summarizingInt(Integer::intValue)).getMax() + "\n");
-                                System.out.println("Warunek zliczenia w pozycji: " + randomVariable2 + " " + listOfPartialLSFFunctions.get(idx).LSFfuncion.get(diffrence) + "\n");*/
+                                randomVariable2 = 0 + ((listOfPartialLSFFunctions.get(idx).LSFfuncion.stream().collect(Collectors.summarizingInt(Integer::intValue)).getMax() - 0)) * Math.random();
+                                //System.out.println("Szukam miejsca zliczenia" + "\n");
+                                //System.out.println("Pozycja losowa dla fotonu światła: " + randomPosition + "\n");
+                                //System.out.println("Difference: " + diffrence + "\n");
+                                //System.out.print("Maksymalna wartość w LSF " + listOfPartialLSFFunctions.get(idx).getPositionZ() + " " + listOfPartialLSFFunctions.get(idx).LSFfuncion.stream().collect(Collectors.summarizingInt(Integer::intValue)).getMax() + "\n");
+                                //System.out.println("Warunek zliczenia w pozycji: "+diffrence+ " wartośc losowa " + randomVariable2 + " " + listOfPartialLSFFunctions.get(idx).LSFfuncion.get(diffrence) + "\n");
                             }
-                            //System.out.println("Doliczyłem foton" + "\n");
-                            endVector.set(randomPosition, (endVector.get(randomPosition) + 1));
+                            endVector.set(diffrence, (endVector.get(randomPosition) + 1));
                         }
                     }
 
@@ -163,12 +158,20 @@ public class LSF {
 
     private int returnRandomPosition(int distance, int size, ArrayList<pureLSF> pureLSFArrayList) {
         Random r = new Random();
-        int position = r.nextInt(pureLSFArrayList.size());
+        int idx = r.nextInt(pureLSFArrayList.size());
+        int position = pureLSFArrayList.get(idx).getPosition();
         if (distance >= 0) {
-            while ()
-            return r.nextInt(((size - distance) - 0)) + 0;
+            while (position > (size - distance-1)) {
+                idx = r.nextInt(pureLSFArrayList.size());
+                position = pureLSFArrayList.get(idx).getPosition();
+            }
+            return position;
         } else {
-            return r.nextInt(((size - Math.abs(distance)))) + Math.abs(distance);
+            while (position>=size||position<Math.abs(distance)) {
+                idx = r.nextInt(pureLSFArrayList.size());
+                position = pureLSFArrayList.get(idx).getPosition();
+            }
+            return position;
         }
     }
 
@@ -190,11 +193,10 @@ public class LSF {
             System.out.println("Początek pętli NPS " + k + " z " + constants.numberOfNPSLoops + "\n");
             listOfNPS.add(countNPS(listOfPartialLSFFunctions, constants));
             listOfMediumValues.add(findMean(listOfNPS.get(k)));
-            System.out.println("Koniec pętli NPS " + k + " z " + constants.numberOfNPSLoops + "\n");
-            System.out.println(listOfMediumValues.get(k) + "\n");
         }
+        listOfMediumValues.forEach(Integer-> System.out.println(Integer+"\n"));
         Integer mediumValue = findMean(listOfMediumValues);
-        System.out.println(mediumValue + "\n");
+        System.out.println("Wartość średnia: "+mediumValue + "\n");
 
         for (int m = 0; m < listOfNPS.size(); m++) {
             int n = m + 10;
@@ -249,7 +251,7 @@ public class LSF {
     }
 
     private void setEtaValue(Double Eta) {
-        System.out.print("Wartośc Eta detektora: "+Eta+"\n");
+        System.out.print("Wartośc Eta detektora: " + Eta + "\n");
         this.eta = Eta;
     }
 
