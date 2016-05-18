@@ -4,7 +4,6 @@
     <list default="true" id="31a1ba8d-1e9d-4120-a834-762d8983f92a" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/symulacja/com/company/Constants.class" afterPath="$PROJECT_DIR$/out/production/symulacja/com/company/Constants.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/company/Main.java" afterPath="$PROJECT_DIR$/src/com/company/Main.java" />
     </list>
     <ignored path="symulacja.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -596,13 +595,6 @@
       <workItem from="1457796527396" duration="1727000" />
       <workItem from="1457799217522" duration="115000" />
     </task>
-    <task id="LOCAL-00012" summary="Working over position file">
-      <created>1453482448618</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1453482448618</updated>
-    </task>
     <task id="LOCAL-00013" summary="Working over position file, Cell and Light photon">
       <created>1453644127561</created>
       <option name="number" value="00013" />
@@ -939,7 +931,14 @@
       <option name="project" value="LOCAL" />
       <updated>1463306788340</updated>
     </task>
-    <option name="localTasksCounter" value="61" />
+    <task id="LOCAL-00061" summary="developing......">
+      <created>1463581894558</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1463581894560</updated>
+    </task>
+    <option name="localTasksCounter" value="62" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
