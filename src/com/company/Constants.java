@@ -20,7 +20,6 @@ public class Constants {
     Double probabilityOfDispersion;
     Double probabilityOfReflection;
     int numberOfLightPhotons;
-    int numberOfNPSXPositions;
     int numberOfNPSXPhotonsInOnePosition;
     int resolutionOfDetector;
     boolean detectorType;
@@ -32,7 +31,7 @@ public class Constants {
                      int newNumberOfMTFXPhotonsPositions, Double RTGConversionCoefficient, Double newLengthOfLightWave,
                      Double newAttenuationCoefficientOfXray, Double newDetectorDensity,
                      Double newProbabilityOfAbsorption, Double newProbabilityOfDispersion, Double newProbabilityOfReflection,
-                     int newResolutionOfDetector, boolean newDetectorType, int newNumberOfNPSXPositions, int newNumberOfNPSXPhotonsInOnePosition,
+                     int newResolutionOfDetector, boolean newDetectorType, int newNumberOfNPSXPhotonsInOnePosition,
                      int newNumberOfNPSLoops) {
         this.areaWallLength = newAreaWallLength;
         this.cellWallLength = newCellWallLength;
@@ -55,8 +54,7 @@ public class Constants {
         this.massAttenuationCoefficientOfLight = setMassAttenuationCoefficientOfLight(detectorDensity,newProbabilityOfAbsorption, newProbabilityOfDispersion);
         this.probabilityOfReflection = newProbabilityOfReflection;
         //this.numberOfLightPhotons = wyznaczLiczbeGenerowanychFotonowSwiatla();
-        this.numberOfLightPhotons = 10000;
-        this.numberOfNPSXPositions = newNumberOfNPSXPositions;
+        this.numberOfLightPhotons = 100000;
         this.numberOfNPSXPhotonsInOnePosition = newNumberOfNPSXPhotonsInOnePosition;
         this.resolutionOfDetector = newResolutionOfDetector;
         this.detectorType = newDetectorType;

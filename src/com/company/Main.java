@@ -7,12 +7,12 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        Constants zmienne = new Constants(100, 5, 100.0, 1024, 1024, 20, 200000, 10, 10, 0.2, 545.0, 3.2, 7.34, 0.9, 499.55, 0.9,5,true,50,50,10);
-        Constants zmiennek = new Constants(100, 5, 100.0, 1024, 1024, 20, 200000, 10, 10, 0.2, 545.0, 3.2, 7.34, 0.9, 499.55, 0.9,5,false,50,50,10);
+        Constants zmienne = new Constants(100, 5, 100.0, 1024, 1024, 20, 200000, 100, 10, 0.2, 545.0, 3.2, 7.34, 0.9, 499.55, 0.9,5,true,100,10);
+        //Constants zmiennek = new Constants(100, 5, 100.0, 1024, 1024, 20, 200000, 10, 10, 0.2, 545.0, 3.2, 7.34, 0.9, 499.55, 0.9,5,false,100,10);
 
 
         LSF lsf = new LSF(zmienne);
-        LSF lsfk = new LSF(zmiennek);
+       // LSF lsfk = new LSF(zmiennek);
 
 /*        PartialLSFFunction lsf = new PartialLSFFunction(zmienne, 50.0);
         lsf.saveLSFfunctions();*/
