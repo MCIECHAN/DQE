@@ -37,7 +37,6 @@ public class LightPhoton {
 
     private Optional<LightPhoton> absorbcjaLubRozproszenie(Constants constants, LightPhoton photonInNewPosition) {
         if (photonInNewPosition.czyAbsorbowany(constants)) {
-            //System.out.println("ABSORPCJA"+"\n");
             return Optional.empty();
         } else return Optional.of(rozproszony(photonInNewPosition));
     }
@@ -54,9 +53,6 @@ public class LightPhoton {
 
     private Boolean czyAbsorbowany(Constants constants) {
         Double r = Math.random();
-/*        System.out.print(r+"\n");
-        System.out.print(constants.probabilityOfDispersion+"\n");
-        System.out.print(constants.probabilityOfAbsorption+"\n");*/
         return r >= constants.probabilityOfDispersion;
     }
 
@@ -95,9 +91,6 @@ public class LightPhoton {
     }
 
     private Optional<LightPhoton> odbicie(LightPhoton przewidywanaNowaPozycja) {
-        //System.out.println("ODBICIE");
-       // przewidywanaNowaPozycja.position.displayPosition();
-       // przewidywanaNowaPozycja.cell.displayBorders();
         Optional<Position> newPosition = przewidywanaNowaPozycja.cell.getCrossedBorderPoint(this.position, this.directCoefficient, przewidywanaNowaPozycja.position);
         return newPosition.map(position -> {
             DirectionCoefficient noweWspolczynnikiKierunkowe = directCoefficient;
@@ -114,34 +107,18 @@ public class LightPhoton {
 
 
     private Optional<LightPhoton> przejscie(LightPhoton przewidywanaNowaPozycja, Constants constants) {
-/*        System.out.println("PRZEJŚCIE");
-        przewidywanaNowaPozycja.position.displayPosition();
-        przewidywanaNowaPozycja.cell.displayBorders();*/
         Optional<Position> newPosition = przewidywanaNowaPozycja.cell.getCrossedBorderPoint(position, directCoefficient, przewidywanaNowaPozycja.position);
         DirectionCoefficient noweWspolczynnikiKierunkowe = przewidywanaNowaPozycja.directCoefficient;
         return newPosition.flatMap(pozycja -> {
             LightPhoton newLightPhoton = new LightPhoton(pozycja, noweWspolczynnikiKierunkowe, przewidywanaNowaPozycja.cell, false);
             return currentCell(newLightPhoton, constants).map(cell -> {
                 newLightPhoton.cell = cell;
-                //System.out.println("Utworzyłem nową komórkę po przejsciu");
                 if (przewidywanaNowaPozycja.position.z >= constants.cellHeight) {
                     newLightPhoton.saved = true;
                 }
                 return newLightPhoton;
             });
         });
-    }
-
-    public void wyswietl() {
-        System.out.println("x: " + position.x + " y: " + position.y + " z: " + position.z);
-    }
-
-    public String naString() {
-        return position.x + " " + position.y + "\n";
-    }
-
-    public PositionOfDetection getPositionOfDetection() {
-        return new PositionOfDetection(this.position.x.intValue(), this.position.y.intValue());
     }
 
     public int getPositionX() {

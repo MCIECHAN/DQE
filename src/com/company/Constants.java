@@ -7,6 +7,7 @@ public class Constants {
     int numberOfRows;
     int numberOfColumns;
     int numberOfParticleLSFFunctions;
+    int number;
     int photonXEnergy;
     int numberOfMTFXPhotons;
     int numberOfMTFXPhotonsPositions;
@@ -27,7 +28,7 @@ public class Constants {
     int numberOfNPSLoops;
 
     public Constants(int newAreaWallLength, int newCellWallLength, Double newCellHeight, int newNumberOfRows,
-                     int newNumberOfColumns, int newNumberOfParticleLSFFunctions, int newPhotonXEnergy, int newNumberOfMTFXPhotons,
+                     int newNumberOfColumns, int newNumberOfParticleLSFFunctions, int newNumber, int newPhotonXEnergy, int newNumberOfMTFXPhotons,
                      int newNumberOfMTFXPhotonsPositions, Double RTGConversionCoefficient, Double newLengthOfLightWave,
                      Double newAttenuationCoefficientOfXray, Double newDetectorDensity,
                      Double newProbabilityOfAbsorption, Double newProbabilityOfDispersion, Double newProbabilityOfReflection,
@@ -39,12 +40,12 @@ public class Constants {
         this.numberOfRows = newNumberOfRows;
         this.numberOfColumns = newNumberOfColumns;
         this.numberOfParticleLSFFunctions = newNumberOfParticleLSFFunctions;
+        this.number = newNumber;
         this.photonXEnergy = newPhotonXEnergy;
         this.numberOfMTFXPhotons = newNumberOfMTFXPhotons;
         this.numberOfMTFXPhotonsPositions = newNumberOfMTFXPhotonsPositions;
         this.RTGConversionCoefficient = RTGConversionCoefficient;
         this.lengthOfLightWave = newLengthOfLightWave;
-
         this.attenuationCoefficientOfXray = newAttenuationCoefficientOfXray;
         this.detectorDensity = newDetectorDensity;
         this.massAttenuationCoefficientOfXray = setMassAttenuationCoefficientOfXray(detectorDensity, attenuationCoefficientOfXray);
@@ -54,7 +55,7 @@ public class Constants {
         this.massAttenuationCoefficientOfLight = setMassAttenuationCoefficientOfLight(detectorDensity,newProbabilityOfAbsorption, newProbabilityOfDispersion);
         this.probabilityOfReflection = newProbabilityOfReflection;
         //this.numberOfLightPhotons = wyznaczLiczbeGenerowanychFotonowSwiatla();
-        this.numberOfLightPhotons = 10000;
+        this.numberOfLightPhotons = 1000;
         this.numberOfNPSXPhotonsInOnePosition = newNumberOfNPSXPhotonsInOnePosition;
         this.resolutionOfDetector = newResolutionOfDetector;
         this.detectorType = newDetectorType;

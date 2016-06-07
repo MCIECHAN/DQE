@@ -27,8 +27,13 @@ public class PartialLSFFunction {
         DirectionCoefficient wspkier = new DirectionCoefficient(Math.random(), Math.random(), Math.random());
         Cell komorka = returnCellAdjusted(constants);
         PhotonX fotonX = new PhotonX(pozycja, wspkier, komorka, constants.massAttenuationCoefficientOfXray, constants.numberOfLightPhotons);
-        ArrayList<LightPhoton> lista = fotonX.generateLightPhotons();
-        ArrayList<LightPhoton> listaZapisanych = mainSimulationLoop(constants, lista);
+
+        //ArrayList<LightPhoton> lista = fotonX.generateLightPhotons();
+        //ArrayList<LightPhoton> listaZapisanych = mainSimulationLoop(constants, lista);
+
+        ArrayList<LightPhoton> listaZapisanych = testLoop(fotonX, constants);
+
+
         ArrayList<Integer> listOfAllXPositions = setListOfXPositions(listaZapisanych);
         ArrayList<Integer> nonNormalizedLSF = mainLSFLoop(listOfAllXPositions, constants);
         this.setProbabilityOfDetection(nonNormalizedLSF, constants);
@@ -37,9 +42,19 @@ public class PartialLSFFunction {
     }
 
     private void setProbabilityOfDetection(ArrayList<Integer> listOfAllXPositions, Constants constants) {
-        Double x = (double) listOfAllXPositions.stream().mapToInt(Integer::intValue).sum() / constants.numberOfLightPhotons;
-        System.out.print(x+"\n");
+        Double x = (double) listOfAllXPositions.stream().mapToInt(Integer::intValue).sum() / (constants.numberOfLightPhotons * constants.number);
+        System.out.print(x + "\n");
         this.probabilityOfDetection = x;
+    }
+
+    private ArrayList<LightPhoton> testLoop(PhotonX fotonX, Constants constants) {
+        ArrayList<LightPhoton> mainList = new ArrayList<>();
+        for (int i = 0; i < constants.number; i++) {
+            ArrayList<LightPhoton> lista = fotonX.generateLightPhotons();
+            ArrayList<LightPhoton> listaZapisanych = mainSimulationLoop(constants, lista);
+            mainList.addAll(listaZapisanych);
+        }
+        return mainList;
     }
 
     private static ArrayList<LightPhoton> mainSimulationLoop(Constants zmienne, ArrayList<LightPhoton> lista) {
@@ -85,30 +100,13 @@ public class PartialLSFFunction {
 
     private void setListOfpureLSF(ArrayList<Integer> nonNormalizedLSF) {
         ArrayList<pureLSF> list = new ArrayList<>();
-        for (int i = 0; i<nonNormalizedLSF.size();i++){
-            if(nonNormalizedLSF.get(i)!=0){
-                list.add(new pureLSF(i,nonNormalizedLSF.get(i)));
+        for (int i = 0; i < nonNormalizedLSF.size(); i++) {
+            if (nonNormalizedLSF.get(i) != 0) {
+                list.add(new pureLSF(i, nonNormalizedLSF.get(i)));
             }
         }
         this.listOfPureLSF = list;
     }
-
-
-/*    private ArrayList<Double> normalizeLSF(Optional<ArrayList<Integer>> entryLSF, Constants constants) {
-        ArrayList<Double> normalizedLSF = new ArrayList<>();
-        if (entryLSF.isPresent()) {
-            for (int i = 0; i < entryLSF.get().size(); i++) {
-                double norm = (double) entryLSF.get().get(i);
-                normalizedLSF.add(norm / constants.numberOfLightPhotons);
-            }
-            return normalizedLSF;
-        } else {
-            for (int i = -constants.startPoint; i < constants.startPoint; i = i + constants.resolutionOfDetector) {
-                normalizedLSF.add(0.0);
-            }
-            return normalizedLSF;
-        }
-    }*/
 
     private Cell returnCellAdjusted(Constants constants) {
         if (constants.detectorType) {
@@ -151,7 +149,6 @@ public class PartialLSFFunction {
 
 
     }
-
 
     public void saveLSFfunctions() {
         if (this.LSFfuncion.size() == 0) {
