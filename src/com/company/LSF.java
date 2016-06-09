@@ -160,7 +160,6 @@ public class LSF {
             endVector = addTwoArrayListsOfIntegets(endVector, funkcja(constants, listOfPartialLSFFunctions), h);
         }
         return new ArrayList<Integer>(endVector.subList(listOfPartialLSFFunctions.get(0).LSFfuncion.size() / 2, listOfPartialLSFFunctions.get(0).LSFfuncion.size() * 3 / 2));
-        //return endVector;
     }
 
     private ArrayList<PhotonXPosition> generatePhotonXPositionsForNPS(Constants constants) {
