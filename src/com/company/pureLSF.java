@@ -15,4 +15,9 @@ public class pureLSF {
     public int getPosition(){
         return this.positionOfDetectorCell;
     }
+
+    public int getnumberOfDetectedPhotons(){
+        return this.numberOfDetectedPhotons;
+    }
+
 }

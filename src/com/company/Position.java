@@ -14,17 +14,6 @@ public class Position {
     public Double distanceBetween(Position that) {
         return Math.sqrt(Math.pow(this.x - that.x, 2) + Math.pow(this.y - that.y, 2) + Math.pow(this.z - that.z, 2));
     }
-
-    public static Double getSingleCoordinate(Double rangeMin, Double rangeMax) {
-        return rangeMin + (rangeMax - rangeMin) * Math.random();
-    }
-
-    public void makeOneStepForMTForNPS(Constants constants, DirectionCoefficient directCoefficient) {
-        Double r = Math.random();
-        Double s = (-1 * Math.log(r)) / constants.massAttenuationCoefficientOfXray;
-        this.z = this.z + directCoefficient.z * s;
-    }
-
     public boolean inDetector(Constants constants) {
         boolean xInBoarder = this.x >= 0 && this.x <= constants.cellWallLength * constants.numberOfColumns;
         boolean yInBoarder = this.y >= 0 && this.y <= constants.cellWallLength * constants.numberOfRows;
@@ -35,5 +24,4 @@ public class Position {
             return false;
         }
     }
-
 }

@@ -12,6 +12,7 @@ public class PartialLSFFunction {
     private Double positionZ;
     public ArrayList<Integer> LSFfuncion;
     public ArrayList<pureLSF> listOfPureLSF;
+    public ArrayList<normalizedPureLSF> listOfNormalizedPureLSF;
     private Double probabilityOfDetection;
     private boolean type;
 
@@ -27,17 +28,12 @@ public class PartialLSFFunction {
         DirectionCoefficient wspkier = new DirectionCoefficient(Math.random(), Math.random(), Math.random());
         Cell komorka = returnCellAdjusted(constants);
         PhotonX fotonX = new PhotonX(pozycja, wspkier, komorka, constants.massAttenuationCoefficientOfXray, constants.numberOfLightPhotons);
-
-        //ArrayList<LightPhoton> lista = fotonX.generateLightPhotons();
-        //ArrayList<LightPhoton> listaZapisanych = mainSimulationLoop(constants, lista);
-
         ArrayList<LightPhoton> listaZapisanych = testLoop(fotonX, constants);
-
-
         ArrayList<Integer> listOfAllXPositions = setListOfXPositions(listaZapisanych);
         ArrayList<Integer> nonNormalizedLSF = mainLSFLoop(listOfAllXPositions, constants);
         this.setProbabilityOfDetection(nonNormalizedLSF, constants);
         this.setListOfpureLSF(nonNormalizedLSF);
+        this.setListOfNormalizedpureLSF(this.listOfPureLSF,nonNormalizedLSF);
         return nonNormalizedLSF;
     }
 
@@ -120,6 +116,14 @@ public class PartialLSFFunction {
         return this.probabilityOfDetection;
     }
 
+    private void setListOfNormalizedpureLSF(ArrayList<pureLSF> pureLSF, ArrayList<Integer> entryLSF) {
+        ArrayList<normalizedPureLSF> list = new ArrayList<>();
+        double maximum = entryLSF.stream().collect(Collectors.summarizingInt(Integer::intValue)).getMax();
+        for (int i = 0; i < pureLSF.size(); i++) {
+            list.add(i, new normalizedPureLSF(pureLSF.get(i).getPosition(), pureLSF.get(i).getnumberOfDetectedPhotons()/(maximum*1.01)));
+        }
+        this.listOfNormalizedPureLSF = list;
+    }
 
     public void save(ArrayList<Integer> listOfAllXPositions, Constants constants) {
         String sciezka = new String("C:\\Users\\ciechan\\Desktop\\DQE - user story\\");

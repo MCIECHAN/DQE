@@ -67,7 +67,7 @@ public class LSF {
             ArrayList<PhotonXPosition> list = generatePhotonXPositionsForMTF(constants);
             etaCounter = etaCounter + list.size();
             list.forEach(photonXPosition -> {
-                int idx = getIndexOfClosestZPosition(photonXPosition.position.z, listOfPartialLSFFunctions);
+                int idx = getIndexOfClosestZPosition(photonXPosition.getZ_position(), listOfPartialLSFFunctions);
                 if (listOfPartialLSFFunctions.get(idx).LSFfuncion.stream().anyMatch(x -> x > 0)) {
                     for (int i = 0; i < constants.numberOfLightPhotons; i++) {
                         boolean detected = rand.nextDouble() <= listOfPartialLSFFunctions.get(idx).getProbablityOfdetection();
@@ -90,24 +90,37 @@ public class LSF {
     }
 
     private boolean notDetected(ArrayList<PartialLSFFunction> listOfPartialLSFFunctions, int idx, int randomPosition, double randomVariable2) {
-        return randomVariable2 > listOfPartialLSFFunctions.get(idx).LSFfuncion.get(listOfPartialLSFFunctions.get(idx).listOfPureLSF.get(randomPosition).getPosition());
+        return randomVariable2 > listOfPartialLSFFunctions.get(idx).listOfPureLSF.get(randomPosition).getnumberOfDetectedPhotons();
     }
+
+    private void addLFToEndVector2(ArrayList<PartialLSFFunction> listOfPartialLSFFunctions, ArrayList<Integer> endVector, Random rand, int idx) {
+        int randomPosition = rand.nextInt(((listOfPartialLSFFunctions.get(idx).listOfNormalizedPureLSF.size())));
+        double randomVariable2 = rand.nextDouble();
+        while (notDetected2(listOfPartialLSFFunctions, idx, randomPosition, randomVariable2)) {
+            randomPosition = rand.nextInt(((listOfPartialLSFFunctions.get(idx).listOfNormalizedPureLSF.size())));
+            randomVariable2 = rand.nextDouble();
+        }
+        endVector.set(listOfPartialLSFFunctions.get(idx).listOfNormalizedPureLSF.get(randomPosition).getPosition(), (endVector.get(listOfPartialLSFFunctions.get(idx).listOfNormalizedPureLSF.get(randomPosition).getPosition()) + 1));
+    }
+
+    private boolean notDetected2(ArrayList<PartialLSFFunction> listOfPartialLSFFunctions, int idx, int randomPosition, double randomVariable2) {
+        return randomVariable2 > listOfPartialLSFFunctions.get(idx).listOfNormalizedPureLSF.get(randomPosition).getPprobablityOfdetection();
+    }
+
 
     private ArrayList<PhotonXPosition> generatePhotonXPositionsForMTF(Constants constants) {
         ArrayList<PhotonXPosition> listOFPhotonXPositionsForMTF = new ArrayList<PhotonXPosition>();
         for (int i = 0; i < constants.numberOfMTFXPhotons; i++) {
-            Position position = new Position((double) constants.numberOfColumns * constants.cellWallLength / 2, (double) constants.numberOfRows * constants.cellWallLength / 2, 0.0);
-            DirectionCoefficient directionCoefficient = new DirectionCoefficient(Math.random(), Math.random(), 1.0);
-            listOFPhotonXPositionsForMTF.add(new PhotonXPosition(position, directionCoefficient));
+            listOFPhotonXPositionsForMTF.add(new PhotonXPosition(0.0, 0));
         }
         listOFPhotonXPositionsForMTF = makeOneStepForAllElementsOfListOfPhotonXPositionsForMTForNPS(listOFPhotonXPositionsForMTF, constants);
         return listOFPhotonXPositionsForMTF;
     }
 
     private ArrayList<PhotonXPosition> makeOneStepForAllElementsOfListOfPhotonXPositionsForMTForNPS(ArrayList<PhotonXPosition> photonXPositions, Constants constants) {
-        photonXPositions.forEach(photonXPosition -> photonXPosition.position.makeOneStepForMTForNPS(constants, photonXPosition.directionCoefficient));
+        photonXPositions.forEach(photonXPosition -> photonXPosition.makeOneStepForMTForNPS(constants));
         photonXPositions = photonXPositions.stream()
-                .filter(photonXPosition -> photonXPosition.position.inDetector(constants))
+                .filter(photonXPosition -> photonXPosition.photonX_in_Detector(constants))
                 .collect(Collectors.toCollection(ArrayList::new));
 
         return photonXPositions;
@@ -122,13 +135,13 @@ public class LSF {
         Random rand = new Random();
 
         list.forEach(photonXPosition -> {
-            int idx = getIndexOfClosestZPosition(photonXPosition.position.z, listOfPartialLSFFunctions);
+            int idx = getIndexOfClosestZPosition(photonXPosition.getZ_position(), listOfPartialLSFFunctions);
             if (listOfPartialLSFFunctions.get(idx).LSFfuncion.stream().anyMatch(x -> x > 0)) {
                 for (int i = 0; i < constants.numberOfLightPhotons; i++) {
                     boolean detected = rand.nextDouble() <= listOfPartialLSFFunctions.get(idx).getProbablityOfdetection();
                     if (detected) addLFToNPSEndVector(listOfPartialLSFFunctions, endVector, rand, idx);
-                    }
                 }
+            }
         });
         return endVector;
     }
@@ -165,7 +178,7 @@ public class LSF {
     private ArrayList<PhotonXPosition> generatePhotonXPositionsForNPS(Constants constants) {
         ArrayList<PhotonXPosition> listOFPhotonXPositionsForNPS = new ArrayList<PhotonXPosition>();
         for (int j = 0; j < getPoisson(constants.numberOfNPSXPhotonsInOnePosition); j++) {
-            listOFPhotonXPositionsForNPS.add(new PhotonXPosition(new Position(0.0, 0.0, 0.0), new DirectionCoefficient(0.0, 0.0, 1.0)));
+            listOFPhotonXPositionsForNPS.add(new PhotonXPosition( 0.0, 1));
         }
         listOFPhotonXPositionsForNPS = makeOneStepForAllElementsOfListOfPhotonXPositionsForMTForNPS(listOFPhotonXPositionsForNPS, constants);
         return listOFPhotonXPositionsForNPS;
@@ -182,10 +195,7 @@ public class LSF {
         }
         listOfMediumValues.forEach(Integer -> System.out.println(Integer + "\n"));
 
-
         Integer mediumValue = findMean(listOfMediumValues);
-        System.out.println("Wartość średnia: " + mediumValue + "\n");
-
         for (int m = 0; m < listOfNPS.size(); m++) {
             int n = m + 10;
             saveLSF(listOfNPS.get(m), constants, false, n);
