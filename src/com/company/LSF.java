@@ -71,7 +71,7 @@ public class LSF {
                 if (listOfPartialLSFFunctions.get(idx).LSFfuncion.stream().anyMatch(x -> x > 0)) {
                     for (int i = 0; i < constants.numberOfLightPhotons; i++) {
                         boolean detected = rand.nextDouble() <= listOfPartialLSFFunctions.get(idx).getProbablityOfdetection();
-                        if (detected) addLFToEndVector(listOfPartialLSFFunctions, endVector, rand, idx);
+                        if (detected) addMTFoEndVector(listOfPartialLSFFunctions, endVector, rand, idx);
                     }
                 }
             });
@@ -79,7 +79,7 @@ public class LSF {
         return endVector;
     }
 
-    private void addLFToEndVector(ArrayList<PartialLSFFunction> listOfPartialLSFFunctions, ArrayList<Integer> endVector, Random rand, int idx) {
+    private void addMTFoEndVector(ArrayList<PartialLSFFunction> listOfPartialLSFFunctions, ArrayList<Integer> endVector, Random rand, int idx) {
         int randomPosition = rand.nextInt(((listOfPartialLSFFunctions.get(idx).listOfPureLSF.size())));
         double randomVariable2 = ((listOfPartialLSFFunctions.get(idx).LSFfuncion.stream().collect(Collectors.summarizingInt(Integer::intValue)).getMax())) * Math.random();
         while (notDetected(listOfPartialLSFFunctions, idx, randomPosition, randomVariable2)) {
@@ -92,21 +92,6 @@ public class LSF {
     private boolean notDetected(ArrayList<PartialLSFFunction> listOfPartialLSFFunctions, int idx, int randomPosition, double randomVariable2) {
         return randomVariable2 > listOfPartialLSFFunctions.get(idx).listOfPureLSF.get(randomPosition).getnumberOfDetectedPhotons();
     }
-
-    private void addLFToEndVector2(ArrayList<PartialLSFFunction> listOfPartialLSFFunctions, ArrayList<Integer> endVector, Random rand, int idx) {
-        int randomPosition = rand.nextInt(((listOfPartialLSFFunctions.get(idx).listOfNormalizedPureLSF.size())));
-        double randomVariable2 = rand.nextDouble();
-        while (notDetected2(listOfPartialLSFFunctions, idx, randomPosition, randomVariable2)) {
-            randomPosition = rand.nextInt(((listOfPartialLSFFunctions.get(idx).listOfNormalizedPureLSF.size())));
-            randomVariable2 = rand.nextDouble();
-        }
-        endVector.set(listOfPartialLSFFunctions.get(idx).listOfNormalizedPureLSF.get(randomPosition).getPosition(), (endVector.get(listOfPartialLSFFunctions.get(idx).listOfNormalizedPureLSF.get(randomPosition).getPosition()) + 1));
-    }
-
-    private boolean notDetected2(ArrayList<PartialLSFFunction> listOfPartialLSFFunctions, int idx, int randomPosition, double randomVariable2) {
-        return randomVariable2 > listOfPartialLSFFunctions.get(idx).listOfNormalizedPureLSF.get(randomPosition).getPprobablityOfdetection();
-    }
-
 
     private ArrayList<PhotonXPosition> generatePhotonXPositionsForMTF(Constants constants) {
         ArrayList<PhotonXPosition> listOFPhotonXPositionsForMTF = new ArrayList<PhotonXPosition>();
@@ -139,14 +124,14 @@ public class LSF {
             if (listOfPartialLSFFunctions.get(idx).LSFfuncion.stream().anyMatch(x -> x > 0)) {
                 for (int i = 0; i < constants.numberOfLightPhotons; i++) {
                     boolean detected = rand.nextDouble() <= listOfPartialLSFFunctions.get(idx).getProbablityOfdetection();
-                    if (detected) addLFToNPSEndVector(listOfPartialLSFFunctions, endVector, rand, idx);
+                    if (detected) addLSFoNPSEndVector2(listOfPartialLSFFunctions, endVector, rand, idx);
                 }
             }
         });
         return endVector;
     }
 
-    private void addLFToNPSEndVector(ArrayList<PartialLSFFunction> listOfPartialLSFFunctions, ArrayList<Integer> endVector, Random rand, int idx) {
+    private void addLSFoNPSEndVector(ArrayList<PartialLSFFunction> listOfPartialLSFFunctions, ArrayList<Integer> endVector, Random rand, int idx) {
         int randomPosition = rand.nextInt(((listOfPartialLSFFunctions.get(idx).listOfPureLSF.size())));
         double randomVariable2 = ((listOfPartialLSFFunctions.get(idx).LSFfuncion.stream().collect(Collectors.summarizingInt(Integer::intValue)).getMax() - 0)) * Math.random();
         while (notDetected(listOfPartialLSFFunctions, idx, randomPosition, randomVariable2)) {
@@ -154,6 +139,20 @@ public class LSF {
             randomVariable2 = ((listOfPartialLSFFunctions.get(idx).LSFfuncion.stream().collect(Collectors.summarizingInt(Integer::intValue)).getMax() - 0)) * Math.random();
         }
         endVector.set(listOfPartialLSFFunctions.get(idx).listOfPureLSF.get(randomPosition).getPosition(), (endVector.get(listOfPartialLSFFunctions.get(idx).listOfPureLSF.get(randomPosition).getPosition()) + 1));
+    }
+
+    private void addLSFoNPSEndVector2(ArrayList<PartialLSFFunction> listOfPartialLSFFunctions, ArrayList<Integer> endVector, Random rand, int idx) {
+        int randomPosition = rand.nextInt(((listOfPartialLSFFunctions.get(idx).listOfNormalizedPureLSF.size())));
+        double randomVariable2 = rand.nextDouble();
+        while (notDetected2(listOfPartialLSFFunctions, idx, randomPosition, randomVariable2)) {
+            randomPosition = rand.nextInt(((listOfPartialLSFFunctions.get(idx).listOfNormalizedPureLSF.size())));
+            randomVariable2 = rand.nextDouble();
+        }
+        endVector.set(listOfPartialLSFFunctions.get(idx).listOfNormalizedPureLSF.get(randomPosition).getPosition(), (endVector.get(listOfPartialLSFFunctions.get(idx).listOfNormalizedPureLSF.get(randomPosition).getPosition()) + 1));
+    }
+
+    private boolean notDetected2(ArrayList<PartialLSFFunction> listOfPartialLSFFunctions, int idx, int randomPosition, double randomVariable2) {
+        return randomVariable2 > listOfPartialLSFFunctions.get(idx).listOfNormalizedPureLSF.get(randomPosition).getPprobablityOfdetection();
     }
 
     private ArrayList<Integer> addTwoArrayListsOfIntegets(ArrayList<Integer> mainArrayList, ArrayList<Integer> addedArrayList, int startPositionOfAdding) {

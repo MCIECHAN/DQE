@@ -55,7 +55,7 @@ public class Constants {
         this.massAttenuationCoefficientOfLight = setMassAttenuationCoefficientOfLight(detectorDensity,newProbabilityOfAbsorption, newProbabilityOfDispersion);
         this.probabilityOfReflection = newProbabilityOfReflection;
         //this.numberOfLightPhotons = wyznaczLiczbeGenerowanychFotonowSwiatla();
-        this.numberOfLightPhotons = 10000;
+        this.numberOfLightPhotons = 1000;
         this.numberOfNPSXPhotonsInOnePosition = newNumberOfNPSXPhotonsInOnePosition;
         this.resolutionOfDetector = newResolutionOfDetector;
         this.detectorType = newDetectorType;

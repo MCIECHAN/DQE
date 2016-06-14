@@ -1,9 +1,5 @@
 package com.company;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,7 +29,7 @@ public class PartialLSFFunction {
         ArrayList<Integer> nonNormalizedLSF = mainLSFLoop(listOfAllXPositions, constants);
         this.setProbabilityOfDetection(nonNormalizedLSF, constants);
         this.setListOfpureLSF(nonNormalizedLSF);
-        this.setListOfNormalizedpureLSF(this.listOfPureLSF,nonNormalizedLSF);
+        this.setListOfNormalizedpureLSF(this.listOfPureLSF, nonNormalizedLSF);
         return nonNormalizedLSF;
     }
 
@@ -120,70 +116,9 @@ public class PartialLSFFunction {
         ArrayList<normalizedPureLSF> list = new ArrayList<>();
         double maximum = entryLSF.stream().collect(Collectors.summarizingInt(Integer::intValue)).getMax();
         for (int i = 0; i < pureLSF.size(); i++) {
-            list.add(i, new normalizedPureLSF(pureLSF.get(i).getPosition(), pureLSF.get(i).getnumberOfDetectedPhotons()/(maximum*1.01)));
+            list.add(i, new normalizedPureLSF(pureLSF.get(i).getPosition(), pureLSF.get(i).getnumberOfDetectedPhotons() / (maximum * 1.01)));
         }
         this.listOfNormalizedPureLSF = list;
-    }
-
-    public void save(ArrayList<Integer> listOfAllXPositions, Constants constants) {
-        String sciezka = new String("C:\\Users\\ciechan\\Desktop\\DQE - user story\\");
-
-        try {
-            String filename = new String(sciezka + constants.detectorType + ".txt");
-
-            File plik = new File(filename);
-            if (!plik.exists()) {
-                plik.createNewFile();
-            }
-            FileWriter fw = new FileWriter(plik.getAbsoluteFile());
-            BufferedWriter bw = new BufferedWriter(fw);
-
-            listOfAllXPositions.forEach(p -> {
-                try {
-                    bw.write(p.toString() + "\n");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-
-            bw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-    public void saveLSFfunctions() {
-        if (this.LSFfuncion.size() == 0) {
-            return;
-        } else {
-            String sciezka = new String("C:\\Users\\ciechan\\Desktop\\DQE - user story\\");
-
-            try {
-                String filename = new String(sciezka + this.getPositionZ() + this.type + ".txt");
-
-                File plik = new File(filename);
-                if (!plik.exists()) {
-                    plik.createNewFile();
-                }
-                FileWriter fw = new FileWriter(plik.getAbsoluteFile());
-                BufferedWriter bw = new BufferedWriter(fw);
-
-                this.LSFfuncion.forEach(p -> {
-                    try {
-                        bw.write(p.toString() + "\n");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
-
-                bw.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
     }
 
 }
