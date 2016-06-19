@@ -57,7 +57,6 @@ public class Cell {
                 coordinatesOfCrossing.add(new Position(currentPosition.x - wsp * currentDirectionCoefficient.x, currentPosition.y - wsp * currentDirectionCoefficient.y, p));
             }
         }
-
         return Optional.of(getClosestCrossBorderPoint(coordinatesOfCrossing, currentPosition));
     }
 

@@ -1,9 +1,6 @@
 package com.company;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -11,25 +8,21 @@ import java.util.stream.Collectors;
 
 public class LSF {
 
-    private ArrayList<PartialLSFFunction> DetectorLSFFunction;
+    private ArrayList<PartialLSFFunction> DetectorLSFFunctions;
+    private ArrayList<Integer> MTF;
+    private ArrayList<ArrayList<Integer>> NPS;
     private Double eta;
 
     LSF(Constants constants) {
-        this.DetectorLSFFunction = getDetectorLSFFunction(constants);
+        getDetectorLSFFunction(constants);
     }
 
-    private ArrayList<PartialLSFFunction> getDetectorLSFFunction(Constants constants) {
+    private void getDetectorLSFFunction(Constants constants) {
         ArrayList<PartialLSFFunction> ListOfPartialLSFFunctions = createListOfPartialLSFFunctions(constants);
+        this.DetectorLSFFunctions = returnEndListOfPartialLSFFunctions(ListOfPartialLSFFunctions);
+        this.MTF = countMTF(ListOfPartialLSFFunctions, constants);
+        this.NPS = generateSetOfNPS(ListOfPartialLSFFunctions, constants);
 
-        ListOfPartialLSFFunctions = returnEndListOfPartialLSFFunctions(ListOfPartialLSFFunctions);
-        saveLSFfunctions(ListOfPartialLSFFunctions, constants);
-
-        ArrayList<Integer> LSFOfMTF = countMTF(ListOfPartialLSFFunctions, constants);
-        saveLSF(LSFOfMTF, constants, true, 0);
-
-        generateSetOfNPS(ListOfPartialLSFFunctions, constants);
-
-        return ListOfPartialLSFFunctions;
     }
 
     private ArrayList<PartialLSFFunction> createListOfPartialLSFFunctions(Constants constants) {
@@ -63,7 +56,6 @@ public class LSF {
         int etaCounter = 0;
         Random rand = new Random();
         for (int l = 0; l < constants.numberOfMTFXPhotonsPositions; l++) {
-            System.out.println(l + " z " + constants.numberOfMTFXPhotonsPositions + " pętli MTF.");
             ArrayList<PhotonXPosition> list = generatePhotonXPositionsForMTF(constants);
             etaCounter = etaCounter + list.size();
             list.forEach(photonXPosition -> {
@@ -76,6 +68,7 @@ public class LSF {
                 }
             });
         }
+        setEtaValue( ((double)etaCounter / (double)(constants.numberOfMTFXPhotons * constants.numberOfMTFXPhotonsPositions)));
         return endVector;
     }
 
@@ -96,14 +89,14 @@ public class LSF {
     private ArrayList<PhotonXPosition> generatePhotonXPositionsForMTF(Constants constants) {
         ArrayList<PhotonXPosition> listOFPhotonXPositionsForMTF = new ArrayList<PhotonXPosition>();
         for (int i = 0; i < constants.numberOfMTFXPhotons; i++) {
-            listOFPhotonXPositionsForMTF.add(new PhotonXPosition(0.0, 0));
+            listOFPhotonXPositionsForMTF.add(new PhotonXPosition(0.0, 1));
         }
         listOFPhotonXPositionsForMTF = makeOneStepForAllElementsOfListOfPhotonXPositionsForMTForNPS(listOFPhotonXPositionsForMTF, constants);
         return listOFPhotonXPositionsForMTF;
     }
 
     private ArrayList<PhotonXPosition> makeOneStepForAllElementsOfListOfPhotonXPositionsForMTForNPS(ArrayList<PhotonXPosition> photonXPositions, Constants constants) {
-        photonXPositions.forEach(photonXPosition -> photonXPosition.makeOneStepForMTForNPS(constants));
+        photonXPositions.stream().forEach(photonXPosition -> photonXPosition.makeOneStepForMTForNPS(constants));
         photonXPositions = photonXPositions.stream()
                 .filter(photonXPosition -> photonXPosition.photonX_in_Detector(constants))
                 .collect(Collectors.toCollection(ArrayList::new));
@@ -122,7 +115,7 @@ public class LSF {
         list.forEach(photonXPosition -> {
             int idx = getIndexOfClosestZPosition(photonXPosition.getZ_position(), listOfPartialLSFFunctions);
             if (listOfPartialLSFFunctions.get(idx).LSFfuncion.stream().anyMatch(x -> x > 0)) {
-                for (int i = 0; i < constants.numberOfLightPhotons; i++) {
+                for (int i = 0; i < getPoisson(constants.numberOfLightPhotons); i++) {
                     boolean detected = rand.nextDouble() <= listOfPartialLSFFunctions.get(idx).getProbablityOfdetection();
                     if (detected) addLSFoNPSEndVector2(listOfPartialLSFFunctions, endVector, rand, idx);
                 }
@@ -168,7 +161,6 @@ public class LSF {
             endVector.add(0);
         }
         for (int h = 0; h < listOfPartialLSFFunctions.get(0).LSFfuncion.size(); h++) {
-            System.out.print(h + "\n");
             endVector = addTwoArrayListsOfIntegets(endVector, funkcja(constants, listOfPartialLSFFunctions), h);
         }
         return new ArrayList<Integer>(endVector.subList(listOfPartialLSFFunctions.get(0).LSFfuncion.size() / 2, listOfPartialLSFFunctions.get(0).LSFfuncion.size() * 3 / 2));
@@ -177,33 +169,23 @@ public class LSF {
     private ArrayList<PhotonXPosition> generatePhotonXPositionsForNPS(Constants constants) {
         ArrayList<PhotonXPosition> listOFPhotonXPositionsForNPS = new ArrayList<PhotonXPosition>();
         for (int j = 0; j < getPoisson(constants.numberOfNPSXPhotonsInOnePosition); j++) {
-            listOFPhotonXPositionsForNPS.add(new PhotonXPosition( 0.0, 1));
+            listOFPhotonXPositionsForNPS.add(new PhotonXPosition(0.0, 1));
         }
         listOFPhotonXPositionsForNPS = makeOneStepForAllElementsOfListOfPhotonXPositionsForMTForNPS(listOFPhotonXPositionsForNPS, constants);
         return listOFPhotonXPositionsForNPS;
     }
 
-    private void generateSetOfNPS(ArrayList<PartialLSFFunction> listOfPartialLSFFunctions, Constants constants) {
+    private ArrayList<ArrayList<Integer>> generateSetOfNPS(ArrayList<PartialLSFFunction> listOfPartialLSFFunctions, Constants constants) {
         ArrayList<ArrayList<Integer>> listOfNPS = new ArrayList<>();
         ArrayList<Integer> listOfMediumValues = new ArrayList<>();
-        System.out.println("Funkcja główna NPS" + "\n");
         for (int k = 0; k < constants.numberOfNPSLoops; k++) {
-            System.out.println("Początek pętli NPS " + k + " z " + constants.numberOfNPSLoops + "\n");
+            System.out.println("Początek pętli NPS " + (k+1) + " z " + constants.numberOfNPSLoops + "\n");
             listOfNPS.add(countNPS(listOfPartialLSFFunctions, constants));
             listOfMediumValues.add(findMean(listOfNPS.get(k)));
         }
-        listOfMediumValues.forEach(Integer -> System.out.println(Integer + "\n"));
-
         Integer mediumValue = findMean(listOfMediumValues);
-        for (int m = 0; m < listOfNPS.size(); m++) {
-            int n = m + 10;
-            saveLSF(listOfNPS.get(m), constants, false, n);
-        }
         listOfNPS = subtractValueFromListOfarrays(listOfNPS, mediumValue);
-
-        for (int m = 0; m < listOfNPS.size(); m++) {
-            saveLSF(listOfNPS.get(m), constants, false, m);
-        }
+        return listOfNPS;
     }
 
     private Integer findMean(ArrayList<Integer> list) {
@@ -248,10 +230,123 @@ public class LSF {
     }
 
     private void setEtaValue(Double Eta) {
-        System.out.print("Wartośc Eta detektora: " + Eta + "\n");
         this.eta = Eta;
     }
 
+
+    public void saveLSF2(Constants constants) {
+
+        String sciezka = new String("C:\\Users\\ciechan\\Desktop\\DQE - user story\\");
+
+        String detectorType = new String("structurized");
+        if (!constants.detectorType) {
+            detectorType = new String("classic");
+        }
+        try {
+            String filename = new String(sciezka+detectorType+ ".dat");
+            File plik = new File(filename);
+            if (!plik.exists()) {
+                plik.createNewFile();
+            }
+            FileWriter fw = new FileWriter(plik.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            try {
+                bw.write("Detector substance: " + constants.detectorSubstance + "\n");
+                bw.write("Detector type: " + detectorType + "\n");
+                bw.write("Photon X energy: " + constants.photonXEnergy + "\n");
+                bw.write("Rows: " + this.MTF.size() + "\n");
+                bw.write("Columns: " + (this.NPS.size() + 1) + "\n");
+                bw.write("Eta: " + (this.eta) + "\n");
+                bw.write("Detector resolution: " + constants.resolutionOfDetector + "\n");
+                bw.write("NumberOfParticleLSFFunctions: " + constants.numberOfParticleLSFFunctions + "\n");
+                bw.write("Detector height: " + constants.cellHeight + "\n");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            for (int i = 0; i < this.MTF.size(); i++) {
+                try {
+                    bw.write(this.MTF.get(i)+returnNPS(i)+ "\n");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            for (int i = 0; i < this.MTF.size(); i++) {
+                try {
+                    bw.write(returnLSFs(i)+"\n");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            try {
+                bw.write(returnLSFPositions()+"\n");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String returnNPS(int j) {
+        String NPSrow = new String();
+        for (int k = 0; k < this.NPS.size(); k++) {
+            NPSrow = " " + NPSrow + this.NPS.get(k).get(j) + " ";
+        }
+        return NPSrow;
+    }
+
+    private String returnLSFs(int j) {
+        String LSFrow = new String();
+        for (int k = 0; k < this.DetectorLSFFunctions.size(); k++) {
+            LSFrow =LSFrow + this.DetectorLSFFunctions.get(k).LSFfuncion.get(j)+" ";
+        }
+        return LSFrow;
+    }
+
+    private String returnLSFPositions() {
+        String PositionRow = new String();
+        for (int k = 0; k < this.DetectorLSFFunctions.size(); k++) {
+            PositionRow =PositionRow + this.DetectorLSFFunctions.get(k).getPositionZ()+" ";
+        }
+        return PositionRow;
+    }
+
+    private void saveLSF(ArrayList<Integer> LSF, Constants constants, boolean MTForNPS, int number) {
+        String functionType = new String("MTF");
+        if (MTForNPS != true) {
+            functionType = new String("NPS");
+        }
+        String detectorType = new String("s");
+        if (!constants.detectorType) {
+            detectorType = new String("k");
+        }
+
+        String sciezka = new String("C:\\Users\\ciechan\\Desktop\\DQE - user story\\");
+        try {
+            String filename = new String(sciezka + detectorType + functionType + number + ".txt");
+            File plik = new File(filename);
+            if (!plik.exists()) {
+                plik.createNewFile();
+            }
+            FileWriter fw = new FileWriter(plik.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            LSF.forEach(integer -> {
+                try {
+                    bw.write(integer + "\n");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void saveLSFfunctions(ArrayList<PartialLSFFunction> ListOfPartialLSFFunctions, Constants constants) {
         String detectorType = new String("s");
@@ -288,37 +383,5 @@ public class LSF {
 
     }
 
-    private void saveLSF(ArrayList<Integer> LSF, Constants constants, boolean MTForNPS, int number) {
-        String functionType = new String("MTF");
-        if (MTForNPS != true) {
-            functionType = new String("NPS");
-        }
-        String detectorType = new String("s");
-        if (!constants.detectorType) {
-            detectorType = new String("k");
-        }
-
-        String sciezka = new String("C:\\Users\\ciechan\\Desktop\\DQE - user story\\");
-        try {
-            String filename = new String(sciezka + detectorType + functionType + number + ".txt");
-            File plik = new File(filename);
-            if (!plik.exists()) {
-                plik.createNewFile();
-            }
-            FileWriter fw = new FileWriter(plik.getAbsoluteFile());
-            BufferedWriter bw = new BufferedWriter(fw);
-
-            LSF.forEach(integer -> {
-                try {
-                    bw.write(integer + "\n");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-
-            bw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }
+

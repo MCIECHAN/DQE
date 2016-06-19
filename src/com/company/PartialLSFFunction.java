@@ -116,7 +116,7 @@ public class PartialLSFFunction {
         ArrayList<normalizedPureLSF> list = new ArrayList<>();
         double maximum = entryLSF.stream().collect(Collectors.summarizingInt(Integer::intValue)).getMax();
         for (int i = 0; i < pureLSF.size(); i++) {
-            list.add(i, new normalizedPureLSF(pureLSF.get(i).getPosition(), pureLSF.get(i).getnumberOfDetectedPhotons() / (maximum * 1.01)));
+            list.add(i, new normalizedPureLSF(pureLSF.get(i).getPosition(), pureLSF.get(i).getnumberOfDetectedPhotons() / (maximum * 1.1)));
         }
         this.listOfNormalizedPureLSF = list;
     }
