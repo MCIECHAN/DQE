@@ -25,8 +25,4 @@ public class PhotonXPosition {
         return zInBoarder;
     }
 
-    public double Z_directionCoefficient() {
-        return this.Z_directionCoefficient;
-    }
-
 }

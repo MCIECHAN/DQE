@@ -124,16 +124,6 @@ public class LSF {
         return endVector;
     }
 
-    private void addLSFoNPSEndVector(ArrayList<PartialLSFFunction> listOfPartialLSFFunctions, ArrayList<Integer> endVector, Random rand, int idx) {
-        int randomPosition = rand.nextInt(((listOfPartialLSFFunctions.get(idx).listOfPureLSF.size())));
-        double randomVariable2 = ((listOfPartialLSFFunctions.get(idx).LSFfuncion.stream().collect(Collectors.summarizingInt(Integer::intValue)).getMax() - 0)) * Math.random();
-        while (notDetected(listOfPartialLSFFunctions, idx, randomPosition, randomVariable2)) {
-            randomPosition = rand.nextInt(((listOfPartialLSFFunctions.get(idx).listOfPureLSF.size())));
-            randomVariable2 = ((listOfPartialLSFFunctions.get(idx).LSFfuncion.stream().collect(Collectors.summarizingInt(Integer::intValue)).getMax() - 0)) * Math.random();
-        }
-        endVector.set(listOfPartialLSFFunctions.get(idx).listOfPureLSF.get(randomPosition).getPosition(), (endVector.get(listOfPartialLSFFunctions.get(idx).listOfPureLSF.get(randomPosition).getPosition()) + 1));
-    }
-
     private void addLSFoNPSEndVector2(ArrayList<PartialLSFFunction> listOfPartialLSFFunctions, ArrayList<Integer> endVector, Random rand, int idx) {
         int randomPosition = rand.nextInt(((listOfPartialLSFFunctions.get(idx).listOfNormalizedPureLSF.size())));
         double randomVariable2 = rand.nextDouble();

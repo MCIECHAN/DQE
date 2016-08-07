@@ -50,7 +50,6 @@ public class Constants {
         this.massAttenuationCoefficientOfXray = setMassAttenuationCoefficientOfXray(detectorDensity, attenuationCoefficientOfXray);
         this.probabilityOfAbsorption = newProbabilityOfAbsorption / (newProbabilityOfAbsorption + newProbabilityOfDispersion);
         this.probabilityOfDispersion = newProbabilityOfDispersion / (newProbabilityOfAbsorption + newProbabilityOfDispersion);
-        //this.massAttenuationCoefficientOfLight = newMassAttenuationCoefficientOfLight;
         this.massAttenuationCoefficientOfLight = setMassAttenuationCoefficientOfLight(detectorDensity,newProbabilityOfAbsorption, newProbabilityOfDispersion);
         this.probabilityOfReflection = newProbabilityOfReflection;
         //this.numberOfLightPhotons = wyznaczLiczbeGenerowanychFotonowSwiatla();
