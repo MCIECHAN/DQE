@@ -1,31 +1,31 @@
 package com.company;
 
 public class Constants {
-    int cellWallLength;
-    Double cellHeight;
-    int numberOfRows;
-    int numberOfColumns;
-    int numberOfParticleLSFFunctions;
-    int number;
-    int photonXEnergy;
-    int numberOfMTFXPhotons;
-    int numberOfMTFXPhotonsPositions;
-    Double RTGConversionCoefficient;
-    Double lengthOfLightWave;
-    Double massAttenuationCoefficientOfLight;
-    Double attenuationCoefficientOfXray;
-    Double detectorDensity;
-    Double massAttenuationCoefficientOfXray;
-    Double probabilityOfAbsorption;
-    Double probabilityOfDispersion;
-    Double probabilityOfReflection;
-    int numberOfLightPhotons;
-    int numberOfNPSXPhotonsInOnePosition;
-    int resolutionOfDetector;
-    boolean detectorType;
-    int startPoint;
-    int numberOfNPSLoops;
-    String detectorSubstance;
+    int cellWallLength;                        //
+    Double cellHeight;                         //
+    int numberOfRows;                          //
+    int numberOfColumns;                       //
+    int numberOfParticleLSFFunctions;          //
+    int number;                                //
+    int photonXEnergy;                         //
+    int numberOfMTFXPhotons;                   //
+    int numberOfMTFXPhotonsPositions;          //
+    Double RTGConversionCoefficient;           //
+    Double lengthOfLightWave;                  //
+    Double massAttenuationCoefficientOfLight;  //
+    Double attenuationCoefficientOfXray;       //
+    Double detectorDensity;                    //
+    Double massAttenuationCoefficientOfXray;   //
+    Double probabilityOfAbsorption;            //
+    Double probabilityOfDispersion;            //
+    Double probabilityOfReflection;            //
+    int numberOfLightPhotons;                  //
+    int numberOfNPSXPhotonsInOnePosition;      //
+    int resolutionOfDetector;                  //
+    boolean detectorType;                      //
+    int startPoint;                            //
+    int numberOfNPSLoops;                      //
+    String detectorSubstance;                  //
 
     public Constants(int newCellWallLength, Double newCellHeight, int newNumberOfRows,
                      int newNumberOfColumns, int newNumberOfParticleLSFFunctions, int newNumber, int newPhotonXEnergy, int newNumberOfMTFXPhotons,
