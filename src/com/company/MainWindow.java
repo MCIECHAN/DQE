@@ -40,6 +40,7 @@ public class MainWindow {
     private JCheckBox useXRayEergyCheckBox;
     private JPanel numberOfLightPhotonsField;
     private JTextField a10TextField;
+    private JButton chooseFolderButton;
 
 
 }
