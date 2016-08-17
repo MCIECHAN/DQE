@@ -39,6 +39,7 @@ public class MainWindow {
     private JTextField filenameTextField;
     private JCheckBox useXRayEergyCheckBox;
     private JPanel numberOfLightPhotonsField;
+    private JTextField a10TextField;
 
 
 }
