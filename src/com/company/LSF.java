@@ -61,10 +61,12 @@ public class LSF {
             list.forEach(photonXPosition -> {
                 int idx = getIndexOfClosestZPosition(photonXPosition.getZ_position(), listOfPartialLSFFunctions);
                 if (listOfPartialLSFFunctions.get(idx).LSFfuncion.stream().anyMatch(x -> x > 0)) {
-                    for (int i = 0; i < constants.numberOfLightPhotons; i++) {
-                        boolean detected = rand.nextDouble() <= listOfPartialLSFFunctions.get(idx).getProbablityOfdetection();
-                        if (detected) addMTFoEndVector(listOfPartialLSFFunctions, endVector, rand, idx);
-                    }
+                    //for (int a=0; a<constants.numberOfLoops; a++) {
+                        for (int i = 0; i < constants.numberOfLightPhotons; i++) {
+                            boolean detected = rand.nextDouble() <= listOfPartialLSFFunctions.get(idx).getProbablityOfdetection();
+                            if (detected) addMTFoEndVector(listOfPartialLSFFunctions, endVector, rand, idx);
+                        }
+                    //}
                 }
             });
         }
@@ -115,10 +117,12 @@ public class LSF {
         list.forEach(photonXPosition -> {
             int idx = getIndexOfClosestZPosition(photonXPosition.getZ_position(), listOfPartialLSFFunctions);
             if (listOfPartialLSFFunctions.get(idx).LSFfuncion.stream().anyMatch(x -> x > 0)) {
-                for (int i = 0; i < getPoisson(constants.numberOfLightPhotons); i++) {
-                    boolean detected = rand.nextDouble() <= listOfPartialLSFFunctions.get(idx).getProbablityOfdetection();
-                    if (detected) addLSFoNPSEndVector2(listOfPartialLSFFunctions, endVector, rand, idx);
-                }
+                //for (int a=0; a<constants.numberOfLoops; a++) {
+                    for (int i = 0; i < getPoisson(constants.numberOfLightPhotons); i++) {
+                        boolean detected = rand.nextDouble() <= listOfPartialLSFFunctions.get(idx).getProbablityOfdetection();
+                        if (detected) addLSFoNPSEndVector2(listOfPartialLSFFunctions, endVector, rand, idx);
+                    }
+                //}
             }
         });
         return endVector;
@@ -228,9 +232,9 @@ public class LSF {
 
         String sciezka = new String("C:\\Users\\ciechan\\Desktop\\DQE - user story\\");
 
-        String detectorType = new String("structurized");
+        String detectorType = new String("strukturyzowany");
         if (!constants.detectorType) {
-            detectorType = new String("classic");
+            detectorType = new String("klasyczny");
         }
         try {
             String filename = new String(sciezka+detectorType+ ".dat");
@@ -304,74 +308,6 @@ public class LSF {
         return PositionRow;
     }
 
-    private void saveLSF(ArrayList<Integer> LSF, Constants constants, boolean MTForNPS, int number) {
-        String functionType = new String("MTF");
-        if (MTForNPS != true) {
-            functionType = new String("NPS");
-        }
-        String detectorType = new String("s");
-        if (!constants.detectorType) {
-            detectorType = new String("k");
-        }
-
-        String sciezka = new String("C:\\Users\\ciechan\\Desktop\\DQE - user story\\");
-        try {
-            String filename = new String(sciezka + detectorType + functionType + number + ".txt");
-            File plik = new File(filename);
-            if (!plik.exists()) {
-                plik.createNewFile();
-            }
-            FileWriter fw = new FileWriter(plik.getAbsoluteFile());
-            BufferedWriter bw = new BufferedWriter(fw);
-
-            LSF.forEach(integer -> {
-                try {
-                    bw.write(integer + "\n");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-
-            bw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void saveLSFfunctions(ArrayList<PartialLSFFunction> ListOfPartialLSFFunctions, Constants constants) {
-        String detectorType = new String("s");
-        if (!constants.detectorType) {
-            detectorType = new String("k");
-        }
-        String sciezka = new String("C:\\Users\\ciechan\\Desktop\\DQE - user story\\" + detectorType);
-        ListOfPartialLSFFunctions.forEach(LSFfunction -> {
-                    try {
-                        String filename = new String(sciezka + LSFfunction.getPositionZ() + ".txt");
-                        File plik = new File(filename);
-                        if (!plik.exists()) {
-                            plik.createNewFile();
-                        }
-                        FileWriter fw = new FileWriter(plik.getAbsoluteFile());
-                        BufferedWriter bw = new BufferedWriter(fw);
-
-                        LSFfunction.LSFfuncion.forEach(lightPhoton -> {
-                            try {
-                                bw.write(lightPhoton + "\n");
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        });
-
-                        bw.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-
-        );
-
-    }
 
 }
 

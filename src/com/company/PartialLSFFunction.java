@@ -34,14 +34,14 @@ public class PartialLSFFunction {
     }
 
     private void setProbabilityOfDetection(ArrayList<Integer> listOfAllXPositions, Constants constants) {
-        Double x = (double) listOfAllXPositions.stream().mapToInt(Integer::intValue).sum() / (constants.numberOfLightPhotons * constants.number);
+        Double x = (double) listOfAllXPositions.stream().mapToInt(Integer::intValue).sum() / (constants.numberOfLightPhotons * constants.numberOfLoops);
         System.out.print(x + "\n");
         this.probabilityOfDetection = x;
     }
 
     private ArrayList<LightPhoton> testLoop(PhotonX fotonX, Constants constants) {
         ArrayList<LightPhoton> mainList = new ArrayList<>();
-        for (int i = 0; i < constants.number; i++) {
+        for (int i = 0; i < constants.numberOfLoops; i++) {
             ArrayList<LightPhoton> lista = fotonX.generateLightPhotons();
             ArrayList<LightPhoton> listaZapisanych = mainSimulationLoop(constants, lista);
             mainList.addAll(listaZapisanych);
