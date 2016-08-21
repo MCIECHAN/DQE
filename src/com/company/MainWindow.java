@@ -35,12 +35,11 @@ public class MainWindow {
     private JTextField numberOfMTFLoopsextField;
     private JTextField numberOFNPSXPhotonsTextField;
     private JTextField numberOfNPSLoopsTextField;
-    private JButton simulateButton;
+    private JButton symulacjaButton;
     private JTextField filenameTextField;
-    private JCheckBox useXRayEergyCheckBox;
-    private JPanel numberOfLightPhotonsField;
+    private JCheckBox ustalLiczbęFotonówŚwiatłaCheckBox;
     private JTextField a10TextField;
-    private JButton chooseFolderButton;
+    private JButton wybierzFolderButton;
 
 
 }
