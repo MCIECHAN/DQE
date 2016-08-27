@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.company.MainWindow">
   <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="1161" height="549"/>
+      <xy x="20" y="20" width="1162" height="549"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -167,20 +167,31 @@
             <properties/>
             <border type="none" title="Parametry promieniowania X"/>
             <children>
+              <component id="c31da" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Masowy współczynnik osłabienia [cm2/g]:"/>
+                </properties>
+              </component>
+              <component id="97795" class="javax.swing.JTextField" binding="xRayMassatCoTextField">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <horizontalAlignment value="0"/>
+                  <text value="3.2"/>
+                </properties>
+              </component>
               <component id="50a0d" class="javax.swing.JLabel" binding="XenergyLabel">
                 <constraints>
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Energia [keV]:"/>
-                </properties>
-              </component>
-              <component id="93352" class="javax.swing.JLabel">
-                <constraints>
-                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Współczynnik konwersji:"/>
                 </properties>
               </component>
               <component id="55053" class="javax.swing.JTextField" binding="energyTextField">
@@ -207,31 +218,20 @@
                   <text value="0.2"/>
                 </properties>
               </component>
+              <component id="93352" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Współczynnik konwersji:"/>
+                </properties>
+              </component>
               <component id="1628" class="javax.swing.JCheckBox" binding="ustalLiczbęFotonówŚwiatłaCheckBox" default-binding="true">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Ustal liczbę fotonów światła na podstawie energii"/>
-                </properties>
-              </component>
-              <component id="c31da" class="javax.swing.JLabel">
-                <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Masowy współczynnik osłabienia [cm2/g]:"/>
-                </properties>
-              </component>
-              <component id="97795" class="javax.swing.JTextField" binding="xRayMassatCoTextField">
-                <constraints>
-                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
-                </constraints>
-                <properties>
-                  <horizontalAlignment value="0"/>
-                  <text value="3.2"/>
                 </properties>
               </component>
             </children>
@@ -266,7 +266,9 @@
                     <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>
-                <properties/>
+                <properties>
+                  <text value=""/>
+                </properties>
               </component>
               <component id="ea3a4" class="javax.swing.JButton" binding="wybierzFolderButton" default-binding="true">
                 <constraints>
@@ -380,17 +382,6 @@
               <text value="545"/>
             </properties>
           </component>
-          <component id="1a7a1" class="javax.swing.JTextField" binding="numberOfLightPhotonsTextField">
-            <constraints>
-              <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="100" height="-1"/>
-              </grid>
-            </constraints>
-            <properties>
-              <horizontalAlignment value="0"/>
-              <text value="10000"/>
-            </properties>
-          </component>
           <component id="86afc" class="javax.swing.JLabel">
             <constraints>
               <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -399,7 +390,7 @@
               <text value=" x 10 000 ="/>
             </properties>
           </component>
-          <component id="9f36f" class="javax.swing.JTextField" binding="a10TextField" default-binding="true">
+          <component id="9f36f" class="javax.swing.JTextField" binding="LightPhotonMultiply">
             <constraints>
               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="30" height="-1"/>
@@ -408,6 +399,14 @@
             <properties>
               <horizontalAlignment value="0"/>
               <text value="10"/>
+            </properties>
+          </component>
+          <component id="8b180" class="javax.swing.JLabel" binding="ll">
+            <constraints>
+              <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Label"/>
             </properties>
           </component>
         </children>
