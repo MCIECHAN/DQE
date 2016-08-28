@@ -3,6 +3,8 @@ package com.company;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -45,12 +47,11 @@ public class MainWindow {
 
     private JCheckBox ustalLiczbęFotonówŚwiatłaCheckBox;
 
-    private JButton wybierzFolderButton;
     private JButton symulacjaButton;
-    private JLabel ll;
 
+    private String filePath;
 
-    public static void main(String[] args) {
+    public static void main(String[] args)   {
 
         JFrame frame = new JFrame("MainWindow");
         frame.getContentPane().add(new MainWindow().panel1);
@@ -61,51 +62,38 @@ public class MainWindow {
     }
 
     public MainWindow() {
+        setDefaultPath();
+
         symulacjaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                varifyInputData();
-            }
-        });
+                boolean czyMoznaSymulowac = varifyInputData();
+                if (czyMoznaSymulowac) {
 
-        wybierzFolderButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser chooser = new JFileChooser();
-                chooser.setCurrentDirectory(new java.io.File("."));
-                chooser.setDialogTitle("Wybieranie folderu do zapisania pliku");
-                chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                chooser.setAcceptAllFileFilterUsed(false);
-
-                if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                    System.out.println("getCurrentDirectory(): " + chooser.getCurrentDirectory());
-                    System.out.println("getSelectedFile() : " + chooser.getSelectedFile());
                 } else {
-                    System.out.println("Nie wybrano folderu");
-                }
 
+                }
             }
         });
-        LightPhotonMultiply.addActionListener(new ActionListener() {
+
+        ustalLiczbęFotonówŚwiatłaCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    int number = Integer.parseInt(LightPhotonMultiply.getText());
-                    int str =  (number*10000);
-                    String s = String.valueOf(str);
-                    ll.setText(s);
-                } catch (NumberFormatException ee) {
-                    ll.setText(String.valueOf(100000));
-                    LightPhotonMultiply.setText(String.valueOf(10));
+                if (ustalLiczbęFotonówŚwiatłaCheckBox.isSelected()) {
+                    energyTextField.setEditable(true);
+                    xRayConversioncooficientTextField.setEditable(true);
+                } else {
+                    energyTextField.setEditable(false);
+                    xRayConversioncooficientTextField.setEditable(false);
                 }
+
             }
         });
     }
 
-    private void varifyInputData() {
-        ArrayList<Optional<String>> list= new ArrayList<>();
-        System.out.print(detectorTypeComboBox1.getSelectedItem() + "\n");
-        System.out.print(detectorSubstanceTextField1.getText() + "\n");
+
+    private boolean varifyInputData() {
+        ArrayList<Optional<String>> list = new ArrayList<>();
         list.add(verifyIfInt(thicknessTextField));
         list.add(verifyIfInt(cellWidthTextField));
         list.add(verifyIfInt(cellNumberTextField));
@@ -125,22 +113,26 @@ public class MainWindow {
         list.add(verifyIfDouble(probablityOfReflectionTextField));
         list.add(verifyIfDouble(xRayMassatCoTextField));
         list.add(verifyIfDouble(xRayConversioncooficientTextField));
+        list.add(verifyIfCorrectFilename(filenameTextField));
 
         list.stream()
                 .filter(Optional::isPresent)
                 .map(Optional::get).collect(Collectors.toCollection(ArrayList::new));
 
-
-        list.forEach(str -> System.out.print(str+"\n"));
+        if (list.size() == 0) {
+            System.out.print("Wartości są poprawne" + "\n");
+            return true;
+        } else {
+            System.out.print("Zmienne niepoprawne" + "\n");
+            return false;
+        }
     }
 
     private Optional<String> verifyIfInt(JTextField textField) {
         try {
             int number = Integer.parseInt(textField.getText());
-            System.out.print("To int !!!!"+"\n");
             return Optional.empty();
         } catch (NumberFormatException e) {
-            System.out.print("To nie int !!!!"+"\n");
             return Optional.of(textField.getText());
         }
     }
@@ -148,11 +140,40 @@ public class MainWindow {
     private Optional<String> verifyIfDouble(JTextField textField) {
         try {
             double number = Double.parseDouble(textField.getText());
-            System.out.print("To double !!!!"+"\n");
             return Optional.empty();
         } catch (NumberFormatException e) {
-            System.out.print("To nie double !!!!"+"\n");
             return Optional.of(textField.getText());
+        }
+    }
+
+    private Optional<String> verifyIfCorrectFilename(JTextField textField) {
+        if(filenameTextField.getText()!="wynikSymulacji"){
+            File f = new File(filenameTextField.getText());
+            try {
+                f.getCanonicalPath();
+                System.out.print("Poprawna nazwa pliku"+"\n");
+                filePath=(f.getCanonicalPath()+".dat");
+                //f.createNewFile();
+                System.out.print(filePath+"\n");
+                return Optional.empty();
+            } catch (IOException e) {
+                System.out.print("Zła nazwa pliku!!!!!!!!!!!!!!!!!!!!!!!!!!"+"\n");
+                return Optional.of(textField.getText());
+            }
+        }
+        else
+            return Optional.empty();
+    }
+
+    private void setDefaultPath() {
+        filenameTextField.setText("wynikSymulacji");
+        File f = new File(filenameTextField.getText()+".dat");
+        try {
+            System.out.print("Domyślnie utworzona ściażka:"+"\n");
+            filePath=f.getCanonicalPath();
+            System.out.print(f.getCanonicalPath()+"\n");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
