@@ -9,10 +9,13 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.awt.Color.red;
+import static java.awt.Color.white;
+
 /**
  * Created by ciechan on 2016-08-07.
  */
-public class MainWindow {
+public class MainWindow extends JFrame{
     private JPanel panel1;
     private JLabel detectorTypeLabel;
     private JLabel detectorSubstanceLabel;
@@ -51,17 +54,18 @@ public class MainWindow {
 
     private String filePath;
 
-    public static void main(String[] args)   {
+    public static void main(String[] args) {
 
         JFrame frame = new JFrame("MainWindow");
         frame.getContentPane().add(new MainWindow().panel1);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1150, 300);
+        frame.setSize(1150, 350);
         frame.setVisible(true);
 
     }
 
     public MainWindow() {
+        super("MainWindow");
         setDefaultPath();
 
         symulacjaButton.addActionListener(new ActionListener() {
@@ -69,9 +73,11 @@ public class MainWindow {
             public void actionPerformed(ActionEvent e) {
                 boolean czyMoznaSymulowac = varifyInputData();
                 if (czyMoznaSymulowac) {
-
+                    System.out.print("Można symulować"+"\n");
+                    //new niepoprawneZmienne();
                 } else {
-
+                    System.out.print("NIE można symulować"+"\n");
+                    //new niepoprawneZmienne();
                 }
             }
         });
@@ -105,15 +111,18 @@ public class MainWindow {
         list.add(verifyIfInt(numberOFNPSXPhotonsTextField));
         list.add(verifyIfInt(numberOfNPSLoopsTextField));
         list.add(verifyIfInt(lightWaveLengthTextField));
-        list.add(verifyIfInt(energyTextField));
-        //double variables
+
         list.add(verifyIfDouble(detectorDensityTextField));
         list.add(verifyIfDouble(probablityOfAbsorptiontextField));
         list.add(verifyIfDouble(probablityOfDispersiontextField));
         list.add(verifyIfDouble(probablityOfReflectionTextField));
         list.add(verifyIfDouble(xRayMassatCoTextField));
-        list.add(verifyIfDouble(xRayConversioncooficientTextField));
+
         list.add(verifyIfCorrectFilename(filenameTextField));
+        if (ustalLiczbęFotonówŚwiatłaCheckBox.isSelected()) {
+            list.add(verifyIfDouble(xRayConversioncooficientTextField));
+            list.add(verifyIfInt(energyTextField));
+        }
 
         list.stream()
                 .filter(Optional::isPresent)
@@ -131,8 +140,10 @@ public class MainWindow {
     private Optional<String> verifyIfInt(JTextField textField) {
         try {
             int number = Integer.parseInt(textField.getText());
+            textField.setBackground(white);
             return Optional.empty();
         } catch (NumberFormatException e) {
+            textField.setBackground(red);
             return Optional.of(textField.getText());
         }
     }
@@ -140,38 +151,42 @@ public class MainWindow {
     private Optional<String> verifyIfDouble(JTextField textField) {
         try {
             double number = Double.parseDouble(textField.getText());
+            textField.setBackground(white);
             return Optional.empty();
         } catch (NumberFormatException e) {
+            textField.setBackground(red);
             return Optional.of(textField.getText());
         }
     }
 
     private Optional<String> verifyIfCorrectFilename(JTextField textField) {
-        if(filenameTextField.getText()!="wynikSymulacji"){
+        if (filenameTextField.getText() != "wynikSymulacji") {
             File f = new File(filenameTextField.getText());
             try {
                 f.getCanonicalPath();
-                System.out.print("Poprawna nazwa pliku"+"\n");
-                filePath=(f.getCanonicalPath()+".dat");
+                System.out.print("Poprawna nazwa pliku" + "\n");
+                filePath = (f.getCanonicalPath() + ".dat");
                 //f.createNewFile();
-                System.out.print(filePath+"\n");
+                System.out.print(filePath + "\n");
+                textField.setBackground(white);
                 return Optional.empty();
             } catch (IOException e) {
-                System.out.print("Zła nazwa pliku!!!!!!!!!!!!!!!!!!!!!!!!!!"+"\n");
+                System.out.print("Zła nazwa pliku!!!!!!!!!!!!!!!!!!!!!!!!!!" + "\n");
+                textField.setBackground(red);
                 return Optional.of(textField.getText());
             }
-        }
-        else
-            return Optional.empty();
+        } else
+            textField.setBackground(white);
+        return Optional.empty();
     }
 
     private void setDefaultPath() {
         filenameTextField.setText("wynikSymulacji");
-        File f = new File(filenameTextField.getText()+".dat");
+        File f = new File(filenameTextField.getText() + ".dat");
         try {
-            System.out.print("Domyślnie utworzona ściażka:"+"\n");
-            filePath=f.getCanonicalPath();
-            System.out.print(f.getCanonicalPath()+"\n");
+            System.out.print("Domyślnie utworzona ściażka:" + "\n");
+            filePath = f.getCanonicalPath();
+            System.out.print(f.getCanonicalPath() + "\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
